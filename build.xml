@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<project name="projects-management" basedir=".">
+	<!-- importing of file which is to contain two properties: "mysql-dir" and "tomcat-dir" -->
+	<import file=".properties.xml"/>
+	<!-- MySQL connection properties -->
+	<property name="mysql-bin-dir" value="${mysql-dir}/bin"/>
+	<property name="mysql-host" value="localhost"/>
+	<property name="mysql-port" value="3306"/>
+	<property name="mysql-user" value="root"/>
+	<property name="mysql-password" value="root"/>
+	<property name="mysql-jdbc-url" value="jdbc:mysql://${mysql-host}:${mysql-port}?useUnicode=true&amp;characterEncoding=UTF-8"/>
+	<!-- Tomcat connection properties -->
+	<property name="tomcat-bin-dir" value="${tomcat-dir}/bin"/>
+	<property name="tomcat-host" value="localhost"/>
+	<property name="tomcat-port" value="80"/>
+	<property name="tomcat-user" value="root"/>
+	<property name="tomcat-password" value="root"/>
+	<property name="tomcat-manager-url" value="http://${tomcat-host}:${tomcat-port}/manager/text"/>
+	<!-- web-application properties -->
+	<property name="deploy-path" value="/pm"/>
+	<property name="build-path" value="${tomcat-dir}/webapps${deploy-path}"/>
+
+	<!-- targets for start/stop of servers -->
+	<target name="Start servers" depends="Start MySQL,Start Tomcat"/>
+	<target name="Stop servers" depends="Stop MySQL,Stop Tomcat"/>
+
+	<!-- targets for database processing -->
+	<target name="Start MySQL">
+		<exec executable="${mysql-bin-dir}/mysqld.exe" spawn="true">
+			<arg value="--standalone"/>
+		</exec>
+	</target>
+	<target name="Stop MySQL">
+		<exec executable="${mysql-bin-dir}/mysqladmin.exe">
+			<arg value="--user=${mysql-user}"/>
+			<arg value="--password=${mysql-password}"/>
+			<arg value="shutdown"/>
+		</exec>
+	</target>
+	<target name="Init data base">
+		<sql driver="com.mysql.jdbc.Driver"
+				url="${mysql-jdbc-url}"
+				userid="${mysql-user}"
+				password="${mysql-password}"
+				encoding="utf8">
+			<classpath>
+				<pathelement location="web/WEB-INF/lib/mysql-connector-java-5.1.17-bin.jar"/>
+			</classpath>
+			<sort>
+				<fileset dir="sql" includes="*.sql"/>
+			</sort>
+		</sql>
+	</target>
+
+	<!-- targets for web-application processing -->
+	<target name="Start Tomcat">
+		<java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+			<jvmarg value="-Dcatalina.home=${tomcat-dir}"/>
+			<classpath>
+				<pathelement location="${tomcat-bin-dir}/bootstrap.jar"/>
+				<pathelement location="${tomcat-bin-dir}/commons-daemon.jar"/>
+				<pathelement location="${tomcat-bin-dir}/tomcat-juli.jar"/>
+			</classpath>
+		</java>
+	</target>
+	<target name="Stop Tomcat">
+		<java classname="org.apache.catalina.startup.Bootstrap" fork="true">
+			<jvmarg value="-Dcatalina.home=${tomcat-dir}"/>
+			<classpath>
+				<pathelement location="${tomcat-bin-dir}/bootstrap.jar"/>
+				<pathelement location="${tomcat-bin-dir}/commons-daemon.jar"/>
+				<pathelement location="${tomcat-bin-dir}/tomcat-juli.jar"/>
+			</classpath>
+			<arg line="stop"/>
+		</java>
+	</target>
+	<target name="Clean">
+		<delete dir=".build"/>
+	</target>
+	<target name="Initialize">
+		<mkdir dir=".build"/>
+		<mkdir dir=".build/web"/>
+		<mkdir dir=".build/web/WEB-INF"/>
+		<mkdir dir=".build/web/WEB-INF/classes"/>
+		<mkdir dir=".build/web/WEB-INF/lib"/>
+		<copy todir=".build/web">
+			<fileset dir="web"/>
+		</copy>
+	</target>
+	<target name="Compile" depends="Initialize">
+		<javac
+				srcdir="src"
+				destdir=".build/web/WEB-INF/classes"
+				debug="true"
+				deprecation="true"
+				optimize="true"
+				source="1.7"
+				encoding="UTF-8"
+				includeantruntime="false">
+			<classpath>
+				<fileset dir="web/WEB-INF/lib">
+					<include name="*.jar"/>
+				</fileset>
+				<pathelement path="${tomcat-dir}/lib/servlet-api.jar"/>
+			</classpath>
+		</javac>
+	</target>
+	<target name="Build" depends="Compile">
+		<war destfile=".build/pm.war" webxml=".build/web/WEB-INF/web.xml">
+			<fileset dir=".build/web"/>
+		</war>
+	</target>
+	<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
+		<classpath>
+			<fileset dir="${tomcat-dir}/lib">
+				<include name="catalina-ant.jar"/>
+				<include name="tomcat-coyote.jar"/>
+				<include name="tomcat-util.jar"/>
+			</fileset>
+			<fileset dir="${tomcat-bin-dir}">
+				<include name="tomcat-juli.jar"/>
+			</fileset>
+		</classpath>
+	</taskdef>
+	<target name="Deploy" depends="Build">
+		<deploy
+				url="${tomcat-manager-url}"
+				username="${tomcat-user}"
+				password="${tomcat-password}"
+				path="${deploy-path}"
+				war=".build/pm.war"
+				update="true"/>
+	</target>
+	<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask">
+		<classpath>
+			<fileset dir="${tomcat-dir}/lib">
+				<include name="catalina-ant.jar"/>
+				<include name="tomcat-coyote.jar"/>
+				<include name="tomcat-util.jar"/>
+			</fileset>
+			<fileset dir="${tomcat-bin-dir}">
+				<include name="tomcat-juli.jar"/>
+			</fileset>
+		</classpath>
+	</taskdef>
+	<target name="Update" depends="Compile">
+		<copy todir="${build-path}">
+			<fileset dir=".build/web"/>
+		</copy>
+		<reload
+			url="${tomcat-manager-url}"
+			username="${tomcat-user}"
+			password="${tomcat-password}"
+			path="${deploy-path}"/>
+	</target>
+</project>
