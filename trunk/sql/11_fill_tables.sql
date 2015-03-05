@@ -180,9 +180,9 @@ VALUES (11005,"Task 6","Some task description",160,0.4,"2015-02-23","2015-03-02"
 INSERT INTO  `task` (`id`,`name`,`description`,`plan_time`,`difficulty`,`open_date`,`accept_date`,`close_date`,`category_id`,`requirement_id`,`module_id`,`employee_id`,`status`) 
 VALUES (11006,"Task 7","Some task description",380,0.9,"2015-02-23","2015-03-03","2015-03-05",11001,11006,11006,11003,4);
 INSERT INTO  `task` (`id`,`name`,`description`,`plan_time`,`difficulty`,`open_date`,`accept_date`,`close_date`,`category_id`,`requirement_id`,`module_id`,`employee_id`,`status`) 
-VALUES (11007,"Task 8","Some task description",280,0.8,"2015-02-23",NULL,NULL,11002,11007,11007,11004,0);
+VALUES (11007,"Task 8","Some task description",280,0.8,"2015-02-26",NULL,NULL,11002,11007,11007,11004,0);
 INSERT INTO  `task` (`id`,`name`,`description`,`plan_time`,`difficulty`,`open_date`,`accept_date`,`close_date`,`category_id`,`requirement_id`,`module_id`,`employee_id`,`status`) 
-VALUES (11008,"Task 9","Some task description",100,0.3,"2015-02-23",NULL,NULL,11002,11008,11008,11004,0);
+VALUES (11008,"Task 9","Some task description",100,0.3,"2015-02-26",NULL,NULL,11002,11008,11008,11004,0);
 
 INSERT INTO  `tasks_dependency` (`id`,`task_id`,`dependent_task_id`) 
 VALUES (11000,11000,11002);
