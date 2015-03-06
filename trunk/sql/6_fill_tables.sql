@@ -29,7 +29,7 @@ VALUES
   ( 6113, 'address', 'regexp for address' );
 
 /* contact
-   6121-6200
+    6121-6200
 */
 /* mobile */
 
