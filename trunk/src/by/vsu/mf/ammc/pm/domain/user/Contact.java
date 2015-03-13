@@ -4,7 +4,7 @@ import by.vsu.mf.ammc.pm.domain.NamedEntity;
 
 public class Contact extends NamedEntity {
 	private User user;
-	private ContactType type;
+	private ContactsType type;
 
 	public User getUser() {
 		return user;
@@ -14,11 +14,11 @@ public class Contact extends NamedEntity {
 		this.user = user;
 	}
 
-	public ContactType getType() {
+	public ContactsType getType() {
 		return type;
 	}
 
-	public void setType(ContactType type) {
+	public void setType(ContactsType type) {
 		this.type = type;
 	}
 }
