@@ -1,6 +1,8 @@
 package by.vsu.mf.ammc.pm.domain;
 
-public abstract class Entity {
+import java.io.Serializable;
+
+public abstract class Entity implements Serializable {
 	private Integer id;
 
 	public Integer getId() {
