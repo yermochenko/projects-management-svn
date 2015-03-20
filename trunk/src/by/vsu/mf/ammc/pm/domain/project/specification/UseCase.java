@@ -28,4 +28,5 @@ public class UseCase extends NamedEntity {
 	public List<UseCase> getRelations(UseCasesRelationsType type) {
 		return relations.get(type);
 	}
+	
 }
