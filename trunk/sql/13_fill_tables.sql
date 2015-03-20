@@ -1,6 +1,3 @@
-USE `pm_db`;
-
-
 INSERT INTO `users_group` (`id`,`name`,`parent_id`) VALUES
 	(13000,"group",NULL),
 	(13001,"root",NULL),
@@ -4138,4 +4135,4 @@ INSERT INTO `tasks_dependency` (`id`,`task_id`,`dependent_task_id`) VALUES
 	(13153,13056,13011),
 	(13154,13067,13010),
 	(13155,13041,13061),
-	(13156,13058,13073)
+	(13156,13058,13073);

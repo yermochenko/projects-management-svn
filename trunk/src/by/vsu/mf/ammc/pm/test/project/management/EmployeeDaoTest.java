@@ -1,6 +1,6 @@
-package test.project.management;
+package by.vsu.mf.ammc.pm.test.project.management;
 
-import by.vsu.mf.ammc.pm.dao.mysql.EmployeeDaoImpl;
+import by.vsu.mf.ammc.pm.dao.mysql.project.management.EmployeeDaoImpl;
 import by.vsu.mf.ammc.pm.dao.util.pool.ConnectionPool;
 import by.vsu.mf.ammc.pm.domain.project.management.Employee;
 import by.vsu.mf.ammc.pm.domain.project.management.EmployeesRole;
