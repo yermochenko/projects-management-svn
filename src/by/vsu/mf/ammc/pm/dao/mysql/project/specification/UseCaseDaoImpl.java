@@ -21,11 +21,7 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao{
         try {
             preparedStatement = getConnection().prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getName());
-            if(entity.getModule() != null && entity.getModule().getId() != null) {
-                preparedStatement.setInt(2, entity.getModule().getId());
-            } else {
-                preparedStatement.setNull(2, Types.INTEGER);
-            }
+            preparedStatement.setInt(2, entity.getModule().getId());
             preparedStatement.executeUpdate();
             resultSet = preparedStatement.getGeneratedKeys();
             if(resultSet.next()) {
@@ -53,11 +49,9 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao{
         try {
             preparedStatement = getConnection().prepareStatement(readSql);
             preparedStatement.setInt(1, id);
-            resultSet = preparedStatement.executeQuery(readSql);
+            resultSet = preparedStatement.executeQuery();
             useCase = new UseCase();
             useCase.setId(id);
-            //while (resultSet.next()) {}
-            //String id = resultSet.getString("id");
             if(resultSet.next()){
                 useCase.setName(resultSet.getString("name"));
                 Module module = new Module();
@@ -108,7 +102,9 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao{
         try {
             preparedStatement = getConnection().prepareStatement(deleteSql);
             preparedStatement.setInt(1, id);
-            resultSet = preparedStatement.executeQuery(readSql);
+            if(0 >= preparedStatement.executeUpdate()){
+                throw new PersistentException();
+            }
         } catch (SQLException e) {
             throw new PersistentException();
         }finally {
