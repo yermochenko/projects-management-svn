@@ -1,5 +1,5 @@
 ﻿insert into `users_group` (id, name)
-values (16001, "разботчики"),
+values (16001, "разработчики"),
 		(16002, "аналитики"),
 		(16003, "admin");
 insert into `users_group` (id, name, parerent_id)
