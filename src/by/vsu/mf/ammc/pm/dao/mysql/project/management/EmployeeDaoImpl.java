@@ -1,6 +1,7 @@
-package by.vsu.mf.ammc.pm.dao.mysql;
+package by.vsu.mf.ammc.pm.dao.mysql.project.management;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.management.EmployeeDao;
+import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
 import by.vsu.mf.ammc.pm.domain.project.management.Employee;
 import by.vsu.mf.ammc.pm.domain.project.management.EmployeesRole;
 import by.vsu.mf.ammc.pm.domain.project.management.Team;
