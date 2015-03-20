@@ -18,11 +18,11 @@ INSERT INTO `contacts_type` (`id`,`name`,`regexp`)
 INSERT INTO `contact` (`id`,`name`,`user_id`,`type_id`)
 	VALUES (14001, "contact@mail.ru",14001, 14003 ),
 		   (14002, "bugaga@gmail.com", 14002, 14003),
-		   (14002, "ololol@gmail.com", 14002, 14003),
-		   (14002, "bg@tut.by", 14003, 14003),
-		   (14002, "29-03-12", 14001, 14002),
-		   (14002, "483-291-2334", 14004, 14001),
-		   (14002, "123-456-7890", 14005, 14001);
+		   (14003, "ololol@gmail.com", 14002, 14003),
+		   (14004, "bg@tut.by", 14003, 14003),
+		   (14005, "29-03-12", 14001, 14002),
+		   (14006, "483-291-2334", 14004, 14001),
+		   (14007, "123-456-7890", 14005, 14001);
 		   
 INSERT INTO `projects_category` (`id`, `name`, `parent_id`)
 	VALUES (14001, "infosystems", null),
