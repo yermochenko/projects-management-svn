@@ -171,7 +171,7 @@ CREATE TABLE `task` (
 	`close_date` DATE,
 	`category_id` INTEGER,
 	`requirement_id` INTEGER,
-	`module_id` INTEGER NOT NULL,
+	`module_id` INTEGER,
 	`employee_id` INTEGER,
 	/*
 	 * 0 - новое NEW (open)
