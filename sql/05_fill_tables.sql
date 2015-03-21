@@ -97,7 +97,7 @@ VALUES
 (5001,"autorization",NULL,5001),
 (5002,"login",5001,5001),
 (5003,"logout",5001,5001),
-(5004,"main menu for admin",NULL,5002),
+(5004,"main menu for admin",NULL,5001),
 (5005,"list scope admin",5004,5001);
 
 INSERT INTO actor
@@ -114,6 +114,7 @@ VALUES
 (5009,"Gamer",5002),
 (5010,"User",5003);
 
+
 INSERT INTO tasks_category
 (id,name,parent_id)
 VALUES
@@ -121,8 +122,8 @@ VALUES
 (5002,"Front-end",NULL),
 (5003,"User Interface",5002),
 (5004,"Back-end",NULL),
-(5005,"Data Base",NULL),
-(5006,"Business logic",NULL);
+(5005,"Data Base",5004),
+(5006,"Business logic",5004);
 
 INSERT INTO use_case
 (id,name,module_id)
@@ -133,31 +134,40 @@ VALUES
 (5004,"for navigate",5004),
 (5005,"for solution different task",5005);
 
+INSERT INTO actor_use_case_relation
+(id,actor_id,use_case_id)
+VALUES
+(5001,5001,5001),
+(5002,5001,5002),
+(5003,5002,5001),
+(5004,5002,5003),
+(5005,5002,5004);
+
 INSERT INTO requirement
 (id,name,description,importance,change_probability,use_case_id,module_id)
 VALUES
-(5001,"req1","missing",0.9,0.3,5001,5001),
-(5002,"req2","missing",0.9,0.3,5001,5001),
-(5003,"req3","missing",1,0.1,5002,5001),
-(5004,"req4","missing",1,0.1,5003,5002),
-(5005,"req5","missing",1,0.1,5004,5003);
+(5001,"req1","missing",0.9,0.3,NULL,5001),
+(5002,"req2","missing",0.9,0.3,NULL,5002),
+(5003,"req3","missing",1,0.1,NULL,5003),
+(5004,"req4","missing",1,0.1,5004,NULL),
+(5005,"req5","missing",1,0.1,5005,NULL);
 
 
 
 INSERT INTO task
 (id,name,description,plan_time,difficulty,open_date,accept_date,close_date,category_id,requirement_id,module_id,employee_id,status)
 VALUES
-(5001,"task1","missing",4,0.8,"10.01.2013","12.01.2013",NULL,5001,5001,5001,5001,2),
-(5002,"task2","missing",3,0.8,"10.03.2013","12.03.2013",NULL,5001,5001,5001,5001,2),
-(5003,"task3","missing",4,0.9,"10.01.2013","12.01.2013","12.02.2013",5001,5002,5002,5001,5),
-(5004,"task4","missing",3,0.9,"10.01.2014","12.01.2014",NULL,5001,5002,5002,5002,2),
-(5005,"task5","missing",6,0.9,"10.01.2014","12.01.2014",NULL,5002,5003,5003,5002,2),
-(5006,"task6","missing",4,0.5,"10.01.2014","12.01.2014",NULL,5002,5003,5003,5003,2),
-(5007,"task7","missing",2,0.5,"10.06.2013","12.06.2013",NULL,5003,5003,5003,5003,2),
-(5008,"task8","missing",5,0.5,"10.01.2013","12.01.2013",NULL,5003,5003,5004,5004,2),
-(5009,"task9","missing",6,0.6,"10.01.2015","12.01.2015","24.02.2015",5003,5005,5001,5004,5),
-(5010,"task10","missing",7,0.6,"10.01.2013","12.01.2013",NULL,5004,5005,5001,5005,2),
-(5011,"task11","missing",4,0.7,"20.01.2013","22.01.2013",NULL,5004,5005,5001,5005,2);
+(5001,"task1","missing",4,0.8,"2013-03-10","2013-03-12",NULL,5001,NULL,5001,NULL,0),
+(5002,"task2","missing",3,0.8,"2013-03-10","2013-01-12",NULL,5001,NULL,5001,5001,2),
+(5003,"task3","missing",4,0.9,"2013-01-10","2013-01-12","12.02.2013",5001,NULL,5002,5001,5),
+(5004,"task4","missing",3,0.9,"2014-01-10","2014-01-12",NULL,5001,NULL,5002,5002,2),
+(5005,"task5","missing",6,0.9,"2014-01-10","2014-01-12",NULL,5002,NULL,5003,NULL,0),
+(5006,"task6","missing",4,0.5,"2014-01-10","2014-01-12",NULL,5002,NULL,5003,5003,2),
+(5007,"task7","missing",2,0.5,"2013-06-10","2013-06-14",NULL,5003,5003,NULL,5003,2),
+(5008,"task8","missing",5,0.5,"2013-01-10","2013-01-12",NULL,5003,5003,NULL,5004,2),
+(5009,"task9","missing",6,0.6,"2015-01-10","2015-01-12","24.02.2015",5003,5005,NULL,5004,5),
+(5010,"task10","missing",7,0.6,"2013-01-10","2013-01-12",NULL,5004,5005,NULL,5005,2),
+(5011,"task11","missing",4,0.7,"2013-01-20","2013-01-22",NULL,5004,5005,NULL,NULL,0);
 
 INSERT INTO tasks_dependency
 (id,task_id,dependent_task_id)
@@ -169,8 +179,6 @@ VALUES
 INSERT INTO use_cases_relation
 (id,source_id,destination_id,type)
 VALUES
-(5001,5002,5001,2),
-(5002,5005,5004,3),
-(5003,5005,5004,1);
+(5001,5002,5001,3);
 
 
