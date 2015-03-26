@@ -24,9 +24,9 @@ VALUES
 */
 INSERT INTO contacts_type (id,name,`regexp`)
 VALUES
-  ( 6111, 'mobile', 'regexp for mobile number' ),
-  ( 6112, 'home', 'regexp for home number' ),
-  ( 6113, 'address', 'regexp for address' );
+  ( 6111, 'mobile', '.*' ),
+  ( 6112, 'home', '.*' ),
+  ( 6113, 'address', '.*' );
 
 /* contact
     6121-6200
@@ -118,7 +118,7 @@ VALUES ( 6271, 6251, 6261);
    6281-6290
 */
 INSERT INTO requirement (id,name,description,importance,change_probability,use_case_id,module_id)
-VALUES ( 6281, 'Основное требование' , 'Создать суперкрутую поисковую систему' , 1 , 0 , NULL , NULL );
+VALUES ( 6281, 'Основное требование' , 'Создать суперкрутую поисковую систему' , 1 , 0 , 6261 , NULL );
 
 /* task_category
   6291-6299
@@ -134,5 +134,5 @@ VALUES
 */
 INSERT INTO task (id,name,description,plan_time,difficulty,open_date,accept_date,close_date,category_id,requirement_id,module_id,employee_id,status)
 VALUES
-  ( 6300, 'front end', 'Создание пользвательского интерфейса', 168, 1, 2015-03-6, NULL , NULL , 6291 , 6281 , 6241, NULL , 0),
-  ( 6301, 'back end', 'Создание архитектуры приложения для взаимодействия с БД и схемы БД', 1, 168, 2015-03-6, NULL , NULL , 6292 , 6281 , 6242, NULL , 0);
+  ( 6300, 'front end', 'Создание пользвательского интерфейса', 168, 1, "2015-03-06", NULL , NULL , 6291 , 6281 , NULL, NULL , 0),
+  ( 6301, 'back end', 'Создание архитектуры приложения для взаимодействия с БД и схемы БД', 1, 168, "2015-03-06", NULL , NULL , 6292 , 6281 , NULL, NULL , 0);
