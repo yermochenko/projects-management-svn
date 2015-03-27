@@ -1,4 +1,4 @@
-package by.vsu.mf.ammc.pm.dao.mysql.abstraction.project.management;
+package by.vsu.mf.ammc.pm.dao.mysql.project.management;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.management.TasksCategoryDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
