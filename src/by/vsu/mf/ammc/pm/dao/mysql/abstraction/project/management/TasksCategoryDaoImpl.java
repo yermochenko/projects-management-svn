@@ -1,5 +1,6 @@
-package by.vsu.mf.ammc.pm.dao.abstraction.project.management;
+package by.vsu.mf.ammc.pm.dao.mysql.abstraction.project.management;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.project.management.TasksCategoryDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
 import by.vsu.mf.ammc.pm.domain.project.management.TasksCategory;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
