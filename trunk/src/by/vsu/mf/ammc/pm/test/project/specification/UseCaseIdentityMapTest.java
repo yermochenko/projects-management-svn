@@ -48,5 +48,15 @@ public class UseCaseIdentityMapTest {
 			System.err.println("read");
 			e.printStackTrace();
 		}
+		
+		try {
+			if(useCase != null) {
+				dao.delete(useCase.getId());
+				System.out.println("delete: done");
+			}
+		} catch(Exception e) {
+			System.err.println("delete");
+			e.printStackTrace();
+		}
 	}
 }
