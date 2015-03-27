@@ -7,6 +7,7 @@ import by.vsu.mf.ammc.pm.domain.project.specification.UseCase;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 import java.sql.*;
+import java.util.HashMap;
 
 public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 	private static final String createSql = "insert into `use_case` (`name`, `module_id`) values (?, ?)";
@@ -15,6 +16,7 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 	private static final String deleteSql = "delete from `use_case` where `id` = ?;";
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
+	private static HashMap<Integer, UseCase> identityMap = new HashMap<Integer, UseCase>();
 
 	@Override
 	public Integer create(UseCase entity) throws PersistentException {
@@ -45,30 +47,33 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 
 	@Override
 	public UseCase read(Integer id) throws PersistentException {
-		UseCase useCase = null;
-		try {
-			preparedStatement = getConnection().prepareStatement(readSql);
-			preparedStatement.setInt(1, id);
-			resultSet = preparedStatement.executeQuery();
-			useCase = new UseCase();
-			useCase.setId(id);
-			if(resultSet.next()) {
-				useCase.setName(resultSet.getString("name"));
-				Module module = new Module();
-				module.setId(resultSet.getInt("module_id"));
-				useCase.setModule(module);
+		UseCase useCase = identityMap.get(id);
+		if (useCase == null) {
+			try {
+				preparedStatement = getConnection().prepareStatement(readSql);
+				preparedStatement.setInt(1, id);
+				resultSet = preparedStatement.executeQuery();
+				useCase = new UseCase();
+				useCase.setId(id);
+				if(resultSet.next()) {
+					useCase.setName(resultSet.getString("name"));
+					Module module = new Module();
+					module.setId(resultSet.getInt("module_id"));
+					useCase.setModule(module);
+				}
+				identityMap.put(id, useCase);
+			} catch(SQLException e) {
+				throw new PersistentException();
+			} finally {
+				try {
+					if(resultSet != null)
+						resultSet.close();
+				} catch(SQLException e) {}
+				try {
+					if(preparedStatement != null)
+						preparedStatement.close();
+				} catch(SQLException e) {}
 			}
-		} catch(SQLException e) {
-			throw new PersistentException();
-		} finally {
-			try {
-				if(resultSet != null)
-					resultSet.close();
-			} catch(SQLException e) {}
-			try {
-				if(preparedStatement != null)
-					preparedStatement.close();
-			} catch(SQLException e) {}
 		}
 		return useCase;
 	}
@@ -99,6 +104,7 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 
 	@Override
 	public void delete(Integer id) throws PersistentException {
+		identityMap.remove(id);
 		try {
 			preparedStatement = getConnection().prepareStatement(deleteSql);
 			preparedStatement.setInt(1, id);
