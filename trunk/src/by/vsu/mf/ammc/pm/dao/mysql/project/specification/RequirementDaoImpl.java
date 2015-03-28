@@ -22,7 +22,7 @@ public class RequirementDaoImpl extends BaseDaoImpl implements RequirementDao  {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = getConnection().prepareStatement( sql, preparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement = getConnection().prepareStatement( sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString( 1, entity.getName() );
             preparedStatement.setString( 2, entity.getDescription() );
             preparedStatement.setFloat(3, entity.getImportance());
@@ -64,7 +64,7 @@ public class RequirementDaoImpl extends BaseDaoImpl implements RequirementDao  {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
-            preparedStatement = getConnection().prepareStatement( sql, preparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement = getConnection().prepareStatement( sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt( 1 , id );
             resultSet = preparedStatement.executeQuery();
             Requirement requirement = new Requirement();
