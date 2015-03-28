@@ -134,5 +134,16 @@ VALUES
 */
 INSERT INTO task (id,name,description,plan_time,difficulty,open_date,accept_date,close_date,category_id,requirement_id,module_id,employee_id,status)
 VALUES
-  ( 6300, 'front end', 'Создание пользвательского интерфейса', 168, 1, "2015-03-06", NULL , NULL , 6291 , 6281 , NULL, NULL , 0),
-  ( 6301, 'back end', 'Создание архитектуры приложения для взаимодействия с БД и схемы БД', 1, 168, "2015-03-06", NULL , NULL , 6292 , 6281 , NULL, NULL , 0);
+  ( 6300, 'front end', 'Создание пользвательского интерфейса', 200, 1, "2015-03-06", NULL , NULL , 6291 , 6281 , NULL, NULL , 0),
+  ( 6301, 'back end', 'Создание архитектуры приложения для взаимодействия с БД и схемы БД', 200, 1, "2015-03-06", NULL , NULL , 6291 , 6281 , NULL, NULL , 0),
+  ( 6302, 'верстка', 'Верстка, HTML-шаблонов страниц', 100 , 0.5, "2015-03-06", NULL , NULL , 6291 , 6281 , NULL, NULL , 0),
+  ( 6303, 'javascript', 'Добавление JS-эффектов к html-шаблонам, наведение красоты ', 100, 0.5, "2015-03-06", NULL , NULL , 6291 , 6281 , NULL, NULL , 0);
+
+
+/* task_dependency
+    6500-6600
+*/
+INSERT INTO tasks_dependency ( id, task_id, dependent_task_id )
+VALUES
+  ( 6501, 6300, 6303 ),
+  ( 6502, 6302, 6303 );
