@@ -178,7 +178,7 @@ CREATE TABLE `task` (
 	 * 1 - назначенное ACCEPTED (open)
 	 * 2 - в процессе STARTED (open)
 	 * 3 - вновь открытое RENEW (open)
-	 * 4 - завершённое разработчиком DONE (close)
+	 * 4 - завершённое разработчиком DONE (open)
 	 * 5 - успешно завершённое APPROVED (close)
 	 */
 	`status` TINYINT NOT NULL,
