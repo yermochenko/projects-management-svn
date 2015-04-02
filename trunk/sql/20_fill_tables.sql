@@ -1,5 +1,3 @@
-USE `pm_db`;
-
 INSERT INTO `users_group`
 (`id`,  `name`,        `parent_id`) VALUES
 (20001, 'admin',       NULL),
