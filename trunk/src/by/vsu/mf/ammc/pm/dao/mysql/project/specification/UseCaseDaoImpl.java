@@ -27,7 +27,10 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
 			if(resultSet.next()) {
-				return resultSet.getInt(1);
+				int result = resultSet.getInt(1);
+				entity.setId(result);
+				identityMap.put(result, entity);
+				return result;
 			} else {
 				throw new PersistentException();
 			}
@@ -53,11 +56,11 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 				preparedStatement = getConnection().prepareStatement(readSql);
 				preparedStatement.setInt(1, id);
 				resultSet = preparedStatement.executeQuery();
-				useCase = new UseCase();
+				useCase = getEntityFactory().create(UseCase.class);
 				useCase.setId(id);
 				if(resultSet.next()) {
 					useCase.setName(resultSet.getString("name"));
-					Module module = new Module();
+					Module module = getEntityFactory().create(Module.class);
 					module.setId(resultSet.getInt("module_id"));
 					useCase.setModule(module);
 				}
@@ -87,6 +90,9 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 			preparedStatement.setInt(3, entity.getId());
 			if(0 >= preparedStatement.executeUpdate()) {
 				throw new PersistentException();
+			} else {
+				identityMap.remove(entity.getId());
+				identityMap.put(entity.getId(), entity);
 			}
 		} catch(SQLException e) {
 			throw new PersistentException();
