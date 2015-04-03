@@ -11,52 +11,55 @@ import by.vsu.mf.ammc.pm.exception.PersistentException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- * Created by meskill on 19.3.15.
- */
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Layout;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+
 public class EmployeeDaoTest {
-
 	public static void main(String[] args) throws PersistentException, SQLException {
+		Logger root = Logger.getRootLogger();
+		Layout layout = new PatternLayout("%n%d%n%p\t%C.%M:%L%n%m%n");
+		root.addAppender(new ConsoleAppender(layout));
+		root.setLevel(Level.ALL);
 		ConnectionPool pool = ConnectionPool.getInstance();
-		pool.init("com.mysql.jdbc.Driver", "jdbc:mysql://localhost", "root", "root", 1, 1, 10000);
+		pool.init("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/pm_db", "pm_user", "pm_password", 1, 1, 0);
 		EmployeeDaoImpl dao = new EmployeeDaoImpl();
-		Connection conn = pool.getConnection();
-		conn.createStatement().execute("use pm_db");
+		Connection connection = pool.getConnection();
+		dao.setConnection(connection);
 
-		dao.setConnection(conn);
 		// create
-		Employee create_employee = new Employee();
-		int create_id = -1;
+		Employee employee = new Employee();
 		User user = new User();
 		user.setId(13001);
 		Team team = new Team();
 		team.setId(13001);
-		create_employee.setUser(user);
-		create_employee.setTeam(team);
-		create_employee.setRole(EmployeesRole.BUSINESS_ANALYST);
-		create_id = dao.create(create_employee);
-		assert create_id != -1 : "Failed on create";
+		employee.setUser(user);
+		employee.setTeam(team);
+		employee.setRole(EmployeesRole.BUSINESS_ANALYST);
+		Integer id = dao.create(employee);
+		System.out.printf("new employee created [id=%d]\n", id);
 
 		// read
-		Employee read_employee = dao.read(create_id);
-		assert create_employee.getUser().getId() == read_employee.getUser().getId() && create_employee.getTeam().getId() == read_employee.getTeam().getId()
-				&& create_employee.getRole() == read_employee.getRole() : "Failed or read";
+		employee = dao.read(id);
+		System.out.printf("employee readed [user_id=%d, team_id=%d, role=%s]\n", employee.getUser().getId(), employee.getTeam().getId(), employee.getRole());
 
 		// update
-		Employee update_employee = new Employee();
-		user.setId(13002);
-		team.setId(13002);
-		update_employee.setId(create_id);
-		update_employee.setUser(user);
-		update_employee.setTeam(team);
-		update_employee.setRole(EmployeesRole.PROJECT_MANAGER);
-		dao.update(update_employee);
-		read_employee = dao.read(create_id);
-		assert update_employee.getUser().getId() == read_employee.getUser().getId() && update_employee.getTeam().getId() == read_employee.getTeam().getId()
-				&& update_employee.getRole() == read_employee.getRole() : "Failed on update";
+		employee.getUser().setId(13002);
+		employee.getTeam().setId(13002);
+		employee.setRole(EmployeesRole.PROGRAMMER);
+		dao.update(employee);
+		employee = dao.read(id);
+		System.out.printf("updated employee readed [user_id=%d, team_id=%d, role=%s]\n", employee.getUser().getId(), employee.getTeam().getId(), employee.getRole());
 
 		// delete
-		dao.delete(create_id);
-		assert dao.read(create_id) == null : "Failed on delete";
+		dao.delete(id);
+		employee = dao.read(id);
+		if(employee == null) {
+			System.out.println("employee deleted OK");
+		}
+
+		connection.close();
 	}
 }
