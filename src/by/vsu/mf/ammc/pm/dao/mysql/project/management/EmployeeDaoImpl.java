@@ -18,15 +18,15 @@ import java.sql.Statement;
  */
 public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 	@Override
-	public Integer create(Employee entity) throws PersistentException {
-		String sql = "INSERT INTO `employee` (`user_id`,`team_id`,`role`) VALUES (?,?,?)";
+	public Integer create(Employee employee) throws PersistentException {
+		String sql = "INSERT INTO `employee` (`user_id`, `team_id`, `role`) VALUES (?, ?, ?)";
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		try {
 			statement = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			statement.setInt(1, entity.getUser().getId());
-			statement.setInt(2, entity.getTeam().getId());
-			statement.setByte(3, (byte)entity.getRole().ordinal());
+			statement.setInt(1, employee.getUser().getId());
+			statement.setInt(2, employee.getTeam().getId());
+			statement.setByte(3, (byte)employee.getRole().ordinal());
 			statement.executeUpdate();
 			resultSet = statement.getGeneratedKeys();
 			if(resultSet.next()) {
@@ -48,11 +48,11 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 
 	@Override
 	public Employee read(Integer id) throws PersistentException {
-		String sql = "SELECT `id`,`user_id`,`team_id`,`role` FROM `employee` WHERE `id`=?";
+		String sql = "SELECT `user_id`, `team_id`, `role` FROM `employee` WHERE `id` = ?";
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		try {
-			statement = this.getConnection().prepareStatement(sql);
+			statement = getConnection().prepareStatement(sql);
 			statement.setInt(1, id);
 			resultSet = statement.executeQuery();
 			Employee employee = null;
@@ -81,15 +81,15 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 	}
 
 	@Override
-	public void update(Employee entity) throws PersistentException {
-		String sql = "UPDATE `employee` SET `user_id`= ?, `team_id`=?, `role`=? WHERE `id` = ?";
+	public void update(Employee employee) throws PersistentException {
+		String sql = "UPDATE `employee` SET `user_id` = ?, `team_id` = ?, `role` = ? WHERE `id` = ?";
 		PreparedStatement statement = null;
 		try {
 			statement = getConnection().prepareStatement(sql);
-			statement.setInt(1, entity.getUser().getId());
-			statement.setInt(2, entity.getTeam().getId());
-			statement.setByte(3, (byte)entity.getRole().ordinal());
-			statement.setInt(4, entity.getId());
+			statement.setInt(1, employee.getUser().getId());
+			statement.setInt(2, employee.getTeam().getId());
+			statement.setByte(3, (byte)employee.getRole().ordinal());
+			statement.setInt(4, employee.getId());
 			statement.executeUpdate();
 		} catch(SQLException e) {
 			throw new PersistentException(e);
