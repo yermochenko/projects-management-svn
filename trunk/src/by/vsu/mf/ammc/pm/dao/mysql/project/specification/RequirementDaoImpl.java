@@ -6,16 +6,22 @@ import by.vsu.mf.ammc.pm.domain.project.Module;
 import by.vsu.mf.ammc.pm.domain.project.specification.Requirement;
 import by.vsu.mf.ammc.pm.domain.project.specification.UseCase;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
+
 import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RequirementDaoImpl extends BaseDaoImpl implements RequirementDao  {
     private static Logger logger = Logger.getLogger( RequirementDaoImpl.class);
+    
+    private Map<Integer, Requirement> identityMap = new HashMap<Integer, Requirement>(); 
+    
     @Override
     public Integer create(Requirement entity) throws PersistentException {
         String sql = " INSERT INTO requirement ( name, description, importance, change_probability, use_case_id, module_id ) VALUES ( ?, ?, ?, ?, ?, ? ); ";
@@ -60,10 +66,14 @@ public class RequirementDaoImpl extends BaseDaoImpl implements RequirementDao  {
 
     @Override
     public Requirement read(Integer id) throws PersistentException {
+    	if(identityMap.containsKey(id)){
+    		return identityMap.get(id);
+    	}
         String sql = " SELECT name, description, importance, change_probability, use_case_id, module_id FROM requirement WHERE id = ? ";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
+        	
             preparedStatement = getConnection().prepareStatement( sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt( 1 , id );
             resultSet = preparedStatement.executeQuery();
@@ -87,6 +97,7 @@ public class RequirementDaoImpl extends BaseDaoImpl implements RequirementDao  {
                     requirement.setModule(module);
                 }
             }
+            identityMap.put(id, requirement);
             return requirement;
         } catch( SQLException e) {
             logger.error( "Reading of record was failed. Table 'requirement'", e);
