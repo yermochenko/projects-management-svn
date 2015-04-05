@@ -2,6 +2,7 @@ package by.vsu.mf.ammc.pm.dao.mysql.project.specification;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.specification.RequirementDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
+import by.vsu.mf.ammc.pm.dao.mysql.EntityFactory;
 import by.vsu.mf.ammc.pm.domain.project.Module;
 import by.vsu.mf.ammc.pm.domain.project.specification.Requirement;
 import by.vsu.mf.ammc.pm.domain.project.specification.UseCase;
@@ -72,12 +73,13 @@ public class RequirementDaoImpl extends BaseDaoImpl implements RequirementDao  {
         String sql = " SELECT name, description, importance, change_probability, use_case_id, module_id FROM requirement WHERE id = ? ";
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        
         try {
         	
             preparedStatement = getConnection().prepareStatement( sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt( 1 , id );
             resultSet = preparedStatement.executeQuery();
-            Requirement requirement = new Requirement();
+            Requirement requirement = getEntityFactory().create(Requirement.class);
             if( resultSet.next() ) {
                 requirement.setId( id );
                 requirement.setName( resultSet.getString("name") );
@@ -86,13 +88,13 @@ public class RequirementDaoImpl extends BaseDaoImpl implements RequirementDao  {
                 requirement.setChangeProbability( resultSet.getFloat( "change_probability" ) );
                 Integer useCaseId = resultSet.getInt( "use_case_id" );
                 if( !resultSet.wasNull() ) {
-                    UseCase useCase = new UseCase();
+                    UseCase useCase = getEntityFactory().create(UseCase.class);;
                     useCase.setId( useCaseId );
                     requirement.setUseCase( useCase );
                 }
                 Integer moduleId = resultSet.getInt( "module_id" );
                 if( !resultSet.wasNull() ) {
-                    Module module = new Module();
+                    Module module = getEntityFactory().create(Module.class);;
                     module.setId(moduleId);
                     requirement.setModule(module);
                 }
