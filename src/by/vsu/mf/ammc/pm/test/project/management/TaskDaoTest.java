@@ -1,12 +1,6 @@
 package by.vsu.mf.ammc.pm.test.project.management;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import by.vsu.mf.ammc.pm.dao.mysql.EntityFactory;
 import by.vsu.mf.ammc.pm.dao.mysql.project.management.TaskDaoImpl;
 import by.vsu.mf.ammc.pm.domain.project.management.Employee;
 import by.vsu.mf.ammc.pm.domain.project.management.Task;
@@ -15,6 +9,8 @@ import by.vsu.mf.ammc.pm.domain.project.management.TasksStatus;
 import by.vsu.mf.ammc.pm.domain.project.specification.Requirement;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
+import java.sql.*;
+
 public class TaskDaoTest {
 	public static void main(String[] args) throws PersistentException, SQLException, ClassNotFoundException {
 
@@ -22,8 +18,8 @@ public class TaskDaoTest {
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost", "root", "root");
 		TaskDaoImpl taskDaoImpl = new TaskDaoImpl();
 		taskDaoImpl.setConnection(connection);
-
-		Task task = new Task();
+        taskDaoImpl.setEntityFactory( new EntityFactory() );
+		Task task = taskDaoImpl.getEntityFactory().create( Task.class );
 		task.setName("test task");
 		task.setDescription("description");
 		task.setPlanTime(100);
