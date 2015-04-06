@@ -124,22 +124,23 @@ public class TaskDaoImpl extends BaseDaoImpl implements TaskDao {
                         task.setCloseDate( closeDate );
                     }
                 }
-                TasksCategory tasksCategory = new TasksCategory( );
+
+                TasksCategory tasksCategory = getEntityFactory().create( TasksCategory.class );
                 tasksCategory.setId( resultSet.getInt( "category_id" ) );
                 if ( !resultSet.wasNull( ) ) {
                     task.setCategory( tasksCategory );
                 }
-                Requirement requirement = new Requirement( );
+                Requirement requirement = getEntityFactory().create( Requirement.class );
                 requirement.setId( resultSet.getInt( "requirement_id" ) );
                 if ( !resultSet.wasNull( ) ) {
                     task.setRequirement( requirement );
                 }
-                Module module = new Module( );
+                Module module = getEntityFactory().create( Module.class );
                 module.setId( resultSet.getInt( "module_id" ) );
                 if ( !resultSet.wasNull( ) ) {
                     task.setModule( module );
                 }
-                Employee employee = new Employee( );
+                Employee employee = getEntityFactory().create( Employee.class );
                 employee.setId( resultSet.getInt( "employee_id" ) );
                 if ( !resultSet.wasNull( ) ) {
                     task.setEmployee( employee );
