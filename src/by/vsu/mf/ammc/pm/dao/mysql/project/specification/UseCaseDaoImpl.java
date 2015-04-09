@@ -6,31 +6,28 @@ import by.vsu.mf.ammc.pm.domain.project.Module;
 import by.vsu.mf.ammc.pm.domain.project.specification.UseCase;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 
 public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
-	private static final String createSql = "insert into `use_case` (`name`, `module_id`) values (?, ?)";
-	private static final String readSql = "select * from `use_case` where `id` = ?;";
-	private static final String updateSql = "update `use_case` set `name`=? , `module_id`=? where `id`=?";
-	private static final String deleteSql = "delete from `use_case` where `id` = ?;";
-	private PreparedStatement preparedStatement = null;
-	private ResultSet resultSet = null;
-	private static HashMap<Integer, UseCase> identityMap = new HashMap<Integer, UseCase>();
+	private HashMap<Integer, UseCase> identityMap = new HashMap<Integer, UseCase>();
 
 	@Override
-	public Integer create(UseCase entity) throws PersistentException {
+	public Integer create(UseCase useCase) throws PersistentException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String sql = "INSERT INTO `use_case` (`name`, `module_id`) VALUES (?, ?)";
 		try {
-			preparedStatement = getConnection().prepareStatement(createSql, Statement.RETURN_GENERATED_KEYS);
-			preparedStatement.setString(1, entity.getName());
-			preparedStatement.setInt(2, entity.getModule().getId());
+			preparedStatement = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, useCase.getName());
+			preparedStatement.setInt(2, useCase.getModule().getId());
 			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
 			if(resultSet.next()) {
-				int result = resultSet.getInt(1);
-				entity.setId(result);
-				identityMap.put(result, entity);
-				return result;
+				return resultSet.getInt(1);
 			} else {
 				throw new PersistentException();
 			}
@@ -38,97 +35,84 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 			throw new PersistentException(e);
 		} finally {
 			try {
-				if(resultSet != null)
-					resultSet.close();
-			} catch(SQLException e) {}
+				resultSet.close();
+			} catch(SQLException | NullPointerException e) {}
 			try {
-				if(preparedStatement != null)
-					preparedStatement.close();
-			} catch(SQLException e) {}
+				preparedStatement.close();
+			} catch(SQLException | NullPointerException e) {}
+			identityMap.clear();
 		}
 	}
 
 	@Override
 	public UseCase read(Integer id) throws PersistentException {
 		UseCase useCase = identityMap.get(id);
-		if (useCase == null) {
+		if(useCase == null) {
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			String sql = "SELECT `name`, `module_id` FROM `use_case` WHERE `id` = ?";
 			try {
-				preparedStatement = getConnection().prepareStatement(readSql);
+				preparedStatement = getConnection().prepareStatement(sql);
 				preparedStatement.setInt(1, id);
 				resultSet = preparedStatement.executeQuery();
-				useCase = getEntityFactory().create(UseCase.class);
-				useCase.setId(id);
 				if(resultSet.next()) {
+					useCase = getEntityFactory().create(UseCase.class);
+					useCase.setId(id);
 					useCase.setName(resultSet.getString("name"));
 					Module module = getEntityFactory().create(Module.class);
 					module.setId(resultSet.getInt("module_id"));
 					useCase.setModule(module);
+					identityMap.put(id, useCase);
 				}
-				identityMap.put(id, useCase);
 			} catch(SQLException e) {
 				throw new PersistentException();
 			} finally {
 				try {
-					if(resultSet != null)
-						resultSet.close();
-				} catch(SQLException e) {}
+					resultSet.close();
+				} catch(SQLException | NullPointerException e) {}
 				try {
-					if(preparedStatement != null)
-						preparedStatement.close();
-				} catch(SQLException e) {}
+					preparedStatement.close();
+				} catch(SQLException | NullPointerException e) {}
 			}
 		}
 		return useCase;
 	}
 
 	@Override
-	public void update(UseCase entity) throws PersistentException {
+	public void update(UseCase useCase) throws PersistentException {
+		PreparedStatement preparedStatement = null;
+		String sql = "UPDATE `use_case` SET `name` = ?, `module_id` = ? WHERE `id` = ?";
 		try {
-			preparedStatement = getConnection().prepareStatement(updateSql);
-			preparedStatement.setString(1, entity.getName());
-			preparedStatement.setInt(2, entity.getModule().getId());
-			preparedStatement.setInt(3, entity.getId());
-			if(0 >= preparedStatement.executeUpdate()) {
-				throw new PersistentException();
-			} else {
-				identityMap.remove(entity.getId());
-				identityMap.put(entity.getId(), entity);
-			}
+			preparedStatement = getConnection().prepareStatement(sql);
+			preparedStatement.setString(1, useCase.getName());
+			preparedStatement.setInt(2, useCase.getModule().getId());
+			preparedStatement.setInt(3, useCase.getId());
+			preparedStatement.executeUpdate();
 		} catch(SQLException e) {
 			throw new PersistentException();
 		} finally {
 			try {
-				if(resultSet != null)
-					resultSet.close();
-			} catch(SQLException e) {}
-			try {
-				if(preparedStatement != null)
-					preparedStatement.close();
-			} catch(SQLException e) {}
+				preparedStatement.close();
+			} catch(SQLException | NullPointerException e) {}
+			identityMap.clear();
 		}
 	}
 
 	@Override
 	public void delete(Integer id) throws PersistentException {
-		identityMap.remove(id);
+		PreparedStatement preparedStatement = null;
+		String sql = "DELETE FROM `use_case` WHERE `id` = ?";
 		try {
-			preparedStatement = getConnection().prepareStatement(deleteSql);
+			preparedStatement = getConnection().prepareStatement(sql);
 			preparedStatement.setInt(1, id);
-			if(0 >= preparedStatement.executeUpdate()) {
-				throw new PersistentException();
-			}
+			preparedStatement.executeUpdate();
 		} catch(SQLException e) {
 			throw new PersistentException();
 		} finally {
 			try {
-				if(resultSet != null)
-					resultSet.close();
-			} catch(SQLException e) {}
-			try {
-				if(preparedStatement != null)
-					preparedStatement.close();
-			} catch(SQLException e) {}
+				preparedStatement.close();
+			} catch(SQLException | NullPointerException e) {}
+			identityMap.clear();
 		}
 	}
-
 }
