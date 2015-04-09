@@ -15,7 +15,7 @@ import by.vsu.mf.ammc.pm.exception.PersistentException;
 public class TransactionImpl implements Transaction {
 	private static Logger logger = Logger.getLogger(TransactionImpl.class);
 
-	private static Map<Class<? extends Dao<?>>, BaseDaoImpl> daos = new ConcurrentHashMap<>();
+	private static Map<Class<? extends Dao<?>>, Class<? extends BaseDaoImpl>> daos = new ConcurrentHashMap<>();
 	static {
 	}
 
@@ -36,12 +36,16 @@ public class TransactionImpl implements Transaction {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <Type extends Dao<?>> Type getDao(Class<Type> key) throws PersistentException {
-		BaseDaoImpl dao = daos.get(key);
-		if(dao != null) {
-			dao.setConnection(connection);
-			dao.setEntityFactory(entityFactory);
+		try {
+			BaseDaoImpl dao = daos.get(key).newInstance();
+			if(dao != null) {
+				dao.setConnection(connection);
+				dao.setEntityFactory(entityFactory);
+			}
+			return (Type)dao;
+		} catch(InstantiationException | IllegalAccessException e) {
+			throw new PersistentException(e);
 		}
-		return (Type)dao;
 	}
 
 	@Override
