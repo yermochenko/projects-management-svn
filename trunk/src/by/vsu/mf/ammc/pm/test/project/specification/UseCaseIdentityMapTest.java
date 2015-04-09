@@ -1,8 +1,16 @@
 package by.vsu.mf.ammc.pm.test.project.specification;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Layout;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+
+import by.vsu.mf.ammc.pm.dao.mysql.EntityFactory;
 import by.vsu.mf.ammc.pm.dao.mysql.project.specification.UseCaseDaoImpl;
 import by.vsu.mf.ammc.pm.dao.util.pool.ConnectionPool;
 import by.vsu.mf.ammc.pm.domain.project.Module;
@@ -10,53 +18,55 @@ import by.vsu.mf.ammc.pm.domain.project.specification.UseCase;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 public class UseCaseIdentityMapTest {
+	public static final Level LOG_LEVEL = Level.ALL;
+	public static final String LOG_MESSAGE_FORMAT = "%n%d%n%p\t%C.%M:%L%n%m%n";
+
 	public static void main(String[] args) throws PersistentException, SQLException {
-		//TODO Logger
+		Logger root = Logger.getRootLogger();
+		Layout layout = new PatternLayout(LOG_MESSAGE_FORMAT);
+		root.addAppender(new ConsoleAppender(layout));
+		root.setLevel(LOG_LEVEL);
 		ConnectionPool pool = ConnectionPool.getInstance();
-		pool.init("com.mysql.jdbc.Driver", "jdbc:mysql://localhost", "root", "root", 1, 1, 10000);
+		pool.init("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/pm_db", "pm_user", "pm_password", 1, 1, 0);
 		Connection conn = pool.getConnection();
-		conn.createStatement().execute("use pm_db");
 		
-		UseCaseDaoImpl dao = new UseCaseDaoImpl();
+		UseCaseDaoImpl dao = null;
+
+		dao = new UseCaseDaoImpl();
 		dao.setConnection(conn);
-		
-		int id = 5001;
-		try {
-			UseCase useCase = new UseCase();
-			useCase.setName("name1");
-			Module module = new Module();
-			module.setId(5001);
-			useCase.setModule(module);
-			id = dao.create(useCase);
-			System.out.println("create id = " + id);
-		} catch(Exception e) {
-			System.err.println("create with module");
-			e.printStackTrace();
-		}
-		UseCase useCase = null;
-		try {
-			useCase = dao.read(id);
-			System.out.println("read: name = " + useCase.getName());
-		} catch(Exception e) {
-			System.err.println("read");
-			e.printStackTrace();
-		}
-		try {
-			useCase = dao.read(id);
-			System.out.println("read: name = " + useCase.getName());
-		} catch(Exception e) {
-			System.err.println("read");
-			e.printStackTrace();
-		}
-		
-		try {
-			if(useCase != null) {
-				dao.delete(useCase.getId());
-				System.out.println("delete: done");
-			}
-		} catch(Exception e) {
-			System.err.println("delete");
-			e.printStackTrace();
-		}
+		dao.setEntityFactory(new EntityFactory());
+		UseCase useCase = new UseCase();
+		useCase.setName("name1");
+		Module module = new Module();
+		module.setId(5001);
+		useCase.setModule(module);
+		int id = dao.create(useCase);
+		System.out.println("create id = " + id);
+
+		dao = new UseCaseDaoImpl();
+		dao.setConnection(conn);
+		dao.setEntityFactory(new EntityFactory());
+		useCase = dao.read(id);
+		System.out.println("read: name = " + useCase.getName());
+
+		PreparedStatement preparedStatement = conn.prepareStatement("UPDATE `use_case` SET `name` = ?, `module_id` = ? WHERE `id` = ?");
+		preparedStatement.setString(1, "name2");
+		preparedStatement.setInt(2, useCase.getModule().getId());
+		preparedStatement.setInt(3, useCase.getId());
+		preparedStatement.executeUpdate();
+		preparedStatement.close();
+
+		System.out.println("update: name = " + dao.read(id).getName());
+
+		dao = new UseCaseDaoImpl();
+		dao.setConnection(conn);
+		dao.setEntityFactory(new EntityFactory());
+		dao.delete(useCase.getId());
+		System.out.println("delete: done");
+
+		dao = new UseCaseDaoImpl();
+		dao.setConnection(conn);
+		dao.setEntityFactory(new EntityFactory());
+		System.out.println("use case = " + dao.read(id));
 	}
 }
