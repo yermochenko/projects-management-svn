@@ -10,9 +10,9 @@ VALUES
    12000-12100
 */
 INSERT INTO `user` (`id`, `name`, `password`, `first_name`, `middle_name`, `last_name`, `is_admin`, `group_id`)
-	VALUES (12001, "user1", "pass1", "Иван", "Иванович", "Иванов", false, 12101),
-		   (12002, "user2", "pass2", "Сидр", "Сидорович", "Сидоров", false, 12102),
-		   (12003, "user3", "pass3", "Петр", "Петрович", "Петров", false, 12103);
+	VALUES (12001, "user6", "pass1", "Иван", "Иванович", "Иванов", false, 12101),
+		   (12002, "user7", "pass2", "Сидр", "Сидорович", "Сидоров", false, 12102),
+		   (12003, "user8", "pass3", "Петр", "Петрович", "Петров", false, 12103);
 
 /* contact_type
    12111-12120
