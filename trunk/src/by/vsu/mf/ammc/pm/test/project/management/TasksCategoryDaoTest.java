@@ -11,6 +11,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 
+import by.vsu.mf.ammc.pm.dao.mysql.EntityFactory;
 import by.vsu.mf.ammc.pm.dao.mysql.project.management.TasksCategoryDaoImpl;
 import by.vsu.mf.ammc.pm.dao.util.pool.ConnectionPool;
 import by.vsu.mf.ammc.pm.domain.project.management.TasksCategory;
@@ -35,11 +36,12 @@ public class TasksCategoryDaoTest {
 		
 		TasksCategoryDaoImpl dao = new TasksCategoryDaoImpl();
 		dao.setConnection(connection);
+		dao.setEntityFactory(new EntityFactory());
 		
 		int id1 = 20001;
 		TasksCategory tc1 = null;
 		try {
-			tc1 = new TasksCategory();
+			tc1 = dao.getEntityFactory().create(TasksCategory.class);
 			tc1.setName("QQQQQ");
 			id1 = dao.create(tc1);
 			System.out.println("create tc1 id = " + id1);
@@ -51,7 +53,7 @@ public class TasksCategoryDaoTest {
 		int id2 = 20002;
 		TasksCategory tc2;
 		try {
-			tc2 = new TasksCategory();
+			tc2 = dao.getEntityFactory().create(TasksCategory.class);
 			tc2.setName("WWWWW");
 			tc2.setParent(tc1);
 			id2 = dao.create(tc2);
