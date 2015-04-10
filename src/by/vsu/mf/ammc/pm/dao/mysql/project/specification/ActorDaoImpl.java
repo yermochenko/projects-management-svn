@@ -3,6 +3,7 @@ package by.vsu.mf.ammc.pm.dao.mysql.project.specification;
 import by.vsu.mf.ammc.pm.dao.abstraction.project.specification.ActorDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
 import by.vsu.mf.ammc.pm.domain.project.Project;
+
 import by.vsu.mf.ammc.pm.domain.project.specification.Actor;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
@@ -46,36 +47,36 @@ public class ActorDaoImpl extends BaseDaoImpl implements ActorDao {
 
     @Override
     public Actor read(Integer id) throws PersistentException {
-	Actor actor = getHash(id);
-	if (actor == null) {
-	    Statement statement = null;
-	    ResultSet resultSet = null;
-	    try {
-		statement = getConnection().createStatement();
-		resultSet = statement.executeQuery("SELECT * FROM `actor` WHERE id = " + Integer.toString(id));
-		if (resultSet.next()) {
-		    actor = new Actor();
-		    actor.setId(id);
-		    actor.setName(resultSet.getString("name"));
-		    Project pr = new Project();
-		    pr.setId(resultSet.getInt("project_id"));
-		    actor.setProject(pr);
-		}
-		setHash(id, actor);
-	    } catch (SQLException e) {
-		throw new PersistentException(e);
-	    } finally {
-		try {
-		    resultSet.close();
-		} catch (SQLException | NullPointerException e) {
-		}
-		try {
-		    statement.close();
-		} catch (SQLException | NullPointerException e) {
-		}
-	    }
+	if (hash.containsKey(id)) {
+		return getHash(id);
 	}
-	return actor;
+	Statement statement = null;
+	ResultSet resultSet = null;
+	try {
+	    statement = getConnection().createStatement();
+	    resultSet = statement.executeQuery("SELECT * FROM `actor` WHERE id = " + Integer.toString(id));
+	    Actor actor = getEntityFactory().create(Actor.class);
+	    if (resultSet.next()) {		
+		actor.setId(id);
+		actor.setName(resultSet.getString("name"));
+		Project pr = getEntityFactory().create(Project.class);
+		pr.setId(resultSet.getInt("project_id"));
+		actor.setProject(pr);
+	    }
+	    setHash(id, actor);
+	    return actor;
+	} catch (SQLException e) {
+	    throw new PersistentException(e);
+	} finally {
+	    try {
+		resultSet.close();
+	    } catch (SQLException | NullPointerException e) {
+	    }
+	    try {
+		statement.close();
+	    } catch (SQLException | NullPointerException e) {
+	    }
+	}	
     }
 
     @Override
