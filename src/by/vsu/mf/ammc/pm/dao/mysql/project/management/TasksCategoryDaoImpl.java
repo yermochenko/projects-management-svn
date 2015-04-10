@@ -2,6 +2,7 @@ package by.vsu.mf.ammc.pm.dao.mysql.project.management;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.management.TasksCategoryDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
+import by.vsu.mf.ammc.pm.domain.project.management.Task;
 import by.vsu.mf.ammc.pm.domain.project.management.TasksCategory;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
@@ -67,7 +68,7 @@ public class TasksCategoryDaoImpl extends BaseDaoImpl implements TasksCategoryDa
             ps.setInt(1, id);
             rs = ps.executeQuery();
             if(rs.next()) {
-                tc = new TasksCategory();
+                tc = getEntityFactory().create(TasksCategory.class);;
                 tc.setId(id);
                 tc.setName(rs.getString("Name"));
                 Integer parentId = rs.getInt("parent_id");
