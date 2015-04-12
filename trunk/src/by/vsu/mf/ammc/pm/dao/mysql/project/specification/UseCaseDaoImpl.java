@@ -65,7 +65,7 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 					identityMap.put(id, useCase);
 				}
 			} catch(SQLException e) {
-				throw new PersistentException();
+				throw new PersistentException(e);
 			} finally {
 				try {
 					resultSet.close();
@@ -89,7 +89,7 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 			preparedStatement.setInt(3, useCase.getId());
 			preparedStatement.executeUpdate();
 		} catch(SQLException e) {
-			throw new PersistentException();
+			throw new PersistentException(e);
 		} finally {
 			try {
 				preparedStatement.close();
@@ -107,7 +107,7 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 			preparedStatement.setInt(1, id);
 			preparedStatement.executeUpdate();
 		} catch(SQLException e) {
-			throw new PersistentException();
+			throw new PersistentException(e);
 		} finally {
 			try {
 				preparedStatement.close();

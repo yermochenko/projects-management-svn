@@ -1,8 +1,6 @@
 package by.vsu.mf.ammc.pm.test.project.specification;
 
-import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Layout;
@@ -18,14 +16,11 @@ import by.vsu.mf.ammc.pm.domain.project.specification.UseCase;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 public class UseCaseDaoTest {
-	public static final Level LOG_LEVEL = Level.ALL;
-	public static final String LOG_MESSAGE_FORMAT = "%n%d%n%p\t%C.%M:%L%n%m%n";
-
-	public static void main(String[] args) throws PersistentException, SQLException, IOException {
+	public static void main(String[] args) throws PersistentException {
 		Logger root = Logger.getRootLogger();
-		Layout layout = new PatternLayout(LOG_MESSAGE_FORMAT);
+		Layout layout = new PatternLayout("%n%d%n%p\t%C.%M:%L%n%m%n");
 		root.addAppender(new ConsoleAppender(layout));
-		root.setLevel(LOG_LEVEL);
+		root.setLevel(Level.ALL);
 		ConnectionPool pool = ConnectionPool.getInstance();
 		pool.init("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/pm_db", "pm_user", "pm_password", 1, 1, 0);
 		Connection conn = pool.getConnection();
