@@ -50,7 +50,7 @@ public class ModuleDaoTest {
 		dao = new ModuleDaoImpl();
 		dao.setConnection(conn);
 		dao.setEntityFactory(new EntityFactory());
-		module.setName("mod1");
+		module.setName("mod2");
 		dao.update(module);
 		System.out.println("update: name = " + dao.read(id).getName());
 
