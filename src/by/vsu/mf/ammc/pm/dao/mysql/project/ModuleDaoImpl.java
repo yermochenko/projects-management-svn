@@ -15,6 +15,8 @@ import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 public class ModuleDaoImpl extends BaseDaoImpl implements ModuleDao {
 
+    Map<Integer, Module> identityMap = new HashMap<>();
+
     @Override
     public Integer create(Module module) throws PersistentException {
         String sql = "INSERT INTO `module` (`name`, `parent_id`, `project_id`) VALUES (?, ?, ?)";
@@ -29,6 +31,7 @@ public class ModuleDaoImpl extends BaseDaoImpl implements ModuleDao {
             resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 int id = resultSet.getInt(1);
+                identityMap.put(id, module);
                 return id;
             } else {
                 throw new PersistentException();
@@ -49,6 +52,7 @@ public class ModuleDaoImpl extends BaseDaoImpl implements ModuleDao {
 
     @Override
     public Module read(Integer id) throws PersistentException {
+        if (identityMap.containsKey(id)) return identityMap.get(id);
         String sql = "SELECT `name`, `parent_id`, `project_id` FROM `module` WHERE `id` = ?";
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -94,6 +98,7 @@ public class ModuleDaoImpl extends BaseDaoImpl implements ModuleDao {
             statement.setInt(3, module.getProject().getId());
             statement.setInt(4, module.getId());
             statement.executeUpdate();
+            identityMap.put(module.getId(), module);
         } catch (SQLException e) {
             throw new PersistentException(e);
         } finally {
@@ -112,6 +117,7 @@ public class ModuleDaoImpl extends BaseDaoImpl implements ModuleDao {
             statement = getConnection().prepareStatement(sql);
             statement.setInt(1, id);
             statement.executeUpdate();
+            identityMap.remove(id);
         } catch (SQLException e) {
             throw new PersistentException(e);
         } finally {
