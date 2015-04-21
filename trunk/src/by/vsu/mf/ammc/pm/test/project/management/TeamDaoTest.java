@@ -18,56 +18,44 @@ import by.vsu.mf.ammc.pm.domain.user.User;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 public class TeamDaoTest {
-	public static void main(String[] args) throws PersistentException,
-			SQLException {
+	public static void main(String[] args) throws PersistentException, SQLException {
 		Logger root = Logger.getRootLogger();
 		Layout layout = new PatternLayout("%n%d%n%p\t%C.%M:%L%n%m%n");
 		root.addAppender(new ConsoleAppender(layout));
 		root.setLevel(Level.ALL);
 
 		ConnectionPool pool = ConnectionPool.getInstance();
-		pool.init("com.mysql.jdbc.Driver", "jdbc:mysql://localhost", "root",
-				"root", 1, 1, 10000);
+		pool.init("com.mysql.jdbc.Driver", "jdbc:mysql://localhost:3306/pm_db", "pm_user", "pm_password", 1, 1, 0);
+		Connection connection = pool.getConnection();
 
 		TeamDaoImpl dao = new TeamDaoImpl();
 		dao.setEntityFactory(new EntityFactory());
-		Connection connection = pool.getConnection();
-		connection.createStatement().execute("use pm_db");
 		dao.setConnection(connection);
 
 		// create
-		Team create_team = new Team();
-		int create_id = -1;
+		Team team = new Team();
+		int id;
 		User leader = new User();
 		leader.setId(11003);
 		Project project = new Project();
 		project.setId(11000);
-		create_team.setLeader(leader);
-		create_team.setProject(project);
-		create_id = dao.create(create_team);
-		assert create_id != -1 : "Failed on create";
+		team.setLeader(leader);
+		team.setProject(project);
+		id = dao.create(team);
+		System.out.println("Create team [id = " + id + "]");
 
 		// read
-		Team read_team = dao.read(create_id);
-		assert create_team.getLeader().getId() == read_team.getLeader().getId()
-				&& create_team.getProject().getId() == read_team.getProject()
-						.getId() : "Failed on read";
+		team = dao.read(id);
+		System.out.println("Read team [project id = " + team.getProject().getId() + "; leader id = " + team.getLeader().getId() + "]");
 
 		// update
-		Team update_team = new Team();
-		leader.setId(11002);
-		project.setId(11000);
-		update_team.setId(create_id);
-		update_team.setLeader(leader);
-		update_team.setProject(project);
-		dao.update(update_team);
-		read_team = dao.read(create_id);
-		assert update_team.getLeader().getId() == read_team.getLeader().getId()
-				&& update_team.getProject().getId() == read_team.getProject()
-						.getId() : "Failed on update";
+		team.getLeader().setId(11002);
+		team.getProject().setId(11000);
+		dao.update(team);
+		System.out.println("Update team [project id = " + team.getProject().getId() + "; leader id = " + team.getLeader().getId() + "]");
 
 		// delete
-		dao.delete(create_id);
-		assert dao.read(create_id) == null : "Failed on delete";
+		dao.delete(id);
+		System.out.println("Delete team. Team is " + dao.read(id));
 	}
 }
