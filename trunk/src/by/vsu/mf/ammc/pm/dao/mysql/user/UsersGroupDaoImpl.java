@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.HashMap;
+import java.util.Map;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UsersGroupDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
@@ -12,8 +14,8 @@ import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
+	private Map< Integer, UsersGroup > cacheMap = new HashMap<>( );
 	
-	@Override
 	public Integer create(UsersGroup entity) throws PersistentException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -22,7 +24,7 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 			String sql = "INSERT INTO `users_group` (`name`, `parent_id`) VALUES (?, ?)";
 			ps = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
-			// подготавливаем запрос
+			// РїРѕРґРіРѕС‚Р°РІР»РёРІР°РµРј Р·Р°РїСЂРѕСЃ
 			ps.setString(1, entity.getName());
 			
 			UsersGroup parent = entity.getParent();
@@ -35,13 +37,14 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 			ps.executeUpdate();
 			
 			rs = ps.getGeneratedKeys();
-			
+			Integer id = null;
 			if(rs.next()){
-				return rs.getInt(1);
+				id = rs.getInt(1);
 			} else {
 				// TODO logger.error
 				throw new PersistentException();
 			}
+			return id;
 		} catch(SQLException e) {
 			throw new PersistentException(e);
 		} finally {
@@ -56,18 +59,20 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 
 	@Override
 	public UsersGroup read(Integer id) throws PersistentException {
-		UsersGroup ug = null;
+        if ( cacheMap.containsKey( id ) ) {
+            return cacheMap.get( id );
+        }		
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
 			String sql = "SELECT `name`, `parent_id` FROM `users_group` WHERE `id` = ?";
-			ps = getConnection().prepareStatement(sql);
+			ps = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS );
 			
 			ps.setInt(1, id);
 			
 			rs = ps.executeQuery();
-			
-			// заполняем объект полученными полями
+			UsersGroup ug = getEntityFactory( ).create( UsersGroup.class );
+			// Р·Р°РїРѕР»РЅСЏРµРј РѕР±СЉРµРєС‚ РїРѕР»СѓС‡РµРЅРЅС‹РјРё РїРѕР»СЏРјРё
 			if(rs.next()){
 				ug = new UsersGroup();
 				ug.setId(id);
@@ -79,7 +84,7 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 					ug.setParent(parent);
 				}
 			}
-			
+			cacheMap.put( id, ug );
 			return ug;
 		} catch(SQLException e) {
 			throw new PersistentException(e);
@@ -98,7 +103,7 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 		PreparedStatement ps = null;
 		try {
 			String sql = "UPDATE `users_group` SET `name` = ?, `parent_id` = ? WHERE `id` = ?";
-			ps = getConnection().prepareStatement(sql);
+			ps = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
 			ps.setString(1, entity.getName());
 			UsersGroup parent = entity.getParent();
@@ -124,7 +129,7 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 		PreparedStatement ps = null;
 		try {
 			String sql = "DELETE FROM `users_group` WHERE `id` = ?";
-			ps = getConnection().prepareStatement(sql);
+			ps = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS );
 			
 			ps.setInt(1, id);
 			
