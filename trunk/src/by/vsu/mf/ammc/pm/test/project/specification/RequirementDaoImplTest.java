@@ -25,6 +25,7 @@ public class RequirementDaoImplTest {
         requirementDao.setConnection( connectionPool.getConnection( ) );
         requirementDao.getConnection( ).prepareStatement( "use pm_db" ).executeQuery( );
         Requirement requirement = new Requirement( );
+        Integer workingIdentifier = null;
         requirement.setName( "TestRequirement" );
         requirement.setDescription( "It's test requirement" );
         requirement.setImportance( new Float( 1.0 ) );
@@ -32,7 +33,7 @@ public class RequirementDaoImplTest {
         requirement.setUseCase( null );
         requirement.setModule( null );
         try {
-            requirementDao.create( requirement );
+            workingIdentifier = requirementDao.create( requirement );
         } catch ( PersistentException e ) {
             testResult = testFailed;
         }
@@ -42,7 +43,7 @@ public class RequirementDaoImplTest {
 
         System.out.println( "TestRead" );
         try {
-            requirementDao.read( 1 );
+            requirementDao.read( workingIdentifier );
         } catch ( PersistentException e ) {
             testResult = testFailed;
         }
@@ -52,7 +53,7 @@ public class RequirementDaoImplTest {
 
         System.out.println( "TestUpdate" );
         Requirement updatedRequirement = new Requirement( );
-        updatedRequirement.setId( 1 );
+        updatedRequirement.setId( workingIdentifier );
         updatedRequirement.setName( "UpdatedRequirement" );
         updatedRequirement.setDescription( "It's updated requirement" );
         updatedRequirement.setImportance( new Float( 0.5 ) );
@@ -70,7 +71,7 @@ public class RequirementDaoImplTest {
 
         System.out.println( "TestDelete" );
         try {
-            requirementDao.delete( 1 );
+            requirementDao.delete( workingIdentifier );
         } catch ( PersistentException e ) {
             testResult = testFailed;
         }
