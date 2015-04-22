@@ -4,14 +4,19 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
+import by.vsu.mf.ammc.pm.domain.project.management.Task;
 import by.vsu.mf.ammc.pm.domain.user.User;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 public class UserDaoImpl extends BaseDaoImpl implements UserDao{
+	
+	private Map<Integer, User> cacheMap = new HashMap<>();
 	
 	public Integer create(User user) throws PersistentException{
 		PreparedStatement statement = null;
@@ -48,6 +53,11 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 	}
 	
 	public User read(Integer id) throws PersistentException {
+		
+		if (cacheMap.containsKey(id)) {
+            return cacheMap.get(id);
+        }
+		
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		try {
@@ -69,6 +79,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 				group.setId(resultSet.getInt("group_id"));
 				user.setGroup(group);
 			}
+			
+			cacheMap.put(id, user);
+			
 			return user;
 		} catch (SQLException e){
 			throw new PersistentException(e);
