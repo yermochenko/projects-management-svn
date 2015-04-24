@@ -67,7 +67,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 			resultSet = statement.executeQuery();
 			User user = null;
 			if(resultSet.next()){
-				user = new User();
+				user = getEntityFactory().create(User.class);
 				user.setId(id);
 				user.setName(resultSet.getString("name"));
 				user.setPassword(resultSet.getString("password"));
