@@ -22,10 +22,10 @@ public class UserDaoTest {
 		userDaoImpl.setEntityFactory(new EntityFactory());
 		User user = userDaoImpl.getEntityFactory().create(User.class);
 		user.setName("test user");
-		user.setPassword("12345pass");
-		user.setFirstName("Garry");
-		user.setMiddleName("Couper");
-		user.setLastName("Truman");
+		user.setPassword("mypass");
+		user.setFirstName("Petya");
+		user.setMiddleName("Petrovich");
+		user.setLastName("Petrov");
 		user.setAdmin(false);
 		UsersGroup group = new UsersGroup(); 
 		group.setId(14010);
