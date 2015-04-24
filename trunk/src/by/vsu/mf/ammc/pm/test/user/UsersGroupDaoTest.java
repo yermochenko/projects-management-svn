@@ -1,4 +1,4 @@
-package by.vsu.mf.ammc.pm.test.project.management;
+package by.vsu.mf.ammc.pm.test.user;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -44,7 +44,7 @@ public class UsersGroupDaoTest {
 		
 		try {
 			ug1 = dao.getEntityFactory().create(UsersGroup.class);
-			ug1.setName("Ï31");
+			ug1.setName("p31");
 			id1 = dao.create(ug1);
 			System.out.println("create ug1 id = " + id1);
 		} catch (Exception e) {
@@ -56,7 +56,7 @@ public class UsersGroupDaoTest {
 		UsersGroup ug2;
 		try {
 			ug2 = dao.getEntityFactory().create(UsersGroup.class);
-			ug2.setName("Ï41");
+			ug2.setName("p41");
 			ug2.setParent(ug1);
 			id2 = dao.create(ug2);
 			System.out.println("create ug2 id = " + id2);
