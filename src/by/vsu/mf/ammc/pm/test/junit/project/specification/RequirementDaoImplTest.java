@@ -1,4 +1,4 @@
-package by.vsu.mf.ammc.pm.test.junit;
+package by.vsu.mf.ammc.pm.test.junit.project.specification;
 
 
 import by.vsu.mf.ammc.pm.dao.mysql.EntityFactory;
