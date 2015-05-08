@@ -35,17 +35,22 @@ public class TransactionImpl implements Transaction {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <Type extends Dao<?>> Type getDao(Class<Type> key) throws PersistentException {
-		try {
-			BaseDaoImpl dao = daos.get(key).newInstance();
-			if(dao != null) {
-				dao.setConnection(connection);
-				dao.setEntityFactory(entityFactory);
+	public <Type extends Dao<?>> Type getDao(Class<Type> dao) throws PersistentException {
+		Class<? extends BaseDaoImpl> daoImplClass = daos.get(dao);
+		if(daoImplClass != null) {
+			try {
+				BaseDaoImpl daoImpl = daoImplClass.newInstance();
+				if(daoImpl != null) {
+					daoImpl.setConnection(connection);
+					daoImpl.setEntityFactory(entityFactory);
+				}
+				return (Type)daoImpl;
+			} catch(InstantiationException | IllegalAccessException e) {
+				logger.error("It is impossible to instantiate data access object class", e);
+				throw new PersistentException(e);
 			}
-			return (Type)dao;
-		} catch(InstantiationException | IllegalAccessException e) {
-			throw new PersistentException(e);
 		}
+		return null;
 	}
 
 	@Override
