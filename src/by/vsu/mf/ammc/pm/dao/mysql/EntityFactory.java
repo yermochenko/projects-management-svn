@@ -7,7 +7,7 @@ import by.vsu.mf.ammc.pm.domain.Entity;
 public class EntityFactory {
 	private static Logger logger = Logger.getLogger(EntityFactory.class);
 
-	public <Type extends Entity> Type create(Class<Type> key) {
+	public <T extends Entity> T create(Class<T> key) {
 		try {
 			return key.newInstance();
 		} catch(InstantiationException | IllegalAccessException e) {

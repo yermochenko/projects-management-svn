@@ -29,13 +29,13 @@ public class ServiceFactoryImpl implements ServiceFactory {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <Type extends Service> Type getService(Class<Type> service) throws PersistentException {
+	public <T extends Service> T getService(Class<T> service) throws PersistentException {
 		Class<? extends ServiceImpl> serviceImplClass = services.get(service);
 		if(serviceImplClass != null) {
 			try {
 				ServiceImpl serviceImpl = serviceImplClass.newInstance();
 				serviceImpl.setTransaction(transaction);
-				return (Type)Proxy.newProxyInstance(serviceImplClass.getClassLoader(), new Class<?>[]{service}, new InvocationHandlerImpl(serviceImpl));
+				return (T)Proxy.newProxyInstance(serviceImplClass.getClassLoader(), new Class<?>[]{service}, new InvocationHandlerImpl(serviceImpl));
 			} catch(InstantiationException | IllegalAccessException e) {
 				logger.error("It is impossible to instantiate service class", e);
 				throw new PersistentException(e);
