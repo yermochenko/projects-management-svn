@@ -4,10 +4,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.HashMap;
+import java.util.Map;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
 import by.vsu.mf.ammc.pm.dao.mysql.user.ContactDaoImpl;
+import by.vsu.mf.ammc.pm.domain.project.specification.Requirement;
 import by.vsu.mf.ammc.pm.domain.user.Contact;
 import by.vsu.mf.ammc.pm.domain.user.ContactsType;
 import by.vsu.mf.ammc.pm.domain.user.User;
@@ -17,7 +20,7 @@ import org.apache.log4j.Logger;
 
 public class ContactDaoImpl extends BaseDaoImpl implements ContactDao {
 	private static Logger logger = Logger.getLogger(ContactDaoImpl.class);
-
+    private Map< Integer, Contact > identityMap = new HashMap< Integer, Contact >( );
 	@Override
 	public Integer create(Contact contact) throws PersistentException {
 		String sql = "INSERT INTO `contact` (`name`, `user_id`, `type_id`) VALUES (?, ?, ?, ?, ?)";
@@ -50,6 +53,9 @@ public class ContactDaoImpl extends BaseDaoImpl implements ContactDao {
 	
 	@Override
 	public Contact read(Integer identity) throws PersistentException {
+		if ( identityMap.containsKey( identity ) ) {
+            return identityMap.get( identity );
+        }
 		String sql = "SELECT `name`, `user_id`, `type_id` FROM `contact` WHERE `identity` = ?";
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -75,6 +81,7 @@ public class ContactDaoImpl extends BaseDaoImpl implements ContactDao {
 					contact.setType(type);
 				}
 			}
+			identityMap.put( identity, contact );
 			return contact;
 		} catch(SQLException e) {
 			throw new PersistentException(e);
