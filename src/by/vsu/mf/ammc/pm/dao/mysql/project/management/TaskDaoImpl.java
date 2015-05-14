@@ -104,8 +104,9 @@ public class TaskDaoImpl extends BaseDaoImpl implements TaskDao {
             statement = getConnection( ).prepareStatement( sqlString, Statement.RETURN_GENERATED_KEYS );
             statement.setInt( 1, id );
             resultSet = statement.executeQuery( );
-            Task task = getEntityFactory( ).create( Task.class );
+            Task task=null;
             if ( resultSet.next( ) ) {
+				task = getEntityFactory( ).create( Task.class );
                 task.setId( id );
                 task.setName( resultSet.getString( "name" ) );
                 task.setDescription( resultSet.getString( "description" ) );
@@ -168,8 +169,8 @@ public class TaskDaoImpl extends BaseDaoImpl implements TaskDao {
                     default:
                         break;
                 }
+				cacheMap.put( id, task );
             }
-            cacheMap.put( id, task );
             return task;
         } catch ( SQLException e ) {
             // TODO: logger.error
