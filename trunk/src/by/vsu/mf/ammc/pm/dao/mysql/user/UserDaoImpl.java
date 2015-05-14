@@ -61,7 +61,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		try {
-			String sqlString = "Select name, password, first_name, middle_name, last_name, is_admin, group_id from user wwhere id = ?";
+			String sqlString = "Select name, password, first_name, middle_name, last_name, is_admin, group_id from user where id = ?";
 			statement = getConnection().prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
 			statement.setInt(1, id);
 			resultSet = statement.executeQuery();
@@ -99,7 +99,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 		PreparedStatement statement = null;
 		
 		try{
-			String sqlString = "update user set name = ?, password = ?, first_name = ?, middle_name = ?, last_name = ?, is_admin = ?, group_id = ?";
+			String sqlString = "update user set name = ?, password = ?, first_name = ?, middle_name = ?, last_name = ?, is_admin = ?, group_id = ? where id = ?";
 			statement = getConnection().prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, user.getName());
 			statement.setString(2, user.getPassword());
@@ -108,6 +108,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 			statement.setString(5, user.getLastName());
 			statement.setBoolean(6, user.getAdmin());
 			statement.setInt(7, user.getGroup().getId());
+			statement.setInt(8, user.getId());
 			statement.executeUpdate();
 		} catch(SQLException e){
 			throw new PersistentException();
