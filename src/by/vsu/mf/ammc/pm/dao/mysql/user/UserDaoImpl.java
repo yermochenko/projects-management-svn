@@ -131,6 +131,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 			statement = getConnection().prepareStatement(sqString,Statement.RETURN_GENERATED_KEYS);
 			statement.setInt(1,id);
 			statement.executeUpdate();
+			
+			cacheMap.remove(id);
 		} catch (SQLException e) {
 			throw new PersistentException();
 		} finally{
