@@ -98,6 +98,8 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 	public void update(User user) throws PersistentException {
 		PreparedStatement statement = null;
 		
+		
+		
 		try{
 			String sqlString = "update user set name = ?, password = ?, first_name = ?, middle_name = ?, last_name = ?, is_admin = ?, group_id = ? where id = ?";
 			statement = getConnection().prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
@@ -110,6 +112,9 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 			statement.setInt(7, user.getGroup().getId());
 			statement.setInt(8, user.getId());
 			statement.executeUpdate();
+			
+			cacheMap.put(user.getId(), user);
+			
 		} catch(SQLException e){
 			throw new PersistentException();
 		} finally {
