@@ -5,7 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -21,7 +23,7 @@ public class ContactsTypeDaoImpl extends BaseDaoImpl implements ContactsTypeDao 
 	private Map< Integer, ContactsType > cacheMap = new HashMap<>( );
 	@Override
 	public Integer create(ContactsType entity) throws PersistentException {
-		String sql = " INSERT INTO contacts_type ( id, name, regexp) VALUES ( ?, ?); ";
+		String sql = "INSERT INTO `contacts_type` (`name`, `regexp`) VALUES (?, ?)";
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
@@ -59,7 +61,7 @@ public class ContactsTypeDaoImpl extends BaseDaoImpl implements ContactsTypeDao 
 		if ( cacheMap.containsKey( id ) ) {
             return cacheMap.get( id );
         }
-        String sql = " SELECT name, regex FROM contacts_type WHERE id = ? ";
+        String sql = "SELECT `name`, `regexp` FROM `contacts_type` WHERE id = ?";
 		PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         
@@ -92,7 +94,7 @@ public class ContactsTypeDaoImpl extends BaseDaoImpl implements ContactsTypeDao 
 
 	@Override
 	public void update(ContactsType entity) throws PersistentException {
-		String sql = " UPDATE contacts_type SET name = ?, regexp = ? WHERE id = ?";
+		String sql = "UPDATE `contacts_type` SET `name` = ?, `regexp` = ? WHERE `id` = ?";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = getConnection().prepareStatement( sql );
@@ -113,7 +115,7 @@ public class ContactsTypeDaoImpl extends BaseDaoImpl implements ContactsTypeDao 
 
 	@Override
 	public void delete(Integer id) throws PersistentException {
-		String sql = " DELETE FROM contacts_type WHERE id = ?";
+		String sql = "DELETE FROM `contacts_type` WHERE `id` = ?";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = getConnection().prepareStatement( sql );
@@ -127,6 +129,36 @@ public class ContactsTypeDaoImpl extends BaseDaoImpl implements ContactsTypeDao 
             try {
                 preparedStatement.close();
             } catch ( SQLException  | NullPointerException e) {}
+        }
+	}
+
+	@Override
+	public List<ContactsType> readAll() throws PersistentException {
+		String sql = "SELECT * FROM `contacts_type`";
+		PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            preparedStatement = getConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            resultSet = preparedStatement.executeQuery();
+            List<ContactsType> result = new ArrayList<ContactsType>();
+            while (resultSet.next()) {
+            	ContactsType ct = getEntityFactory().create(ContactsType.class);
+            	ct.setId(resultSet.getInt("id"));
+            	ct.setName(resultSet.getString("name"));
+            	ct.setRegexp(resultSet.getString("regexp"));
+            	result.add(ct);
+            }
+            return result;
+        } catch( SQLException e) {
+            logger.error( "Reading of record was failed. Table 'contacts_type'", e);
+            throw new PersistentException(e);
+        } finally {
+            try {
+                resultSet.close();
+            } catch ( SQLException | NullPointerException e) {}
+            try {
+                preparedStatement.close();
+            } catch ( SQLException | NullPointerException e) {}
         }
 	}
 
