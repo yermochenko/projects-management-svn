@@ -2,6 +2,7 @@ package by.vsu.mf.ammc.pm.service.main.project;
 
 import java.util.List;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectDao;
 import by.vsu.mf.ammc.pm.domain.project.Project;
 import by.vsu.mf.ammc.pm.domain.project.ProjectsCategory;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
@@ -23,7 +24,13 @@ public class ProjectServiceImpl extends ServiceImpl implements ProjectService {
 
 	@Override
 	public void save(Project project) throws PersistentException {
-		// TODO Auto-generated method stub
+		ProjectDao projectDao = getTransaction().getDao(ProjectDao.class);
+		Integer id = project.getId();
+		if(id!=null){
+			projectDao.update(project);
+		}else{
+			project.setId(projectDao.create(project));
+		}
 	}
 
 	@Override

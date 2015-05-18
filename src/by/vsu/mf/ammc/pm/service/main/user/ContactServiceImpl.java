@@ -12,14 +12,7 @@ public class ContactServiceImpl extends ServiceImpl implements ContactService {
 		ContactDao contactDao = getTransaction().getDao(ContactDao.class);
 		Integer id = contact.getId();
 		if(id != null){
-			Contact dbContact = contactDao.read(id);
-			if(dbContact !=null){
-				dbContact.setId(contact.getId());
-				dbContact.setName(contact.getName());
-				dbContact.setType(contact.getType());
-				dbContact.setUser(contact.getUser());
-				contactDao.update(dbContact);
-			}
+			contactDao.update(contact);
 		}else{
 			contact.setId(contactDao.create(contact));
 		}	
