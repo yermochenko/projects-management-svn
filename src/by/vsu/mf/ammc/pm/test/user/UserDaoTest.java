@@ -28,11 +28,11 @@ public class UserDaoTest {
 		user.setLastName("Petrov");
 		user.setAdmin(false);
 		UsersGroup group = new UsersGroup(); 
-		group.setId(14010);
+		group.setId(14040);
 		user.setGroup(group);
 		
 		PreparedStatement statement = connection.prepareStatement("use pm_db");
-		statement.executeQuery("test method create!___________");
+		System.out.println("test method create!___________");
 		Integer identity = userDaoImpl.create(user);
 		statement = connection.prepareStatement("Select * from user");
 		ResultSet resultSet = statement.executeQuery();
