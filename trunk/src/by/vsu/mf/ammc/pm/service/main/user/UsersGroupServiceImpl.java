@@ -2,6 +2,7 @@ package by.vsu.mf.ammc.pm.service.main.user;
 
 import java.util.List;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.user.UsersGroupDao;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.user.UsersGroupService;
@@ -33,8 +34,8 @@ public class UsersGroupServiceImpl extends ServiceImpl implements UsersGroupServ
 
 	@Override
 	public boolean canDelete(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return false;
+		UsersGroup usersGroup=this.getTransaction().getDao(UsersGroupDao.class).read(id);
+		return usersGroup.getUsers().isEmpty() && usersGroup.getChildren().isEmpty();
 	}
 
 	@Override
