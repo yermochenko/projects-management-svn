@@ -2,6 +2,7 @@ package by.vsu.mf.ammc.pm.service.main.user;
 
 import java.util.List;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
 import by.vsu.mf.ammc.pm.domain.user.User;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
@@ -23,8 +24,7 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 
 	@Override
 	public User findById(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getTransaction().getDao(UserDao.class).read(id);
 	}
 
 	@Override
