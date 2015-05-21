@@ -2,6 +2,7 @@ package by.vsu.mf.ammc.pm.service.main.project;
 
 import java.util.List;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectsCategoryDao;
 import by.vsu.mf.ammc.pm.domain.project.ProjectsCategory;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.project.ProjectsCategoryService;
@@ -10,7 +11,7 @@ import by.vsu.mf.ammc.pm.service.main.ServiceImpl;
 public class ProjectsCategoryServiceImpl extends ServiceImpl implements ProjectsCategoryService {
 	@Override
 	public List<ProjectsCategory> findAll() throws PersistentException {
-		// TODO Auto-generated method stub
+		this.getTransaction().getDao(ProjectsCategoryDao.class).readAll();
 		return null;
 	}
 
