@@ -2,6 +2,7 @@ package by.vsu.mf.ammc.pm.test.project;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import by.vsu.mf.ammc.pm.dao.mysql.EntityFactory;
 import by.vsu.mf.ammc.pm.dao.mysql.project.ProjectsCategoryDaoImpl;
@@ -26,7 +27,7 @@ public class ProjectCategoryDaoTest {
 		int create_id = -1;
 		create_project_category.setName("test");
 		ProjectsCategory pc = new ProjectsCategory();
-		pc.setId(7203);
+		pc.setId(13001);
 		create_project_category.setParent(pc);
 		create_id = pcdao.create(create_project_category);
 		assert create_id != -1 : "Failed on create";
@@ -35,6 +36,24 @@ public class ProjectCategoryDaoTest {
 		// read
 		ProjectsCategory read_project_category = new ProjectsCategory();
 		assert create_project_category.getName() == read_project_category.getName() && create_project_category.getParent()==read_project_category.getParent() :  "Failed on read";
+		
+		//read all
+		ProjectsCategory create_project_category_null_parent = new ProjectsCategory();
+		create_project_category_null_parent.setName("readtest");
+		int create_id_null_parent = pcdao.create(create_project_category_null_parent);
+		
+		List<ProjectsCategory> list = pcdao.readAll();
+		boolean containsProjectCategory = false;
+		boolean containsProjectCategoryNullParent = false;
+		for(int i = 0; i < list.size(); i++)
+		{
+			if(list.get(i).getId() == create_id)
+				containsProjectCategory = true;
+			if(list.get(i).getId() == create_id_null_parent)
+				containsProjectCategoryNullParent = true;
+		}
+		assert containsProjectCategoryNullParent : "Failed update";
+		assert !containsProjectCategory : "Failed update";
 		
 		// update
 		ProjectsCategory update_project_category = new ProjectsCategory();
@@ -47,6 +66,7 @@ public class ProjectCategoryDaoTest {
 		read_project_category = pcdao.read(create_id);
 		assert update_project_category.getName() == read_project_category.getName() && update_project_category.getParent() == read_project_category.getParent() : "Failed update";
 		
+			
 		// delete
 		pcdao.delete(create_id);
 		assert pcdao.read(create_id) == null : "Failed on delete";
