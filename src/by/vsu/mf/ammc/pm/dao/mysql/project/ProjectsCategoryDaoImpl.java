@@ -4,23 +4,29 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectsCategoryDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
 import by.vsu.mf.ammc.pm.domain.project.ProjectsCategory;
+import by.vsu.mf.ammc.pm.domain.user.ContactsType;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 public class ProjectsCategoryDaoImpl extends BaseDaoImpl implements ProjectsCategoryDao{
 
 	@Override
 	public Integer create(ProjectsCategory projects_catogory) throws PersistentException{
-		String sql = "INSERT INTO `projects_catogory` (`name`, `parent_id`) VALUES (?, ?)";
+		String sql = "INSERT INTO `projects_category` (`name`, `parent_id`) VALUES (?, ?)";
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		try {
 			statement = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			statement.setString(1, projects_catogory.getName().toString());
-			statement.setInt(2, projects_catogory.getParent().getId());
+			if(projects_catogory.getParent() != null)
+				statement.setInt(2, projects_catogory.getParent().getId());
+			else
+				statement.setNull(2, java.sql.Types.NULL);
 			statement.executeUpdate();
 			resultSet = statement.getGeneratedKeys();
 			
@@ -74,7 +80,7 @@ public class ProjectsCategoryDaoImpl extends BaseDaoImpl implements ProjectsCate
 	
 	@Override
 	public void update(ProjectsCategory projects_catogory) throws PersistentException{
-		String sql = "UPDATE `projects_catogory` SET `name` = ?, `parent_id` = ? WHERE `id` = ?";
+		String sql = "UPDATE `projects_category` SET `name` = ?, `parent_id` = ? WHERE `id` = ?";
 		PreparedStatement statement = null;
 		try {
 			statement = getConnection().prepareStatement(sql);
@@ -107,4 +113,7 @@ public class ProjectsCategoryDaoImpl extends BaseDaoImpl implements ProjectsCate
 			} catch(SQLException | NullPointerException e) {}
 		}
 	}
+
+	
+	
 }
