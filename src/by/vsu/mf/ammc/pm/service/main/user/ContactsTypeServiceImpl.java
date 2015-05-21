@@ -2,6 +2,8 @@ package by.vsu.mf.ammc.pm.service.main.user;
 
 import java.util.List;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactsTypeDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
 import by.vsu.mf.ammc.pm.dao.mysql.user.ContactsTypeDaoImpl;
 import by.vsu.mf.ammc.pm.domain.user.ContactsType;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
@@ -17,8 +19,7 @@ public class ContactsTypeServiceImpl extends ServiceImpl implements ContactsType
 
 	@Override
 	public ContactsType findById(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getTransaction().getDao(ContactsTypeDao.class).read(id);
 	}
 
 	@Override
