@@ -35,7 +35,7 @@ public class UsersGroupServiceImpl extends ServiceImpl implements UsersGroupServ
 	@Override
 	public boolean canDelete(int id) throws PersistentException {
 		UsersGroup usersGroup=this.getTransaction().getDao(UsersGroupDao.class).read(id);
-		return usersGroup.getUsers().isEmpty() && usersGroup.getChildren().isEmpty();
+		return usersGroup != null && usersGroup.getUsers().isEmpty() && usersGroup.getChildren().isEmpty();
 	}
 
 	@Override
