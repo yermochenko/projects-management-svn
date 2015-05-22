@@ -2,7 +2,10 @@ package by.vsu.mf.ammc.pm.service.main.user;
 
 import java.util.List;
 
+import org.junit.Assert;
+
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.user.UsersGroupDao;
 import by.vsu.mf.ammc.pm.domain.user.User;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
@@ -46,6 +49,10 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 
 	@Override
 	public void delete(int id) throws PersistentException {
-		// TODO Auto-generated method stub
+		try {
+			if(canDelete(id)) {
+				this.getTransaction().getDao(UserDao.class).delete(id);
+			}
+		} catch(PersistentException e) {}
 	}
 }
