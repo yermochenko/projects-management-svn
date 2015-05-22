@@ -19,7 +19,7 @@ public class JUnitActorDaoTest extends Assert {
 		Connection connection = null;
 		try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost", "root", "root");
-		} catch(SQLException e) { 
+		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 
@@ -28,13 +28,13 @@ public class JUnitActorDaoTest extends Assert {
 		actorDaoImpl.setEntityFactory(new EntityFactory());
 
 		Actor actor = actorDaoImpl.getEntityFactory().create(Actor.class);
-		Integer actorId=11999;
-		Integer projectId=11999;
+		Integer actorId = 11999;
+		Integer projectId = 11999;
 		actor.setId(actorId);
-		actor.setName("testActor");		
+		actor.setName("testActor");
 		Project project = new Project();
 		project.setId(projectId);
-		actor.setProject(project);		
+		actor.setProject(project);
 
 		try {
 			connection.prepareStatement("use pm_db").executeQuery();
@@ -42,12 +42,12 @@ public class JUnitActorDaoTest extends Assert {
 			e.printStackTrace();
 		}
 
-		// create		
+		// create
 		try {
-			actorDaoImpl.create(actor);			
+			actorDaoImpl.create(actor);
 		} catch(PersistentException e) {
 			Assert.assertTrue(false);
-		}		
+		}
 
 		// read
 		Actor actorReaded = null;
@@ -56,10 +56,9 @@ public class JUnitActorDaoTest extends Assert {
 		} catch(PersistentException e) {
 			Assert.assertTrue(false);
 		}
-		Assert.assertEquals(actor.getId(), actorReaded.getId());		
+		Assert.assertEquals(actor.getId(), actorReaded.getId());
 		Assert.assertEquals(actor.getName(), actorReaded.getName());
 		Assert.assertEquals(actor.getProject(), actorReaded.getProject());
-		
 
 		// update
 		try {
