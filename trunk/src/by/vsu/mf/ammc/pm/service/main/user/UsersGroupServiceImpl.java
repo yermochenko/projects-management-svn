@@ -1,18 +1,18 @@
 package by.vsu.mf.ammc.pm.service.main.user;
 
-import java.util.List;
-
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UsersGroupDao;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.user.UsersGroupService;
 import by.vsu.mf.ammc.pm.service.main.ServiceImpl;
 
+import java.util.List;
+
 public class UsersGroupServiceImpl extends ServiceImpl implements UsersGroupService {
 	@Override
 	public List<UsersGroup> findAll() throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+		UsersGroupDao usersGroupDao = getTransaction().getDao( UsersGroupDao.class );
+		return usersGroupDao.readAll();
 	}
 
 	@Override

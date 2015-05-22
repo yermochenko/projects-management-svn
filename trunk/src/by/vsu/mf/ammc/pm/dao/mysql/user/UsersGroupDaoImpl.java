@@ -1,19 +1,19 @@
 package by.vsu.mf.ammc.pm.dao.mysql.user;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
-import java.util.HashMap;
-import java.util.Map;
-
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UsersGroupDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
+import org.apache.log4j.Logger;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
+	private static Logger logger = Logger.getLogger( UsersGroupDaoImpl.class );
 	private Map< Integer, UsersGroup > cacheMap = new HashMap<>( );
 	
 	public Integer create(UsersGroup entity) throws PersistentException {
@@ -140,6 +140,37 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 			try {
 				ps.close();
 			} catch(SQLException | NullPointerException e) {}
+		}
+	}
+
+	@Override
+	public List< UsersGroup > readAll( ) throws PersistentException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		List<UsersGroup> usersGroups= new ArrayList<UsersGroup>(  );
+		try {
+			String sql = "SELECT * FROM users_group WHERE parent_id IS NULL ";
+			preparedStatement = getConnection().prepareStatement( sql, PreparedStatement.RETURN_GENERATED_KEYS );
+			resultSet = preparedStatement.executeQuery();
+			while ( resultSet.next() ){
+				UsersGroup usersGroup = getEntityFactory().create( UsersGroup.class );
+				usersGroup.setId( resultSet.getInt( "id" ) );
+				usersGroup.setName( resultSet.getString( "name" ) );
+				usersGroups.add( usersGroup );
+			}
+			return usersGroups;
+		}  catch ( SQLException e ) {
+			logger.error( "Reading of record was failed. Table 'users_groups'", e );
+			throw new PersistentException( e );
+		} finally {
+			try {
+				resultSet.close( );
+			} catch ( SQLException | NullPointerException e ) {
+			}
+			try {
+				preparedStatement.close( );
+			} catch ( SQLException | NullPointerException e ) {
+			}
 		}
 	}
 }
