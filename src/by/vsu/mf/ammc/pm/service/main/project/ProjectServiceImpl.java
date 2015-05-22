@@ -1,7 +1,6 @@
 package by.vsu.mf.ammc.pm.service.main.project;
 
 import java.util.List;
-
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectDao;
 import by.vsu.mf.ammc.pm.domain.project.Project;
 import by.vsu.mf.ammc.pm.domain.project.ProjectsCategory;
@@ -18,17 +17,16 @@ public class ProjectServiceImpl extends ServiceImpl implements ProjectService {
 
 	@Override
 	public Project findById(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getTransaction().getDao(ProjectDao.class).read(id);
 	}
 
 	@Override
 	public void save(Project project) throws PersistentException {
 		ProjectDao projectDao = getTransaction().getDao(ProjectDao.class);
 		Integer id = project.getId();
-		if(id!=null){
+		if(id != null) {
 			projectDao.update(project);
-		}else{
+		} else {
 			project.setId(projectDao.create(project));
 		}
 	}
