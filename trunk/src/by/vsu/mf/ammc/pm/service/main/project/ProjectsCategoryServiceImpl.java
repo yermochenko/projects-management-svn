@@ -11,8 +11,7 @@ import by.vsu.mf.ammc.pm.service.main.ServiceImpl;
 public class ProjectsCategoryServiceImpl extends ServiceImpl implements ProjectsCategoryService {
 	@Override
 	public List<ProjectsCategory> findAll() throws PersistentException {
-		this.getTransaction().getDao(ProjectsCategoryDao.class).readAll();
-		return null;
+		return this.getTransaction().getDao(ProjectsCategoryDao.class).readAll();
 	}
 
 	@Override
@@ -34,8 +33,8 @@ public class ProjectsCategoryServiceImpl extends ServiceImpl implements Projects
 
 	@Override
 	public boolean canDelete(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return false;
+		ProjectsCategory pc = this.getTransaction().getDao(ProjectsCategoryDao.class).read(id);
+		return pc != null && pc.getChildren().isEmpty() && pc.getProjects().isEmpty();
 	}
 
 	@Override
