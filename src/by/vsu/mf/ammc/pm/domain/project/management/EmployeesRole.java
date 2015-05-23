@@ -17,4 +17,8 @@ public enum EmployeesRole {
 	 * Calculated role
 	 */
 	PROJECT_MANAGER;
+
+	public static EmployeesRole getByIdentity(Integer identity) {
+		return EmployeesRole.values()[identity];
+	}
 }
