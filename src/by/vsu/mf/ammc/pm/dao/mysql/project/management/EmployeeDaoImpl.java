@@ -12,11 +12,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Created by meskill on 19.3.15.
- */
 public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
+    private Map< Integer, Employee > cacheMap = new HashMap<>( );
 	@Override
 	public Integer create(Employee employee) throws PersistentException {
 		String sql = "INSERT INTO `employee` (`user_id`, `team_id`, `role`) VALUES (?, ?, ?)";
@@ -30,7 +30,9 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 			statement.executeUpdate();
 			resultSet = statement.getGeneratedKeys();
 			if(resultSet.next()) {
-				return resultSet.getInt(1);
+                int id = resultSet.getInt(1);
+                cacheMap.put(id, employee);
+                return id;
 			} else {
 				throw new PersistentException();
 			}
@@ -48,6 +50,7 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 
 	@Override
 	public Employee read(Integer id) throws PersistentException {
+        if (cacheMap.containsKey(id)) return cacheMap.get(id);
 		String sql = "SELECT `user_id`, `team_id`, `role` FROM `employee` WHERE `id` = ?";
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -91,6 +94,7 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 			statement.setByte(3, (byte)employee.getRole().ordinal());
 			statement.setInt(4, employee.getId());
 			statement.executeUpdate();
+			cacheMap.put(employee.getId(), employee);
 		} catch(SQLException e) {
 			throw new PersistentException(e);
 		} finally {
@@ -108,6 +112,7 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 			statement = getConnection().prepareStatement(sql);
 			statement.setInt(1, id);
 			statement.executeUpdate();
+			cacheMap.remove(id);
 		} catch(SQLException e) {
 			throw new PersistentException(e);
 		} finally {
