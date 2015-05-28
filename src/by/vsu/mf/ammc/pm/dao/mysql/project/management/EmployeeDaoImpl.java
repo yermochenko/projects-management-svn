@@ -2,6 +2,7 @@ package by.vsu.mf.ammc.pm.dao.mysql.project.management;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.management.EmployeeDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
+import by.vsu.mf.ammc.pm.domain.project.Project;
 import by.vsu.mf.ammc.pm.domain.project.management.Employee;
 import by.vsu.mf.ammc.pm.domain.project.management.EmployeesRole;
 import by.vsu.mf.ammc.pm.domain.project.management.Team;
@@ -13,10 +14,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by meskill on 19.3.15.
+ */
 public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
-    private Map< Integer, Employee > cacheMap = new HashMap<>( );
 	@Override
 	public Integer create(Employee employee) throws PersistentException {
 		String sql = "INSERT INTO `employee` (`user_id`, `team_id`, `role`) VALUES (?, ?, ?)";
@@ -30,9 +35,7 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 			statement.executeUpdate();
 			resultSet = statement.getGeneratedKeys();
 			if(resultSet.next()) {
-                int id = resultSet.getInt(1);
-                cacheMap.put(id, employee);
-                return id;
+				return resultSet.getInt(1);
 			} else {
 				throw new PersistentException();
 			}
@@ -50,14 +53,13 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 
 	@Override
 	public Employee read(Integer id) throws PersistentException {
-        if (cacheMap.containsKey(id)) return cacheMap.get(id);
 		String sql = "SELECT `user_id`, `team_id`, `role` FROM `employee` WHERE `id` = ?";
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		try {
 			statement = getConnection().prepareStatement(sql);
-			statement.setInt(1, id);
-			resultSet = statement.executeQuery();
+			statement.setInt( 1, id );
+			resultSet = statement.executeQuery( );
 			Employee employee = null;
 			if(resultSet.next()) {
 				employee = new Employee();
@@ -94,7 +96,6 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 			statement.setByte(3, (byte)employee.getRole().ordinal());
 			statement.setInt(4, employee.getId());
 			statement.executeUpdate();
-			cacheMap.put(employee.getId(), employee);
 		} catch(SQLException e) {
 			throw new PersistentException(e);
 		} finally {
@@ -112,7 +113,6 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 			statement = getConnection().prepareStatement(sql);
 			statement.setInt(1, id);
 			statement.executeUpdate();
-			cacheMap.remove(id);
 		} catch(SQLException e) {
 			throw new PersistentException(e);
 		} finally {
@@ -121,4 +121,35 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 			} catch(SQLException | NullPointerException e) {}
 		}
 	}
+
+	@Override
+	public Map< Project, List< EmployeesRole > > readByUser( User user ) {
+		String sql = "SELECT project.id, project.name, employee.role FROM employee " +
+				"INNER JOIN team ON employee.team_id = team.id " +
+				"LEFT JOIN project ON project.id = team.project_id " +
+				"WHERE employee.user_id = ? ";
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			statement = getConnection( ).prepareStatement( sql, Statement.RETURN_GENERATED_KEYS );
+			statement.setInt( 1, user.getId( ) );
+			resultSet = statement.executeQuery( );
+			Map< Project, List< EmployeesRole > > resultMap = new HashMap<>( );
+			while ( resultSet.next( ) ) {
+				Project project = new Project( );
+				project.setId( resultSet.getInt( "project.id" ) );
+				if ( resultMap.get( project ) == null ) {
+					resultMap.put( project, new LinkedList< EmployeesRole >( ) );
+				}
+				resultMap.get( project ).add( EmployeesRole.getByIdentity( resultSet.getInt("employee.role") ) );
+			}
+			return resultMap;
+		} catch ( SQLException e ) {
+			e.printStackTrace( );
+		}
+		return null;
+	}
 }
+
+
+
