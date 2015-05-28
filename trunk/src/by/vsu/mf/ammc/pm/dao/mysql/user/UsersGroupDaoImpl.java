@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 	private static Logger logger = Logger.getLogger( UsersGroupDaoImpl.class );
 	private Map< Integer, UsersGroup > cacheMap = new HashMap<>( );
@@ -24,7 +25,6 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 			String sql = "INSERT INTO `users_group` (`name`, `parent_id`) VALUES (?, ?)";
 			ps = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			
-			// подготавливаем запрос
 			ps.setString(1, entity.getName());
 			
 			UsersGroup parent = entity.getParent();
@@ -71,9 +71,9 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 			ps.setInt(1, id);
 			
 			rs = ps.executeQuery();
-			UsersGroup ug = getEntityFactory( ).create( UsersGroup.class );
-			// заполняем объект полученными полями
+			UsersGroup ug = null;
 			if(rs.next()){
+				ug =getEntityFactory( ).create( UsersGroup.class );
 				ug = new UsersGroup();
 				ug.setId(id);
 				ug.setName(rs.getString("Name"));
@@ -83,8 +83,8 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 					UsersGroup parent = read(parentId);
 					ug.setParent(parent);
 				}
+				cacheMap.put( id, ug );
 			}
-			cacheMap.put( id, ug );
 			return ug;
 		} catch(SQLException e) {
 			throw new PersistentException(e);
