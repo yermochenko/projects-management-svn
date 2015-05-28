@@ -75,7 +75,6 @@ public class RequirementDaoImpl extends BaseDaoImpl implements RequirementDao {
         ResultSet resultSet = null;
 
         try {
-
             preparedStatement = getConnection( ).prepareStatement( sql, PreparedStatement.RETURN_GENERATED_KEYS );
             preparedStatement.setInt( 1, id );
             resultSet = preparedStatement.executeQuery( );
@@ -96,7 +95,6 @@ public class RequirementDaoImpl extends BaseDaoImpl implements RequirementDao {
                 Integer moduleId = resultSet.getInt( "module_id" );
                 if ( !resultSet.wasNull( ) ) {
                     Module module = getEntityFactory( ).create( Module.class );
-                    ;
                     module.setId( moduleId );
                     requirement.setModule( module );
                 }
