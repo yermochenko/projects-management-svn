@@ -1,6 +1,7 @@
 package by.vsu.mf.ammc.pm.service.main.project;
 
 import java.util.List;
+
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectDao;
 import by.vsu.mf.ammc.pm.domain.project.Project;
 import by.vsu.mf.ammc.pm.domain.project.ProjectsCategory;
@@ -33,12 +34,37 @@ public class ProjectServiceImpl extends ServiceImpl implements ProjectService {
 
 	@Override
 	public boolean canDelete(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return false;
+		ProjectDao pd = getTransaction().getDao(ProjectDao.class);
+		Project project = pd.read(id);
+		if (project == null) {
+			return false;
+		} else {
+			//ModuleServiceImpl msi = new ModuleServiceImpl();
+			//TeamServiceImpl tsi = new TeamServiceImpl();
+			// TODO
+			return true;
+		}
 	}
 
 	@Override
 	public void delete(int id) throws PersistentException {
-		// TODO Auto-generated method stub
+		ProjectDao pd = getTransaction().getDao(ProjectDao.class);
+		if (canDelete(id)) {
+			ProjectsCategoryServiceImpl pcsi = new ProjectsCategoryServiceImpl();
+			List<ProjectsCategory> pcs = pcsi.findAll();
+			for (ProjectsCategory pc : pcs) {
+				List<Project> ps = pc.getProjects();
+				int max = ps.size();
+				for (int i=0; i<max; i++) {
+					Project p = ps.get(i);
+					if (p.getId() == id) {
+						ps.remove(i);
+						i--;
+						max--;
+					}
+				}
+			}
+			pd.delete(id);
+		}
 	}
 }
