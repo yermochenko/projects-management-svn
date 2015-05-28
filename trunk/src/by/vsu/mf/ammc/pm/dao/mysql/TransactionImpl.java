@@ -1,22 +1,27 @@
 package by.vsu.mf.ammc.pm.dao.mysql;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.Dao;
+import by.vsu.mf.ammc.pm.dao.abstraction.Transaction;
+import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.project.management.EmployeeDao;
+import by.vsu.mf.ammc.pm.dao.mysql.project.ProjectDaoImpl;
+import by.vsu.mf.ammc.pm.dao.mysql.project.management.EmployeeDaoImpl;
+import by.vsu.mf.ammc.pm.dao.util.pool.ConnectionPool;
+import by.vsu.mf.ammc.pm.exception.PersistentException;
+import org.apache.log4j.Logger;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.log4j.Logger;
-
-import by.vsu.mf.ammc.pm.dao.abstraction.Dao;
-import by.vsu.mf.ammc.pm.dao.abstraction.Transaction;
-import by.vsu.mf.ammc.pm.dao.util.pool.ConnectionPool;
-import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 public class TransactionImpl implements Transaction {
 	private static Logger logger = Logger.getLogger(TransactionImpl.class);
 
 	private static Map<Class<? extends Dao<?>>, Class<? extends BaseDaoImpl>> daos = new ConcurrentHashMap<>();
 	static {
+		daos.put( EmployeeDao.class, EmployeeDaoImpl.class );
+		daos.put( ProjectDao.class, ProjectDaoImpl.class);
 	}
 
 	private Connection connection;
