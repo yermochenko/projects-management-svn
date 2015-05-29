@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.management.TeamDao;
@@ -117,6 +118,39 @@ public class TeamDaoImpl extends BaseDaoImpl implements TeamDao {
 				preparedStatement.close();
 			} catch(SQLException | NullPointerException e) {}
 			identityMap.clear();
+		}
+	}
+
+	@Override
+	public ArrayList<Team> read(Project project) throws PersistentException {
+		Integer id = project.getId();
+		String sql = "SELECT `project_id`, `leader_id` FROM `team` WHERE `project_id` = ?";
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		try {
+			preparedStatement = getConnection().prepareStatement(sql);
+			preparedStatement.setInt(1, id);
+			resultSet = preparedStatement.executeQuery();
+			ArrayList<Team> teams = new ArrayList<Team>();
+			if(resultSet.next()) {
+				Team team = getEntityFactory().create(Team.class);
+				team.setId(resultSet.getInt("id"));
+				team.setProject(project);
+				User leader = getEntityFactory().create(User.class);
+				leader.setId(resultSet.getInt("leader_id"));
+				team.setLeader(leader);
+				teams.add(team);
+			}
+			return teams;
+		} catch(SQLException e) {
+			throw new PersistentException(e);
+		} finally {
+			try {
+				resultSet.close();
+			} catch(SQLException | NullPointerException e) {}
+			try {
+				preparedStatement.close();
+			} catch(SQLException | NullPointerException e) {}
 		}
 	}
 }

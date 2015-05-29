@@ -1,10 +1,15 @@
 package by.vsu.mf.ammc.pm.service.main.project;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.project.ModuleDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.project.management.TeamDao;
+import by.vsu.mf.ammc.pm.domain.project.Module;
 import by.vsu.mf.ammc.pm.domain.project.Project;
 import by.vsu.mf.ammc.pm.domain.project.ProjectsCategory;
+import by.vsu.mf.ammc.pm.domain.project.management.Team;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.project.ProjectService;
 import by.vsu.mf.ammc.pm.service.main.ServiceImpl;
@@ -39,9 +44,16 @@ public class ProjectServiceImpl extends ServiceImpl implements ProjectService {
 		if (project == null) {
 			return false;
 		} else {
-			//ModuleServiceImpl msi = new ModuleServiceImpl();
-			//TeamServiceImpl tsi = new TeamServiceImpl();
-			// TODO
+			ModuleDao md = getTransaction().getDao(ModuleDao.class);
+			ArrayList<Module> modules = md.read(project);
+			if (!modules.isEmpty()) {
+				return false;
+			}
+			TeamDao td = getTransaction().getDao(TeamDao.class);
+			ArrayList<Team> teams = td.read(project);
+			if (!teams.isEmpty()) {
+				return false;
+			}
 			return true;
 		}
 	}
@@ -50,7 +62,7 @@ public class ProjectServiceImpl extends ServiceImpl implements ProjectService {
 	public void delete(int id) throws PersistentException {
 		ProjectDao pd = getTransaction().getDao(ProjectDao.class);
 		if (canDelete(id)) {
-			ProjectsCategoryServiceImpl pcsi = new ProjectsCategoryServiceImpl();
+			/*ProjectsCategoryServiceImpl pcsi = new ProjectsCategoryServiceImpl();
 			List<ProjectsCategory> pcs = pcsi.findAll();
 			for (ProjectsCategory pc : pcs) {
 				List<Project> ps = pc.getProjects();
@@ -63,7 +75,7 @@ public class ProjectServiceImpl extends ServiceImpl implements ProjectService {
 						max--;
 					}
 				}
-			}
+			}*/
 			pd.delete(id);
 		}
 	}
