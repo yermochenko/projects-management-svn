@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,4 +128,40 @@ public class ModuleDaoImpl extends BaseDaoImpl implements ModuleDao {
             }
         }
     }
+
+	@Override
+	public ArrayList<Module> read(Project project) throws PersistentException {
+		Integer id = project.getId();
+		String sql = "SELECT `name`, `parent_id`, `project_id` FROM `module` WHERE `project_id` = ?";
+		PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = getConnection().prepareStatement(sql);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            ArrayList<Module> modules = new ArrayList<Module>();
+            while (resultSet.next()) {
+                Module module = getEntityFactory().create(Module.class);
+                module.setId(resultSet.getInt("id"));
+                module.setName(resultSet.getString("name"));
+                module.setProject(project);
+                Module modulee = getEntityFactory().create(Module.class);
+                modulee.setId(resultSet.getInt("parent_id"));
+                module.setParent(modulee);
+                modules.add(module);
+            }
+            return modules;
+        } catch (SQLException e) {
+            throw new PersistentException(e);
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException | NullPointerException e) {
+            }
+            try {
+                statement.close();
+            } catch (SQLException | NullPointerException e) {
+            }
+        }
+	}
 }
