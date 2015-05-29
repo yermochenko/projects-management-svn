@@ -22,8 +22,7 @@ public class ProjectsCategoryServiceImpl extends ServiceImpl implements Projects
 
 	@Override
 	public ProjectsCategory findById(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getTransaction().getDao(ProjectsCategoryDao.class).read(id);
 	}
 
 	@Override
