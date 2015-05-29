@@ -10,7 +10,6 @@ import java.util.Map;
 import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
 import by.vsu.mf.ammc.pm.dao.mysql.user.ContactDaoImpl;
-import by.vsu.mf.ammc.pm.domain.project.specification.Requirement;
 import by.vsu.mf.ammc.pm.domain.user.Contact;
 import by.vsu.mf.ammc.pm.domain.user.ContactsType;
 import by.vsu.mf.ammc.pm.domain.user.User;
@@ -137,6 +136,12 @@ public class ContactDaoImpl extends BaseDaoImpl implements ContactDao {
 				statement.close();
 			} catch(SQLException | NullPointerException e) {}
 		}
+	}
+
+	@Override
+	public boolean canDelete(int id) throws PersistentException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	
