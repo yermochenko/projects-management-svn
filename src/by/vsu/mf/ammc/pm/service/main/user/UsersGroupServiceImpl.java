@@ -1,6 +1,7 @@
 package by.vsu.mf.ammc.pm.service.main.user;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UsersGroupDao;
+import by.vsu.mf.ammc.pm.dao.mysql.user.UsersGroupDaoImpl;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.user.UsersGroupService;
@@ -17,8 +18,7 @@ public class UsersGroupServiceImpl extends ServiceImpl implements UsersGroupServ
 
 	@Override
 	public List<UsersGroup> findPossibleParents(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getTransaction().getDao(UsersGroupDaoImpl.class).readPossibleParents(id);
 	}
 
 	@Override
@@ -42,4 +42,5 @@ public class UsersGroupServiceImpl extends ServiceImpl implements UsersGroupServ
 	public void delete(int id) throws PersistentException {
 		// TODO Auto-generated method stub
 	}
+
 }
