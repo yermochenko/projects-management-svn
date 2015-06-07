@@ -42,8 +42,12 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 
 	@Override
 	public boolean canDelete(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return false;
+		boolean emptyEmployee = this.getTransaction().getDao(EmployeeDao.class).employeeByUserIsEmpty(id);
+		boolean emptyTeam = this.getTransaction().getDao(TeamDao.class).teamByUserIsEmpty(id);
+		boolean emptyProject = this.getTransaction().getDao(ProjectDao.class).projectByUserIsEmpty(id);
+
+		if(emptyEmployee && emptyTeam && emptyProject) return true;
+		else return false;
 	}
 
 	@Override
