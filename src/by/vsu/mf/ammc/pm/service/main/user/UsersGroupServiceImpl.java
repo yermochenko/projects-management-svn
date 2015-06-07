@@ -10,6 +10,7 @@ import by.vsu.mf.ammc.pm.service.main.ServiceImpl;
 import java.util.List;
 
 public class UsersGroupServiceImpl extends ServiceImpl implements UsersGroupService {
+	
 	@Override
 	public List<UsersGroup> findAll() throws PersistentException {
 		UsersGroupDao usersGroupDao = getTransaction().getDao( UsersGroupDao.class );
@@ -29,7 +30,13 @@ public class UsersGroupServiceImpl extends ServiceImpl implements UsersGroupServ
 
 	@Override
 	public void save(UsersGroup group) throws PersistentException {
-		// TODO Auto-generated method stub
+		UsersGroupDao usersGroupDao = getTransaction().getDao(UsersGroupDao.class);
+		Integer id = group.getId();
+		if(id != null){
+			usersGroupDao.update(group);
+		}else{
+			group.setId(usersGroupDao.create(group));
+		}	
 	}
 
 	@Override
