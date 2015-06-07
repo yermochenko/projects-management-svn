@@ -2,6 +2,8 @@ package by.vsu.mf.ammc.pm.service.main.project.management;
 
 import java.util.List;
 
+import by.vsu.mf.ammc.pm.dao.mysql.project.management.TasksCategoryDaoImpl;
+import by.vsu.mf.ammc.pm.dao.mysql.user.UsersGroupDaoImpl;
 import by.vsu.mf.ammc.pm.domain.project.management.TasksCategory;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.project.management.TasksCategoryService;
@@ -16,8 +18,7 @@ public class TasksCategoryServiceImpl extends ServiceImpl implements TasksCatego
 
 	@Override
 	public List<TasksCategory> findPossibleParents(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getTransaction().getDao(TasksCategoryDaoImpl.class).findPossibleParents(id);
 	}
 
 	@Override
