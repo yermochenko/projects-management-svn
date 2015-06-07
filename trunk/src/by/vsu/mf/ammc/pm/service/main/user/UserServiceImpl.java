@@ -1,7 +1,10 @@
 package by.vsu.mf.ammc.pm.service.main.user;
 
 import java.util.List;
+
+import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactsTypeDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
+import by.vsu.mf.ammc.pm.dao.mysql.user.UserDaoImpl;
 import by.vsu.mf.ammc.pm.domain.user.User;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
@@ -50,5 +53,10 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 				this.getTransaction().getDao(UserDao.class).delete(id);
 			}
 		} catch(PersistentException e) {}
+	}
+	
+	public User findByUsersGroup(int group_id) throws PersistentException {
+		
+		return this.getTransaction().getDao(UserDaoImpl.class).readByUserGroup(group_id);
 	}
 }
