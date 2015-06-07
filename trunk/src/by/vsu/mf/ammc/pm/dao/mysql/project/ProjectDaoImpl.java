@@ -4,11 +4,13 @@ import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectDao;
 import by.vsu.mf.ammc.pm.domain.project.Project;
 import by.vsu.mf.ammc.pm.domain.project.ProjectsCategory;
+import by.vsu.mf.ammc.pm.domain.project.management.TasksCategory;
 import by.vsu.mf.ammc.pm.domain.user.User;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 import java.sql.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -154,6 +156,49 @@ private Map<Integer, Project> cacheMap = new HashMap<>();
 				statement.close();
 			} catch(SQLException | NullPointerException e) {}
 		}
+	}
+
+	@Override
+	public List<Project> readByProjectsCategory(Integer category_id) throws PersistentException {
+		
+		Project project = new Project();
+
+		List<Project> listProject = null;
+		
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		
+		String sql = "SELECT * FROM `project` WHERE `id` category_id = ?";
+		try {
+			preparedStatement = getConnection().prepareStatement(sql);
+			preparedStatement.setInt(1, category_id);
+			resultSet = preparedStatement.executeQuery();
+			if(resultSet.next()) {
+				project = getEntityFactory().create(Project.class);
+				project.setId(resultSet.getInt("id"));
+				project.setName(resultSet.getString("name"));
+				project.setDescription(resultSet.getString("description"));
+				ProjectsCategory pc = new ProjectsCategory();
+				pc.setId(category_id);
+				project.setCategory(pc);
+				User user = new User();
+				user.setId(resultSet.getInt("manager_id"));
+				project.setManager(user);
+				
+				listProject.add(project);
+			}
+		} catch(SQLException e) {
+			throw new PersistentException(e);
+		} finally {
+			try {
+				resultSet.close();
+			} catch(SQLException | NullPointerException e) {}
+			try {
+				preparedStatement.close();
+			} catch(SQLException | NullPointerException e) {}
+		}
+	
+		return listProject;
 	}
 
 }

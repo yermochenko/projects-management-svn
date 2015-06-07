@@ -17,4 +17,6 @@ public interface ProjectService extends Service {
 	boolean canDelete(int id) throws PersistentException;
 
 	void delete(int id) throws PersistentException;
+	
+	List<Project> findByProjectsCategory(Integer category_id) throws PersistentException;
 }
