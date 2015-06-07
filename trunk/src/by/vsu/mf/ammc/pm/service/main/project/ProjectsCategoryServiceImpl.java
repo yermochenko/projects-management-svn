@@ -3,6 +3,7 @@ package by.vsu.mf.ammc.pm.service.main.project;
 import java.util.List;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectsCategoryDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.user.UsersGroupDao;
 import by.vsu.mf.ammc.pm.domain.project.ProjectsCategory;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.project.ProjectsCategoryService;
@@ -27,7 +28,13 @@ public class ProjectsCategoryServiceImpl extends ServiceImpl implements Projects
 
 	@Override
 	public void save(ProjectsCategory category) throws PersistentException {
-		// TODO Auto-generated method stub
+		ProjectsCategoryDao projectsCategoryDao = getTransaction().getDao(ProjectsCategoryDao.class);
+		Integer id = category.getId();
+		if(id != null){
+			projectsCategoryDao.update(category);
+		}else{
+			category.setId(projectsCategoryDao.create(category));
+		}	
 	}
 
 	@Override
