@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.management.TasksCategoryDao;
@@ -128,5 +129,41 @@ public class TasksCategoryDaoImpl extends BaseDaoImpl implements TasksCategoryDa
 			} catch(SQLException | NullPointerException e) {}
 			identityMap.clear();
 		}
+	}
+	
+	public List<TasksCategory> findPossibleParents(int id) throws PersistentException {
+		TasksCategory category = identityMap.get(id);
+		if(category == null) {
+			PreparedStatement preparedStatement = null;
+			ResultSet resultSet = null;
+			String sql = "SELECT `name`, `parent_id` FROM `tasks_category` WHERE `id` != ?";
+			try {
+				preparedStatement = getConnection().prepareStatement(sql);
+				preparedStatement.setInt(1, id);
+				resultSet = preparedStatement.executeQuery();
+				if(resultSet.next()) {
+					category = getEntityFactory().create(TasksCategory.class);
+					category.setId(id);
+					category.setName(resultSet.getString("name"));
+					Integer parentId = resultSet.getInt("parent_id");
+					if(!resultSet.wasNull()) {
+						TasksCategory parent = getEntityFactory().create(TasksCategory.class);
+						parent.setId(parentId);
+						category.setParent(parent);
+					}
+					identityMap.put(id, category);
+				}
+			} catch(SQLException e) {
+				throw new PersistentException(e);
+			} finally {
+				try {
+					resultSet.close();
+				} catch(SQLException | NullPointerException e) {}
+				try {
+					preparedStatement.close();
+				} catch(SQLException | NullPointerException e) {}
+			}
+		}
+		return (List<TasksCategory>) category;
 	}
 }
