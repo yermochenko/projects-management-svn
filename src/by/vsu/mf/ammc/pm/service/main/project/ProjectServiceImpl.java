@@ -79,4 +79,11 @@ public class ProjectServiceImpl extends ServiceImpl implements ProjectService {
 			pd.delete(id);
 		}
 	}
+
+	@Override
+	public List<Project> findByProjectsCategory(Integer category_id) throws PersistentException {
+		
+		return this.getTransaction().getDao(ProjectDao.class).readByProjectsCategory(category_id);
+
+	}
 }
