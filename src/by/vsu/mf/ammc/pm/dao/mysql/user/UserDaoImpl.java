@@ -9,7 +9,6 @@ import java.util.Map;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
-import by.vsu.mf.ammc.pm.domain.project.management.Task;
 import by.vsu.mf.ammc.pm.domain.user.User;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
@@ -141,4 +140,51 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 			} catch(SQLException | NullPointerException e){}			
 		}
 	}
+	
+
+	public User readByUserGroup(Integer group_id) throws PersistentException {
+		
+		if (cacheMap.containsKey(group_id)) {
+            return cacheMap.get(group_id);
+        }
+		
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			String sqlString = "Select id, name, password, first_name, middle_name, last_name, is_admin, from user join users_group on users_group.id = user.group_id where group_id = ? AND group_id = parent_id";
+			statement = getConnection().prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
+			statement.setInt(1, group_id);
+			resultSet = statement.executeQuery();
+			User user = null;
+			if(resultSet.next()){
+				user = getEntityFactory().create(User.class);
+				user.setId(resultSet.getInt("id"));
+				user.setName(resultSet.getString("name"));
+				user.setPassword(resultSet.getString("password"));
+				user.setFirstName(resultSet.getString("first_name"));
+				user.setMiddleName(resultSet.getString("middle_name"));
+				user.setLastName(resultSet.getString("last_name"));
+				user.setAdmin(resultSet.getBoolean("is_admin"));
+				UsersGroup group = new UsersGroup();
+				group.setId(group_id);
+				user.setGroup(group);
+			}
+			
+			cacheMap.put(group_id, user);
+			
+			return user;
+		} catch (SQLException e){
+			throw new PersistentException(e);
+		} finally{
+			try {
+				resultSet.close();
+			} catch(SQLException | NullPointerException e) {}
+			try {
+				statement.close();
+			} catch(SQLException | NullPointerException e) {}
+		}
+	}
+
+
+	
 }
