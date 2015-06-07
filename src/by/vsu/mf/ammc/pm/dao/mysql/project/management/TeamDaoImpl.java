@@ -153,4 +153,26 @@ public class TeamDaoImpl extends BaseDaoImpl implements TeamDao {
 			} catch(SQLException | NullPointerException e) {}
 		}
 	}
+
+	@Override
+	public boolean teamByUserIsEmpty(Integer user_id) throws SQLException {
+		String sql = "SELECT * FROM `team` WHERE `team`.`leader_id` = ?";
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			statement = getConnection().prepareStatement(sql);
+			statement.setInt(1, user_id);
+			resultSet = statement.executeQuery();
+			if(resultSet.next()) return false;
+				else return true;
+		} 
+		finally {
+			try {
+				resultSet.close();
+			} catch(SQLException | NullPointerException e) {}
+			try {
+				statement.close();
+			} catch(SQLException | NullPointerException e) {}
+		}
+	}
 }

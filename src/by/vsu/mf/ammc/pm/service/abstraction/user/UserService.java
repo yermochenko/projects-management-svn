@@ -1,5 +1,6 @@
 package by.vsu.mf.ammc.pm.service.abstraction.user;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import by.vsu.mf.ammc.pm.domain.user.User;
@@ -18,7 +19,7 @@ public interface UserService extends Service {
 
 	void save(User user) throws PersistentException;
 
-	boolean canDelete(int id) throws PersistentException;
+	boolean canDelete(int id) throws PersistentException, SQLException;
 
-	void delete(int id) throws PersistentException;
+	void delete(int id) throws PersistentException, SQLException;
 }

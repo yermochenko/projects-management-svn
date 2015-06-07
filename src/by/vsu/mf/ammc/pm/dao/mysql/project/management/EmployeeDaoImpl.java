@@ -149,6 +149,32 @@ public class EmployeeDaoImpl extends BaseDaoImpl implements EmployeeDao {
 		}
 		return null;
 	}
+
+	@Override
+	public boolean employeeByUserIsEmpty(Integer user_id) throws SQLException {
+		String sql = "SELECT * FROM `employee` WHERE `employee`.`user_id` = ?";
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			statement = getConnection().prepareStatement(sql);
+			statement.setInt(1, user_id);
+			resultSet = statement.executeQuery();
+			if(resultSet.next()) return false;
+				else return true;
+			
+		} 
+		 finally {
+				try {
+					resultSet.close();
+				} catch(SQLException | NullPointerException e) {}
+				try {
+					statement.close();
+				} catch(SQLException | NullPointerException e) {}
+			}
+		}
+	
+
+	
 }
 
 
