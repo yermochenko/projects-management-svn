@@ -5,17 +5,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectsCategoryDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
 import by.vsu.mf.ammc.pm.domain.project.ProjectsCategory;
-import by.vsu.mf.ammc.pm.domain.user.ContactsType;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 public class ProjectsCategoryDaoImpl extends BaseDaoImpl implements ProjectsCategoryDao{
 
-	@Override
+	private Map<Integer, ProjectsCategory> cacheMap = new HashMap<>();
+	
 	public Integer create(ProjectsCategory projects_catogory) throws PersistentException{
 		String sql = "INSERT INTO `projects_category` (`name`, `parent_id`) VALUES (?, ?)";
 		PreparedStatement statement = null;
@@ -49,6 +51,9 @@ public class ProjectsCategoryDaoImpl extends BaseDaoImpl implements ProjectsCate
 	
 	@Override
 	public ProjectsCategory read(Integer id) throws PersistentException{
+		if ( cacheMap.containsKey( id ) ) {
+            return cacheMap.get( id );
+        }	
 		String sql = "SELECT `name`, `parent_id` FROM `projects_category` WHERE `id` = ?";
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -63,7 +68,8 @@ public class ProjectsCategoryDaoImpl extends BaseDaoImpl implements ProjectsCate
 				projects_catogory.setId(id);				
 				ProjectsCategory pc = new ProjectsCategory();
 				pc.setId(resultSet.getInt(3));
-				projects_catogory.setParent(pc);				
+				projects_catogory.setParent(pc);	
+				cacheMap.put( id, projects_catogory );
 			}
 			return projects_catogory;
 		} catch(SQLException e) {
