@@ -173,7 +173,7 @@ private Map<Integer, Project> cacheMap = new HashMap<>();
 			preparedStatement = getConnection().prepareStatement(sql);
 			preparedStatement.setInt(1, category_id);
 			resultSet = preparedStatement.executeQuery();
-			if(resultSet.next()) {
+			while(resultSet.next()) {
 				project = getEntityFactory().create(Project.class);
 				project.setId(resultSet.getInt("id"));
 				project.setName(resultSet.getString("name"));
