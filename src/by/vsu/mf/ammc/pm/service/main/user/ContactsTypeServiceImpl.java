@@ -2,7 +2,9 @@ package by.vsu.mf.ammc.pm.service.main.user;
 
 import java.util.List;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactsTypeDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
 import by.vsu.mf.ammc.pm.dao.mysql.user.ContactsTypeDaoImpl;
 import by.vsu.mf.ammc.pm.domain.user.ContactsType;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
@@ -34,6 +36,10 @@ public class ContactsTypeServiceImpl extends ServiceImpl implements ContactsType
 
 	@Override
 	public void delete(int id) throws PersistentException {
-		// TODO Auto-generated method stub
+		try {
+			if(canDelete(id)) {
+				this.getTransaction().getDao(ContactsTypeDao.class).delete(id);
+			}
+		} catch(PersistentException e) {}
 	}
 }
