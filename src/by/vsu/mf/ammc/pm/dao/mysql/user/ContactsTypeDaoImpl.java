@@ -103,6 +103,7 @@ public class ContactsTypeDaoImpl extends BaseDaoImpl implements ContactsTypeDao 
             preparedStatement.setString(2, entity.getRegexp());
             preparedStatement.setInt( 3, entity.getId() );
             preparedStatement.executeUpdate();
+            cacheMap.clear();
         } catch( SQLException e) {
             logger.error( "Updating of record was failed. Table 'contacts_type'", e);
             throw new PersistentException(e);
@@ -121,7 +122,7 @@ public class ContactsTypeDaoImpl extends BaseDaoImpl implements ContactsTypeDao 
             preparedStatement = getConnection().prepareStatement( sql );
             preparedStatement.setInt( 1, id );
             preparedStatement.executeUpdate();
-
+            cacheMap.clear();
         }catch ( SQLException e) {
             logger.error( "Deleting of record was failed. Table 'contacts_type' ", e);
             throw new PersistentException(e);

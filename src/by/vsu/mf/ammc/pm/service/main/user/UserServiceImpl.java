@@ -1,7 +1,11 @@
 package by.vsu.mf.ammc.pm.service.main.user;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.project.management.EmployeeDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.project.management.TeamDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactsTypeDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
 import by.vsu.mf.ammc.pm.dao.mysql.user.UserDaoImpl;
@@ -41,7 +45,7 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean canDelete(int id) throws PersistentException {
+	public boolean canDelete(int id) throws PersistentException, SQLException {
 		boolean emptyEmployee = this.getTransaction().getDao(EmployeeDao.class).employeeByUserIsEmpty(id);
 		boolean emptyTeam = this.getTransaction().getDao(TeamDao.class).teamByUserIsEmpty(id);
 		boolean emptyProject = this.getTransaction().getDao(ProjectDao.class).projectByUserIsEmpty(id);
@@ -56,7 +60,12 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 			if(canDelete(id)) {
 				this.getTransaction().getDao(UserDao.class).delete(id);
 			}
-		} catch(PersistentException e) {}
+		} catch(PersistentException e) {
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public User findByUsersGroup(int group_id) throws PersistentException {
