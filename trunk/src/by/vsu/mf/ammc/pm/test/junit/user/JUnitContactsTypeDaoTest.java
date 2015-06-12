@@ -69,11 +69,11 @@ public class JUnitContactsTypeDaoTest {
 		ctdi.setEntityFactory(new EntityFactory());
 		
 		ContactsType contactsType1 = ctdi.getEntityFactory().create(ContactsType.class);
-		contactsType1.setId(20018);
+		contactsType1.setId(14006);
 		contactsType1.setName("Telephone");
 		contactsType1.setRegexp("nn-nn-nn");
-		/*Read(ctdi, conn, 20018, contactsType1);
-		Delete(ctdi, conn, 20018);*/
+		//Read(ctdi, conn, 14006, contactsType1);
+		//Delete(ctdi, conn, 14006);
 		int ctid = Create(ctdi, conn, contactsType1);
 		Read(ctdi, conn, ctid, contactsType1);
 		contactsType1.setName("Cellphone");

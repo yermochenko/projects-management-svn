@@ -11,6 +11,7 @@ import by.vsu.mf.ammc.pm.domain.project.specification.Requirement;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -273,5 +274,42 @@ public class TaskDaoImpl extends BaseDaoImpl implements TaskDao {
         }
 
     }
+
+	@Override
+	public ArrayList<Task> read(TasksCategory tasksCategory)
+			throws PersistentException {
+		Integer id = tasksCategory.getId();
+		String sql = "SELECT `name`, `description`, `plan_time`, `difficulty`, `open_date`, `accept_date`, `close_date`, `category_id`, `requirement_id`, `module_id`, `employee_id`, `status` FROM `task` WHERE `category_id` = ?";
+		PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+        	statement = getConnection().prepareStatement(sql);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            ArrayList<Task> tasks = new ArrayList<Task>();
+            while (resultSet.next()) {
+            	Task task = getEntityFactory().create(Task.class);
+            	task.setId( resultSet.getInt( "id" ) );
+                task.setName( resultSet.getString( "name" ) );
+                task.setDescription( resultSet.getString( "description" ) );
+                task.setPlanTime( resultSet.getInt( "plan_time" ) );
+                task.setDifficulty( resultSet.getFloat( "difficulty" ) );
+                task.setOpenDate( new Date( resultSet.getDate( "open_date" ).getTime( ) ) );
+                tasks.add(task);
+            }
+            return tasks;
+        } catch (SQLException e) {
+        	throw new PersistentException(e);
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException | NullPointerException e) {
+            }
+            try {
+                statement.close();
+            } catch (SQLException | NullPointerException e) {
+            }
+        }
+	}
 
 }
