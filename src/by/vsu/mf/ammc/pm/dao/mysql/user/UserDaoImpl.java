@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
@@ -13,8 +15,10 @@ import by.vsu.mf.ammc.pm.domain.user.User;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
+import org.apache.log4j.Logger;
+
 public class UserDaoImpl extends BaseDaoImpl implements UserDao{
-	
+	private static Logger logger = Logger.getLogger( UserDaoImpl.class );
 	private Map<Integer, User> cacheMap = new HashMap<>();
 	
 	public Integer create(User user) throws PersistentException{
@@ -184,7 +188,43 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 			} catch(SQLException | NullPointerException e) {}
 		}
 	}
-
-
 	
+	@Override
+	public List<User> readAll( ) throws PersistentException {
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		List<User> users= new ArrayList<User>(  );
+		try {
+			String sql = "SELECT * FROM user";
+			preparedStatement = getConnection().prepareStatement( sql, PreparedStatement.RETURN_GENERATED_KEYS );
+			resultSet = preparedStatement.executeQuery();
+			while ( resultSet.next() ){
+				User user = getEntityFactory().create( User.class );
+				user.setId( resultSet.getInt("id") );
+				user.setName( resultSet.getString("name") );
+				user.setPassword(resultSet.getString("password"));
+				user.setFirstName(resultSet.getString("First name"));
+				user.setMiddleName(resultSet.getString("Middle name"));
+				user.setLastName(resultSet.getString("Last name"));
+				user.setAdmin(resultSet.getBoolean("false"));
+				UsersGroup ug = getEntityFactory().create(UsersGroup.class);
+				ug.setId(resultSet.getInt(7102));
+				user.setGroup(ug);
+				users.add(user);
+			}
+			return users;
+		}  catch ( SQLException e ) {
+			logger.error( "Reading of record was failed. Table 'user'", e );
+			throw new PersistentException( e );
+		} finally {
+			try {
+				resultSet.close( );
+			} catch ( SQLException | NullPointerException e ) {
+			}
+			try {
+				preparedStatement.close( );
+			} catch ( SQLException | NullPointerException e ) {
+			}
+		}
+	}
 }
