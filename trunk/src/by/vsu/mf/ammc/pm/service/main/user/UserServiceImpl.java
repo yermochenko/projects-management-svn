@@ -6,7 +6,6 @@ import java.util.List;
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.project.management.EmployeeDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.project.management.TeamDao;
-import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactsTypeDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
 import by.vsu.mf.ammc.pm.dao.mysql.user.UserDaoImpl;
 import by.vsu.mf.ammc.pm.domain.user.User;
@@ -18,8 +17,8 @@ import by.vsu.mf.ammc.pm.service.main.ServiceImpl;
 public class UserServiceImpl extends ServiceImpl implements UserService {
 	@Override
 	public List<User> findAll() throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+			UserDao userDao = getTransaction().getDao( UserDao.class );
+			return userDao.readAll();
 	}
 
 	@Override
