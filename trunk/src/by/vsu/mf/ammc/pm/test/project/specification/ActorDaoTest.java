@@ -40,18 +40,19 @@ public class ActorDaoTest {
 	Project pr = new Project();
 	pr.setId(11000);
 	createActor.setProject(pr);
+	createActor.setAbstract(true);
 	create_id = dao.create(createActor);
 	assert create_id != -1 : "Failed on create actor";
 
 	// read
 	Actor readActor = dao.read(create_id);
-	assert readActor.getName().equals(createActor.getName()) && readActor.getProject().getId().equals(createActor.getProject().getId()) : "Failed on read actor";
+	assert readActor.getName().equals(createActor.getName()) && readActor.getProject().getId().equals(createActor.getProject().getId()) && readActor.getAbstract().equals(createActor.getAbstract()) : "Failed on read actor";
 
 	// update
 	createActor.setName("feoi");
 	dao.update(createActor);
 	readActor = dao.read(create_id);
-	assert readActor.getName().equals(createActor.getName()) && readActor.getProject().getId().equals(createActor.getProject().getId()) : "Failed on update actor";
+	assert readActor.getName().equals(createActor.getName()) && readActor.getProject().getId().equals(createActor.getProject().getId()) && readActor.getAbstract().equals(createActor.getAbstract()) : "Failed on update actor";
 
 	// delete
 	dao.delete(create_id);
