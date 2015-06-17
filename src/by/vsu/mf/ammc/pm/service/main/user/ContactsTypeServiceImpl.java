@@ -25,7 +25,8 @@ public class ContactsTypeServiceImpl extends ServiceImpl implements ContactsType
 
 	@Override
 	public void save(ContactsType type) throws PersistentException {
-		// TODO Auto-generated method stub
+		ContactsTypeDao contactsTypeDao = this.getTransaction().getDao(ContactsTypeDao.class);
+		contactsTypeDao.update(type);
 	}
 
 	@Override
