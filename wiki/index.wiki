@@ -1,6 +1,6 @@
 <h1>Specification for information system «Projects management»</h1>
 <ul>
-<li><a href="BusinessRequirement">Business requirement</a></li>
+<li>[BusinessRequirement Business requirement]</li>
 <li>User requirements</li>
 <li>Functional requirements</li>
 </ul>
