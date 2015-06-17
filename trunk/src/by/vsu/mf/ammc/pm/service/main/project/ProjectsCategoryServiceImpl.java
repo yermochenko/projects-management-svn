@@ -1,5 +1,6 @@
 package by.vsu.mf.ammc.pm.service.main.project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectsCategoryDao;
@@ -17,8 +18,25 @@ public class ProjectsCategoryServiceImpl extends ServiceImpl implements Projects
 
 	@Override
 	public List<ProjectsCategory> findPossibleParents(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+		ProjectsCategoryDao projectsCategoryDao = getTransaction().getDao(ProjectsCategoryDao.class);
+		ProjectsCategory projectsCategory = projectsCategoryDao.read(id);
+		List<ProjectsCategory> list = new  ArrayList<ProjectsCategory>();
+		List<ProjectsCategory> tempList = new  ArrayList<ProjectsCategory>();
+		
+		List<ProjectsCategory> temp = new  ArrayList<ProjectsCategory>();
+		
+		tempList = projectsCategoryDao.readChildsByProjectsCategory(projectsCategory);
+		while(tempList.size()>0){
+			list.addAll(tempList);
+			for(ProjectsCategory pr: tempList){
+				temp.addAll(projectsCategoryDao.readChildsByProjectsCategory(pr));
+			}
+			tempList.clear();
+			tempList.addAll(temp);
+			temp.clear();
+		}
+		
+		return list;
 	}
 
 	@Override

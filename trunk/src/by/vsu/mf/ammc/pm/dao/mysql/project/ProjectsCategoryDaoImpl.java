@@ -151,5 +151,40 @@ public class ProjectsCategoryDaoImpl extends BaseDaoImpl implements ProjectsCate
 			} catch(SQLException | NullPointerException e) {}
 		}
 	}
+
+	@Override
+	public List<ProjectsCategory> readChildsByProjectsCategory(
+			ProjectsCategory projectsCategory) throws PersistentException {
+		Integer id = projectsCategory.getId();
+		String sql = "SELECT * FROM `projects_category` WHERE `parent_id` = ?";
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			statement = getConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			statement.setInt(1, id);
+			resultSet = statement.executeQuery();
+			
+			List<ProjectsCategory> result = new ArrayList<>();
+			while(resultSet.next()) {
+				ProjectsCategory projects_catogory = new ProjectsCategory();
+				projects_catogory.setId(resultSet.getInt("id"));	
+				projects_catogory.setName(resultSet.getString("name"));	
+				ProjectsCategory pc = new ProjectsCategory();
+				pc.setId(resultSet.getInt("parent_id"));
+				projects_catogory.setParent(pc);
+				result.add(projects_catogory);
+			}
+			return result;
+		} catch(SQLException e) {
+			throw new PersistentException(e);
+		} finally {
+			try {
+				resultSet.close();
+			} catch(SQLException | NullPointerException e) {}
+			try {
+				statement.close();
+			} catch(SQLException | NullPointerException e) {}
+		}
+	}
 	
 }
