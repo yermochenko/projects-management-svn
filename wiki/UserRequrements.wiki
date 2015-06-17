@@ -1,6 +1,6 @@
 <h1>User requrements</h1>
 <h2>List of roles</h2>
-<table>
+<table border="1">
 <tr>
 <th>ID</th>
 <th>Name</th>
