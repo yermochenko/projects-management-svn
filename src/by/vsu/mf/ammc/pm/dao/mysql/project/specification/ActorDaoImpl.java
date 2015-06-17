@@ -22,8 +22,8 @@ public class ActorDaoImpl extends BaseDaoImpl implements ActorDao {
 	ResultSet resultSet = null;
 	try {
 	    statement = getConnection().createStatement();
-	    String sql = "INSERT INTO actor (`id`, `name`, `project_id`) " + "VALUES (" + Integer.toString(entity.getId()) + ", '"
-		    + entity.getName() + "', " + Integer.toString(entity.getProject().getId()) + ")";
+	    String sql = "INSERT INTO actor (`id`, `name`, `project_id`,`is_abstract`) " + "VALUES (" + Integer.toString(entity.getId()) + ", '"
+		    + entity.getName() + "', " + Integer.toString(entity.getProject().getId()) +","+entity.getAbstract()+")";
 	    statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 	    resultSet = statement.getGeneratedKeys();
 	    if (resultSet.next()) {
@@ -62,6 +62,7 @@ public class ActorDaoImpl extends BaseDaoImpl implements ActorDao {
 		Project pr = getEntityFactory().create(Project.class);
 		pr.setId(resultSet.getInt("project_id"));
 		actor.setProject(pr);
+		actor.setAbstract(resultSet.getBoolean("is_abstract"));
 	    }
 	    setHash(id, actor);
 	    return actor;
@@ -86,7 +87,7 @@ public class ActorDaoImpl extends BaseDaoImpl implements ActorDao {
 	try {
 	    statement = getConnection().createStatement();
 	    statement.executeUpdate("UPDATE `actor` SET name = '" + entity.getName() + "', project_id = "
-		    + Integer.toString(entity.getProject().getId()) + " WHERE id = " + entity.getId());
+		    + Integer.toString(entity.getProject().getId()) +",is_abstract = "+ entity.getAbstract() + " WHERE id = " + entity.getId());
 	} catch (SQLException e) {
 	    throw new PersistentException(e);
 	} finally {
