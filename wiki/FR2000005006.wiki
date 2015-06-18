@@ -1,0 +1,9 @@
+<h1>`#`2000`-`005`-`006. Add own contact</h1>
+<p><em>User requirement [UR2000005 `#`2000`-`005]</em></p>
+<p>On page «<a href="https://projects-management.googlecode.com/svn/wiki/private/profile/edit.html">Editing of personal user profile</a>» there is form with following elements:</p>
+<ul>
+<li>drop-down list «Contact type»;</li>
+<li>text field «Contact»;</li>
+<li>button «Add».</li>
+</ul>
+<p>When button «Add» is clicked, new contact of selected type is added into list of contacts if text in field «Contact» matches regular expression which corresponds to selected contact type. Otherwise new contact is not added into list of contacts and following message is displayed: «Contact value has to match regular expression …» (dots should be replaced by regular expression which corresponds to selected contact type).</p>

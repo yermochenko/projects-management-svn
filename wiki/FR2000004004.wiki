@@ -1,0 +1,8 @@
+<h1>`#`2000`-`004`-`004. View personal user profile</h1>
+<p><em>User requirement [UR2000004 `#`2000`-`004]</em></p>
+<p>When menu item «Profile» from main menu is selected, user is redirected to the page «<a href="https://projects-management.googlecode.com/svn/wiki/private/profile/view.html">Personal user profile</a>». On this page the following information is displayed:</p>
+<ul>
+<li>personal information about user (user name, last name, first name, middle name);</li>
+<li>information about user contacts (contact types and contact values);</li>
+<li>information about user roles (projects, roles and additionally the mark, whether user is administrator).</li>
+</ul>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<HTML>
+	<HEAD>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<TITLE>Управление проектами - Редактирование личного профиля пользователя</TITLE>
+		<LINK rel="stylesheet" type="text/css" href="../../main.css">
+		<SCRIPT src="../../main.js"></SCRIPT>
+	</HEAD>
+	<BODY>
+		<DIV id="header">
+			<H1>Управление<BR>Проектами</H1>
+			<UL class="right">
+				<LI class="item">
+					<A href="#" class="current">Username <IMG class="arrow" src="../../img/arrow-white-bottom.gif"></A>
+					<OL class="drop">
+						<LI><A href="view.html">Профиль</A></LI>
+						<LI><A href="../../login.html">Выход</A></LI>
+					</OL>
+				</LI>
+			</UL>
+		</DIV>
+		<DIV id="wrapper">
+			<DIV id="content">
+				<DIV id="breadcrumbs"><A href="../../index.html">Главная</A> :: <A href="view.html">Профиль</A> :: Редактирование</DIV>
+				<H2>Редактирование личного профиля пользователя</H2>
+				<DIV id="page">
+					<DIV class="single-column">
+						<H3>Учётные данные:</H3>
+						<TABLE>
+							<TR>
+								<TD><STRONG>Псевдоним:</STRONG></TD>
+								<TD><PRE>ivanov69</PRE></TD>
+							</TR>
+							<TR>
+								<TD><STRONG>Фамилия:</STRONG></TD>
+								<TD>Иванов</TD>
+							</TR>
+							<TR>
+								<TD><STRONG>Имя:</STRONG></TD>
+								<TD>Пётр</TD>
+							</TR>
+							<TR>
+								<TD><STRONG>Отчество:</STRONG></TD>
+								<TD>Сидорович</TD>
+							</TR>
+						</TABLE>
+						<FORM action="view.html">
+							<BUTTON type="submit">Отменить</BUTTON>
+						</FORM>
+						<HR>
+						<H3>Контакты:</H3>
+						<TABLE>
+							<TR>
+								<TD><STRONG>Телефон:</STRONG></TD>
+								<TD>+375-29-123-45-56</TD>
+								<TD><FORM action="edit.html" class="inline"><BUTTON type="submit">Удалить</BUTTON></FORM></TD>
+							</TR>
+							<TR>
+								<TD><STRONG>Телефон:</STRONG></TD>
+								<TD>+375-0212-98-76-65</TD>
+								<TD><FORM action="edit.html" class="inline"><BUTTON type="submit">Удалить</BUTTON></FORM></TD>
+							</TR>
+							<TR>
+								<TD><STRONG>Адрес электронной почты:</STRONG></TD>
+								<TD>ivanov69@pisem.net</TD>
+								<TD><FORM action="edit.html" class="inline"><BUTTON type="submit">Удалить</BUTTON></FORM></TD>
+							</TR>
+							<TR>
+								<TD><STRONG>Имя пользователя в Skype:</STRONG></TD>
+								<TD>ivanov123</TD>
+								<TD><FORM action="edit.html" class="inline"><BUTTON type="submit">Удалить</BUTTON></FORM></TD>
+							</TR>
+						</TABLE>
+						<HR>
+						<H3>Добавление нового контакта:</H3>
+						<FORM action="edit.html">
+							<LABEL for="contact-type">Тип контакта:</LABEL>
+							<SELECT id="contact-type">
+								<OPTION>Телефон</OPTION>
+								<OPTION>Адрес электронной почты</OPTION>
+								<OPTION>Имя пользователя в Skype</OPTION>
+							</SELECT>
+							<LABEL for="contact">Контакт:</LABEL>
+							<INPUT type="text" id="contact">
+							<BUTTON type="submit">Добавить</BUTTON>
+						</FORM>
+						<HR>
+						<H3>Смена пароля:</H3>
+						<FORM action="edit.html">
+							<LABEL for="password-old">Старый пароль:</LABEL>
+							<INPUT type="password" id="password-old">
+							<LABEL for="password-new">Новый пароль:</LABEL>
+							<INPUT type="password" id="password-new">
+							<LABEL for="password-new-repeat">Подтверждение нового пароля:</LABEL>
+							<INPUT type="password" id="password-new-repeat">
+							<BUTTON type="submit">Изменить</BUTTON>
+						</FORM>
+					</DIV>
+				</DIV>
+				<DIV id="copyright">&copy; Лаборатория компьютерных технологий ВГУ имени П.&nbsp;М.&nbsp;Машерова</DIV>
+			</DIV>
+		</DIV>
+	</BODY>
+</HTML>
