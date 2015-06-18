@@ -8,7 +8,7 @@
 </tr>
 <tr>
 <td>1000</td>
-<td>Unauthorized user</td>
+<td>[R1000 Unauthorized user]</td>
 <td>can’t do anything but authorization</td>
 </tr>
 <tr>
