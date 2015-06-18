@@ -1,0 +1,15 @@
+<h1>`#`1000. Unauthorized user</h1>
+<p>Unauthorized user can’t do anything but authorization</p>
+<h2>List of roles</h2>
+<table border="1">
+<tr>
+<th>ID</th>
+<th>Role</th>
+<th>User requirement</th>
+</tr>
+<tr>
+<td>1000`-`001</td>
+<td>Unauthorized user</td>
+<td>[UR1000001 Login]</td>
+</tr>
+</table>
