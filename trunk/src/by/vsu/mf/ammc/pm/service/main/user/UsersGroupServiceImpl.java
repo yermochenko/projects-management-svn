@@ -1,5 +1,6 @@
 package by.vsu.mf.ammc.pm.service.main.user;
 
+import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactsTypeDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UsersGroupDao;
 import by.vsu.mf.ammc.pm.dao.mysql.user.UsersGroupDaoImpl;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
@@ -24,8 +25,7 @@ public class UsersGroupServiceImpl extends ServiceImpl implements UsersGroupServ
 
 	@Override
 	public UsersGroup findById(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getTransaction().getDao(UsersGroupDao.class).read(id);
 	}
 
 	@Override
