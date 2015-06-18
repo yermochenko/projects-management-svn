@@ -47,3 +47,6 @@
 <td>formulates requirements</td>
 </tr>
 </table>
+<h2>Use case diagram: roles</h2>
+<p><img src="https://projects-management.googlecode.com/svn/wiki/images/actors.png"></p>
+<p>Each user of system can play several roles. Role of the user depends on project (except role «administrator»). For example, user can play role «team leader» in one project, and in the same time this user can play role «developer» in other project.</p>
