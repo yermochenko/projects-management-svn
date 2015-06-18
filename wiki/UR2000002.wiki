@@ -1,0 +1,2 @@
+<h1>`#`2000`-`002. Open homepage</h1>
+<p><strong>Role</strong>: Authorized user</p>

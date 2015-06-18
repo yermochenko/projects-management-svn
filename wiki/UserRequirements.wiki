@@ -13,7 +13,7 @@
 </tr>
 <tr>
 <td>2000</td>
-<td><em>Authorized user</em></td>
+<td><em>[R2000 Authorized user]</em></td>
 <td>any user which has own user name and password</td>
 </tr>
 <tr>

@@ -1,0 +1,2 @@
+<h1>`#`2000`-`006. Delete own contact</h1>
+<p><strong>Role</strong>: Authorized user</p>
