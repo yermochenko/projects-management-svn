@@ -1,2 +1,7 @@
 <h1>`#`2000`-`004. View personal user profile</h1>
 <p><strong>Role</strong>: Authorized user</p>
+<table border="1">
+<tr><th>ID</th><th>Functional requirement</th></tr>
+<tr><td>2000`-`004`-`004</td><td>[FR2000004004 View personal user profile]</td></tr>
+<tr><td>2000`-`004`-`005</td><td>[FR2000004005 View personal user profile in edit mode]</td></tr>
+</table>

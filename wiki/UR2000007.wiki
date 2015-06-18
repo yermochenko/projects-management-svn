@@ -1,2 +1,6 @@
 <h1>`#`2000`-`007. Change own password</h1>
 <p><strong>Role</strong>: Authorized user</p>
+<table border="1">
+<tr><th>ID</th><th>Functional requirement</th></tr>
+<tr><td>2000`-`007`-`008</td><td>[FR2000007008 Change own password]</td></tr>
+</table>
