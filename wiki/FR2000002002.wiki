@@ -1,4 +1,4 @@
-<h1>`#`2000`-`002`-`002. Open homepage</h1>
+<h1>Functional requirement `#`2000`-`002`-`002. Open homepage</h1>
 <p><em>User requirement [UR2000002 #2000-002]</em></p>
 <p>Homepage, which corresponds to role of user, opens automatically after user successfully logged in. This page and any other page, which is available to authorized user, have to contain main menu. Main menu is to be created according following rules.</p>
 <ol>

@@ -1,4 +1,4 @@
-<h1>`#`2000`-`005`-`006. Add own contact</h1>
+<h1>Functional requirement `#`2000`-`005`-`006. Add own contact</h1>
 <p><em>User requirement [UR2000005 #2000-005]</em></p>
 <p>On page «<a href="https://projects-management.googlecode.com/svn/wiki/prototypes/private/profile/edit.html">Editing of personal user profile</a>» there is form with following elements:</p>
 <ul>

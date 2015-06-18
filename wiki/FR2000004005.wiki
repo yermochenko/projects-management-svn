@@ -1,4 +1,4 @@
-<h1>`#`2000`-`004`-`005. View personal user profile in edit mode</h1>
+<h1>Functional requirement `#`2000`-`004`-`005. View personal user profile in edit mode</h1>
 <p><em>User requirement [UR2000004 #2000-004]</em></p>
 <p>On page «<a href="https://projects-management.googlecode.com/svn/wiki/prototypes/private/profile/view.html">Personal user profile</a>» there is button «Edit». When this button is clicked, user is redirected to the page «<a href="https://projects-management.googlecode.com/svn/wiki/prototypes/private/profile/edit.html">Editing of personal user profile</a>». On this page the following information is displayed:</p>
 <ul>

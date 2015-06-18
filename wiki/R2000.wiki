@@ -1,4 +1,4 @@
-<h1>`#`2000. <em>Authorized user</em></h1>
+<h1>Role `#`2000. <em>Authorized user</em></h1>
 <p>Authorized user any user which has own user name and password</p>
 <h2>List of roles</h2>
 <table border="1">
