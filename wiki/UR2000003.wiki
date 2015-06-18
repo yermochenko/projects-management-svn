@@ -1,6 +1,7 @@
 <h1>User requirement `#`2000`-`003. Logout</h1>
-<p><strong>Role</strong>: Authorized user</p>
+<p><strong>Role</strong>: <em>[R2000 Authorized user]</em></p>
 <table border="1">
 <tr><th>ID</th><th>Functional requirement</th></tr>
 <tr><td>2000`-`003`-`003</td><td>[FR2000003003 Logout]</td></tr>
 </table>
+<p>[index home]</p>

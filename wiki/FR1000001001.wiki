@@ -7,3 +7,4 @@
 <li>button «Login».</li>
 </ul>
 <p>There are no any buttons and hyperlinks on the page even hyperlinks in main menu. When user enters his user name and password and when user presses button «Login», system verifies this information. If user with this name exists and MD5-hash of password corresponds to stored MD5-hash of password in data base, system redirects user to his main page (according his role). Otherwise system redirects user to the same page «<a href="https://projects-management.googlecode.com/svn/wiki/prototypes/login.html">Authorization</a>», following message is displayed: «User name or password are not identified» and clears all fields.</p>
+<p>[index home]</p>

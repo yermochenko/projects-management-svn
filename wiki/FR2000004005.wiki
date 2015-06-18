@@ -6,3 +6,4 @@
 <li>information about user contacts (contact types and contact values).</li>
 </ul>
 <p>On this page there is also button «Cancel». When this button is clicked, user is redirected back to the page «<a href="https://projects-management.googlecode.com/svn/wiki/prototypes/private/profile/view.html">Personal user profile</a>».</p>
+<p>[index home]</p>

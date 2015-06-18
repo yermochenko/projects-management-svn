@@ -20,3 +20,4 @@
 <li>Into the end of list of menu items new complex menu item is added. This complex menu item has name matching with user name and contains two simple menu items. First item is «Profile». Second item is «Logout».</li>
 </ol>
 <p>Homepage for each user is a page which corresponds to first simple menu item from main menu of this user.</p>
+<p>[index home]</p>

@@ -1,6 +1,7 @@
 <h1>User requirement `#`2000`-`002. Open homepage</h1>
-<p><strong>Role</strong>: Authorized user</p>
+<p><strong>Role</strong>: <em>[R2000 Authorized user]</em></p>
 <table border="1">
 <tr><th>ID</th><th>Functional requirement</th></tr>
 <tr><td>2000`-`002`-`002</td><td>[FR2000002002 Open homepage]</td></tr>
 </table>
+<p>[index home]</p>

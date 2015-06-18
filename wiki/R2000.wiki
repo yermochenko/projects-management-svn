@@ -31,3 +31,5 @@
 <td>[UR2000007 Change own password]</td>
 </tr>
 </table>
+<p>[UserRequirements roles]</p>
+<p>[index home]</p>

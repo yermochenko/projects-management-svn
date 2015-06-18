@@ -6,3 +6,4 @@
 <li>information about user contacts (contact types and contact values);</li>
 <li>information about user roles (projects, roles and additionally the mark, whether user is administrator).</li>
 </ul>
+<p>[index home]</p>

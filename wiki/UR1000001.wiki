@@ -1,7 +1,8 @@
 <h1>User requirement `#`1000`-`001. Login</h1>
-<p><strong>Role</strong>: Unauthorized user</p>
+<p><strong>Role</strong>: [R1000 Unauthorized user]</p>
 <h2>List of functional requirements</h2>
 <table border="1">
 <tr><th>ID</th><th>Functional requirement</th></tr>
 <tr><td>1000`-`001`-`001</td><td>[FR1000001001 Authorization form]</td></tr>
 </table>
+<p>[index home]</p>

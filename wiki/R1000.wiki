@@ -11,3 +11,5 @@
 <td>[UR1000001 Login]</td>
 </tr>
 </table>
+<p>[UserRequirements roles]</p>
+<p>[index home]</p>
