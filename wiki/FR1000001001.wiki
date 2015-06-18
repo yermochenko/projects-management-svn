@@ -1,9 +1,9 @@
 <h1>`#`1000`-`001`-`001. Authorization form</h1>
-<p><em>User requirement [UR1000001 `#`1000`-`001]</em></p>
-<p>Page «<a href="https://projects-management.googlecode.com/svn/wiki/login.html">Authorization</a>» contains form with following elements:</p>
+<p><em>User requirement [UR1000001 #1000-001]</em></p>
+<p>Page «<a href="https://projects-management.googlecode.com/svn/wiki/prototypes/login.html">Authorization</a>» contains form with following elements:</p>
 <ul>
 <li>text field «User name»,</li>
 <li>password field «Password»,</li>
 <li>button «Login».</li>
 </ul>
-<p>There are no any buttons and hyperlinks on the page even hyperlinks in main menu. When user enters his user name and password and when user presses button «Login», system verifies this information. If user with this name exists and MD5-hash of password corresponds to stored MD5-hash of password in data base, system redirects user to his main page (according his role). Otherwise system redirects user to the same page «<a href="https://projects-management.googlecode.com/svn/wiki/login.html">Authorization</a>», following message is displayed: «User name or password are not identified» and clears all fields.</p>
+<p>There are no any buttons and hyperlinks on the page even hyperlinks in main menu. When user enters his user name and password and when user presses button «Login», system verifies this information. If user with this name exists and MD5-hash of password corresponds to stored MD5-hash of password in data base, system redirects user to his main page (according his role). Otherwise system redirects user to the same page «<a href="https://projects-management.googlecode.com/svn/wiki/prototypes/login.html">Authorization</a>», following message is displayed: «User name or password are not identified» and clears all fields.</p>

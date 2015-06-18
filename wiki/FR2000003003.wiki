@@ -1,3 +1,3 @@
 <h1>`#`2000`-`003`-`003. Logout</h1>
-<p><em>User requirement [UR2000003 `#`2000`-`003]</em></p>
-<p>When menu item «Logout» from main menu is selected, current user session is destroyed and user is redirected to the page «<a href="https://projects-management.googlecode.com/svn/wiki/login.html">Authorization</a>» (see functional requirement [FR1000001001 #1000 001 001]).</p>
+<p><em>User requirement [UR2000003 #2000-003]</em></p>
+<p>When menu item «Logout» from main menu is selected, current user session is destroyed and user is redirected to the page «<a href="https://projects-management.googlecode.com/svn/wiki/prototypes/login.html">Authorization</a>» (see functional requirement [FR1000001001 #1000-001-001]).</p>
