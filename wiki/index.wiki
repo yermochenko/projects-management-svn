@@ -3,4 +3,5 @@
 <li>[BusinessRequirement Business requirement]</li>
 <li>[UserRequirements User requirements]</li>
 <li>[FunctionalRequirements Functional requirements]</li>
+<li>[AppendixMessagesTranslations appendix «Messages translations»]</li>
 </ul>

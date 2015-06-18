@@ -1,5 +1,5 @@
 <h1>Functional requirements</h1>
-<p>All text messages have to be translated into Russian according prototypes. If there is no translated message in prototype, it has to be translated according appendix «Messages translations» (see below).</p>
+<p>All text messages have to be translated into Russian according prototypes. If there is no translated message in prototype, it has to be translated according [AppendixMessagesTranslations appendix «Messages translations»].</p>
 <h2>List of functional requirements</h2>
 <table border="1">
 <tr><th>ID</th><th>Functional requirement</th></tr>
