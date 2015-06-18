@@ -4,37 +4,30 @@
 <table border="1">
 <tr>
 <th>ID</th>
-<th>Role</th>
 <th>User requirement</th>
 </tr>
 <tr>
 <td>2000`-`002</td>
-<td>Authorized user</td>
 <td>[UR2000002 Open homepage]</td>
 </tr>
 <tr>
 <td>2000`-`003</td>
-<td>Authorized user</td>
 <td>[UR2000003 Logout]</td>
 </tr>
 <tr>
 <td>2000`-`004</td>
-<td>Authorized user</td>
 <td>[UR2000004 View personal user profile]</td>
 </tr>
 <tr>
 <td>2000`-`005</td>
-<td>Authorized user</td>
 <td>[UR2000005 Add own contact]</td>
 </tr>
 <tr>
 <td>2000`-`006</td>
-<td>Authorized user</td>
 <td>[UR2000006 Delete own contact]</td>
 </tr>
 <tr>
 <td>2000`-`007</td>
-<td>Authorized user</td>
 <td>[UR2000007 Change own password]</td>
 </tr>
 </table>
