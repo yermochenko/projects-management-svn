@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,7 +131,7 @@ public class TasksCategoryDaoImpl extends BaseDaoImpl implements TasksCategoryDa
 			identityMap.clear();
 		}
 	}
-	
+
 	public List<TasksCategory> findPossibleParents(int id) throws PersistentException {
 		TasksCategory category = identityMap.get(id);
 		if(category == null) {
@@ -164,6 +165,38 @@ public class TasksCategoryDaoImpl extends BaseDaoImpl implements TasksCategoryDa
 				} catch(SQLException | NullPointerException e) {}
 			}
 		}
-		return (List<TasksCategory>) category;
+		return (List<TasksCategory>)category;
+	}
+
+	@Override
+	public List<TasksCategory> readAll() throws PersistentException {
+		String sql = "SELECT * FROM `tasks_category` WHERE `parent_id` IS NULL";
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			statement = getConnection().prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			resultSet = statement.executeQuery();
+
+			List<TasksCategory> result = new ArrayList<>();
+			while(resultSet.next()) {
+				TasksCategory projects_catogory = new TasksCategory();
+				projects_catogory.setId(resultSet.getInt("id"));
+				projects_catogory.setName(resultSet.getString("name"));
+				TasksCategory tc = new TasksCategory();
+				tc.setId(resultSet.getInt("parent_id"));
+				projects_catogory.setParent(tc);
+				result.add(projects_catogory);
+			}
+			return result;
+		} catch(SQLException e) {
+			throw new PersistentException(e);
+		} finally {
+			try {
+				resultSet.close();
+			} catch(SQLException | NullPointerException e) {}
+			try {
+				statement.close();
+			} catch(SQLException | NullPointerException e) {}
+		}
 	}
 }
