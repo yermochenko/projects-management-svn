@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import by.vsu.mf.ammc.pm.domain.project.specification.UseCasesRelationsType;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,9 +29,7 @@ public class JUnitUseCaseDaoTest extends Assert {
 		useCaseDaoImpl.setEntityFactory(new EntityFactory());
 
 		UseCase useCase = useCaseDaoImpl.getEntityFactory().create(UseCase.class);
-		Integer useCaseId = 11999;
-		Integer moduleId = 11999;
-		useCase.setId(useCaseId);
+		Integer moduleId = 13188;
 		useCase.setName("testActor");
 		Module module = new Module();
 		module.setId(moduleId);
@@ -43,8 +42,9 @@ public class JUnitUseCaseDaoTest extends Assert {
 		}
 
 		// create
+		int useCaseId = 0;
 		try {
-			useCaseDaoImpl.create(useCase);
+			useCaseId = useCaseDaoImpl.create(useCase);
 		} catch(PersistentException e) {
 			Assert.assertTrue(false);
 		}
@@ -56,7 +56,7 @@ public class JUnitUseCaseDaoTest extends Assert {
 		} catch(PersistentException e) {
 			Assert.assertTrue(false);
 		}
-		Assert.assertEquals(useCase.getId(), UseCaseReaded.getId());
+		useCase.setId(useCaseId);
 		Assert.assertEquals(useCase.getName(), UseCaseReaded.getName());
 		Assert.assertEquals(useCase.getModule(), UseCaseReaded.getModule());
 
@@ -80,6 +80,7 @@ public class JUnitUseCaseDaoTest extends Assert {
 		}
 
 		Assert.assertNull(UseCaseReaded);
+
 	}
 
 }

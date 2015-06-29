@@ -4,6 +4,7 @@ import by.vsu.mf.ammc.pm.dao.abstraction.project.specification.UseCaseDao;
 import by.vsu.mf.ammc.pm.dao.mysql.BaseDaoImpl;
 import by.vsu.mf.ammc.pm.domain.project.Module;
 import by.vsu.mf.ammc.pm.domain.project.specification.UseCase;
+import by.vsu.mf.ammc.pm.domain.project.specification.UseCasesRelationsType;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 import java.sql.PreparedStatement;
@@ -27,7 +28,20 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
 			if(resultSet.next()) {
-				return resultSet.getInt(1);
+				int useCaseId = resultSet.getInt(1);
+				String sql_relations = "INSERT INTO `use_cases_relation` (`source_id`, `destination_id`, `type`) VALUES (?, ?, ?)";
+				preparedStatement = getConnection().prepareStatement(sql_relations);
+				UseCasesRelationsType[] types = UseCasesRelationsType.values();
+				for(int i = 0; i < types.length; i++) {
+					for(UseCase useCaseRelate : useCase.getRelations(types[i])) {
+						preparedStatement.setInt(1, useCaseId);
+						preparedStatement.setInt(2, useCaseRelate.getId());
+						preparedStatement.setInt(3, i);
+						preparedStatement.executeUpdate();
+					}
+				}
+
+				return useCaseId;
 			} else {
 				throw new PersistentException();
 			}
@@ -36,10 +50,12 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 		} finally {
 			try {
 				resultSet.close();
-			} catch(SQLException | NullPointerException e) {}
+			} catch(SQLException | NullPointerException e) {
+			}
 			try {
 				preparedStatement.close();
-			} catch(SQLException | NullPointerException e) {}
+			} catch(SQLException | NullPointerException e) {
+			}
 			identityMap.clear();
 		}
 	}
@@ -62,6 +78,17 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 					Module module = getEntityFactory().create(Module.class);
 					module.setId(resultSet.getInt("module_id"));
 					useCase.setModule(module);
+
+					String sql_relations = "SELECT `destination_id`, `type` FROM `use_cases_relation` WHERE `source_id` = ?";
+					preparedStatement = getConnection().prepareStatement(sql_relations);
+					preparedStatement.setInt(1, id);
+					resultSet = preparedStatement.executeQuery();
+					while(resultSet.next()) {
+						int source_id = resultSet.getInt("destination_id");
+						int type = resultSet.getInt("type");
+						useCase.getRelations(UseCasesRelationsType.values()[type]).add(this.read(source_id));
+					}
+
 					identityMap.put(id, useCase);
 				}
 			} catch(SQLException e) {
@@ -69,10 +96,12 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 			} finally {
 				try {
 					resultSet.close();
-				} catch(SQLException | NullPointerException e) {}
+				} catch(SQLException | NullPointerException e) {
+				}
 				try {
 					preparedStatement.close();
-				} catch(SQLException | NullPointerException e) {}
+				} catch(SQLException | NullPointerException e) {
+				}
 			}
 		}
 		return useCase;
@@ -88,12 +117,30 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 			preparedStatement.setInt(2, useCase.getModule().getId());
 			preparedStatement.setInt(3, useCase.getId());
 			preparedStatement.executeUpdate();
+
+			String sql_relations = "DELETE FROM `use_cases_relation` WHERE `source_id` = ?";
+			preparedStatement = getConnection().prepareStatement(sql_relations);
+			preparedStatement.setInt(1, useCase.getId());
+			preparedStatement.executeUpdate();
+			sql_relations = "INSERT INTO `use_cases_relation` (`source_id`, `destination_id`, `type`) VALUES (?, ?, ?)";
+			preparedStatement = getConnection().prepareStatement(sql_relations);
+			UseCasesRelationsType types[] = UseCasesRelationsType.values();
+			for(int i = 0; i < types.length; i++) {
+				for(UseCase useCaseRelate : useCase.getRelations(types[i])) {
+					preparedStatement.setInt(1, useCase.getId());
+					preparedStatement.setInt(2, useCaseRelate.getId());
+					preparedStatement.setInt(3, i);
+					preparedStatement.executeUpdate();
+				}
+			}
+
 		} catch(SQLException e) {
 			throw new PersistentException(e);
 		} finally {
 			try {
 				preparedStatement.close();
-			} catch(SQLException | NullPointerException e) {}
+			} catch(SQLException | NullPointerException e) {
+			}
 			identityMap.clear();
 		}
 	}
@@ -111,7 +158,8 @@ public class UseCaseDaoImpl extends BaseDaoImpl implements UseCaseDao {
 		} finally {
 			try {
 				preparedStatement.close();
-			} catch(SQLException | NullPointerException e) {}
+			} catch(SQLException | NullPointerException e) {
+			}
 			identityMap.clear();
 		}
 	}
