@@ -24,8 +24,8 @@ public class TasksCategoryServiceImpl extends ServiceImpl implements TasksCatego
 
 	@Override
 	public TasksCategory findById(int id) throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+		TasksCategoryDao tasksCategoryDao = getTransaction().getDao(TasksCategoryDao.class);
+		return tasksCategoryDao.read(id);
 	}
 
 	@Override
