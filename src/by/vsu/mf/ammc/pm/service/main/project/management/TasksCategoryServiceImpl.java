@@ -4,7 +4,6 @@ import java.util.List;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.management.TasksCategoryDao;
 import by.vsu.mf.ammc.pm.dao.mysql.project.management.TasksCategoryDaoImpl;
-import by.vsu.mf.ammc.pm.dao.mysql.user.UsersGroupDaoImpl;
 import by.vsu.mf.ammc.pm.domain.project.management.TasksCategory;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.project.management.TasksCategoryService;
@@ -41,6 +40,7 @@ public class TasksCategoryServiceImpl extends ServiceImpl implements TasksCatego
 
 	@Override
 	public void delete(int id) throws PersistentException {
-		// TODO Auto-generated method stub
+		TasksCategoryDao tasksCategoryDao = getTransaction().getDao(TasksCategoryDao.class);
+		tasksCategoryDao.delete(id);
 	}
 }
