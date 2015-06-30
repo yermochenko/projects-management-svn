@@ -14,7 +14,7 @@ import by.vsu.mf.ammc.pm.service.main.ServiceImpl;
 public class ContactsTypeServiceImpl extends ServiceImpl implements ContactsTypeService {
 	@Override
 	public List<ContactsType> findAll() throws PersistentException {
-		ContactsTypeDaoImpl ctdi = new ContactsTypeDaoImpl();
+		ContactsTypeDao ctdi = getTransaction().getDao(ContactsTypeDao.class);
 		return ctdi.readAll();
 	}
 

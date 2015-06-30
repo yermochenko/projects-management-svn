@@ -10,8 +10,18 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>UserViewServlet</servlet-name>
-		<url-pattern>*.html</url-pattern>
+		<url-pattern>/view.html</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>UserEditServlet</servlet-name>
+		<servlet-class>by.vsu.mf.ammc.pm.dispatcher.test.UserEditServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserEditServlet</servlet-name>
+		<url-pattern>/edit.html</url-pattern>
+	</servlet-mapping>
+	
 	
 	<error-page>
 		<error-code>404</error-code>

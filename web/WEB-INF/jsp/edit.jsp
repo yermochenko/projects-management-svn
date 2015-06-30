@@ -1,5 +1,4 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="by.vsu.pms.domain.project.employee.Role"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@taglib tagdir="/WEB-INF/tags" prefix="u"%>
@@ -15,45 +14,34 @@
 				<TABLE>
 					<tr>
 						<td>Псевдоним:</td>
-						<td>${user.login}</td>
+						<td>${user.getName()}</td>
 					</tr>
 					<tr>
 						<td>Фамилия:</td>
-						<td>${user.secondname}</td>
+						<td>${user.getLastName()}</td>
 					</tr>
 					<tr>
 						<td>Имя:</td>
-						<td>${user.name}</td>
+						<td>${user.getFirstName()}</td>
 					</tr>
 					<tr>
 						<td>Отчество:</td>
-						<td>${user.patronomic}</td>
+						<td>${user.getMiddleName()}</td>
 					</tr>
-					<FORM action="#">
+					
+				</TABLE>
+				<FORM action="/pm/view.html">
 						<BUTTON type="submit">Отменить</BUTTON>
 					</FORM>
-				</TABLE>
 				<H3>Контакты:</H3>
 				<TABLE>
-					<c:forEach items="${user.phones}" var="phone">
+					<c:forEach items="${user.getContacts()}" var="contact">
 						<tr>
-							<td>Телефон:</td>
-							<td>${phone}</td>
-							<FORM action="#">
+							<td>${contact.getType().getName()}:</td>
+							<td>${contact.getName()}</td>
+							<td><FORM action="#">
 								<BUTTON type="submit">Удалить</BUTTON>
-							</FORM>
-						</tr>
-					</c:forEach>
-					<c:forEach items="${user.mails}" var="mail" >
-						<tr>
-							<td>Адрес электронной почты:</td>
-							<td>${mail}</td>
-						</tr>
-					</c:forEach>
-					<c:forEach items="${user.skypes}" var="skype">
-						<tr>
-							<td>Имя пользователя в Skype:</td>
-							<td>${skype}</td>
+							</FORM></td>
 						</tr>
 					</c:forEach>
 				</TABLE>
@@ -62,8 +50,8 @@
 					<form action="#">
 						<h4>Тип контакта:</h4>
 						<select>
-							<c:forEach items="${contacts_type}" var="contact_type">
-								<option>${contact_type}</option>
+							<c:forEach items="${types}" var="type">
+								<option>${type.getName()}</option>
 							</c:forEach>
 						</select>
 						<h4>Контакт:</h4>
