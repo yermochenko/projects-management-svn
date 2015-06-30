@@ -13,12 +13,18 @@ import by.vsu.mf.ammc.pm.dao.abstraction.Transaction;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.Service;
 import by.vsu.mf.ammc.pm.service.abstraction.ServiceFactory;
+import by.vsu.mf.ammc.pm.service.abstraction.user.ContactService;
+import by.vsu.mf.ammc.pm.service.abstraction.user.UserService;
+import by.vsu.mf.ammc.pm.service.main.user.ContactServiceImpl;
+import by.vsu.mf.ammc.pm.service.main.user.UserServiceImpl;
 
 public class ServiceFactoryImpl implements ServiceFactory {
 	private static Logger logger = Logger.getLogger(ServiceFactoryImpl.class);
 
 	private static Map<Class<? extends Service>, Class<? extends ServiceImpl>> services = new ConcurrentHashMap<>();
 	static {
+		services.put(UserService.class, UserServiceImpl.class);
+		services.put(ContactService.class, ContactServiceImpl.class);
 	}
 
 	private Transaction transaction;
