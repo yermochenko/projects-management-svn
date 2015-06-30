@@ -4,7 +4,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactDao;
@@ -143,6 +145,39 @@ public class ContactDaoImpl extends BaseDaoImpl implements ContactDao {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	
+
+	@Override
+	public List<Contact> getContactsByUser(User user) throws PersistentException {
+		String sql = "SELECT id, name, type_id FROM contact WHERE user_id = ?";
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try {
+			statement = getConnection().prepareStatement(sql);
+			statement.setInt(1, user.getId());
+			resultSet = statement.executeQuery();
+			List<Contact> contacts = new ArrayList<Contact>();
+			Contact contact = null;
+			while(resultSet.next()) {
+				contact = getEntityFactory().create(Contact.class);
+				contact.setId(resultSet.getInt("id"));
+				contact.setName(resultSet.getString("name"));
+				contact.setUser(user);
+				Integer typeIdentity = resultSet.getInt("type_id");
+				ContactsType type = new ContactsType();
+				type.setId(typeIdentity);
+				contact.setType(type);
+				contacts.add(contact);
+			}
+			return contacts;
+		} catch(SQLException e) {
+			throw new PersistentException(e);
+		} finally {
+			try {
+				resultSet.close();
+			} catch(SQLException | NullPointerException e) {}
+			try {
+				statement.close();
+			} catch(SQLException | NullPointerException e) {}
+		}
+	}
 }

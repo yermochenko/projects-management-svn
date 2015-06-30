@@ -4,10 +4,17 @@ import by.vsu.mf.ammc.pm.dao.abstraction.Dao;
 import by.vsu.mf.ammc.pm.dao.abstraction.Transaction;
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.project.management.EmployeeDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactsTypeDao;
+import by.vsu.mf.ammc.pm.dao.abstraction.user.UserDao;
 import by.vsu.mf.ammc.pm.dao.mysql.project.ProjectDaoImpl;
 import by.vsu.mf.ammc.pm.dao.mysql.project.management.EmployeeDaoImpl;
+import by.vsu.mf.ammc.pm.dao.mysql.user.ContactDaoImpl;
+import by.vsu.mf.ammc.pm.dao.mysql.user.ContactsTypeDaoImpl;
+import by.vsu.mf.ammc.pm.dao.mysql.user.UserDaoImpl;
 import by.vsu.mf.ammc.pm.dao.util.pool.ConnectionPool;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
+
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -22,6 +29,9 @@ public class TransactionImpl implements Transaction {
 	static {
 		daos.put( EmployeeDao.class, EmployeeDaoImpl.class );
 		daos.put( ProjectDao.class, ProjectDaoImpl.class);
+		daos.put( UserDao.class, UserDaoImpl.class);
+		daos.put( ContactDao.class, ContactDaoImpl.class);
+		daos.put( ContactsTypeDao.class, ContactsTypeDaoImpl.class);
 	}
 
 	private Connection connection;
