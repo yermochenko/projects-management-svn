@@ -10,12 +10,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.log4j.Logger;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.Transaction;
+import by.vsu.mf.ammc.pm.domain.user.ContactsType;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.Service;
 import by.vsu.mf.ammc.pm.service.abstraction.ServiceFactory;
 import by.vsu.mf.ammc.pm.service.abstraction.user.ContactService;
+import by.vsu.mf.ammc.pm.service.abstraction.user.ContactsTypeService;
 import by.vsu.mf.ammc.pm.service.abstraction.user.UserService;
 import by.vsu.mf.ammc.pm.service.main.user.ContactServiceImpl;
+import by.vsu.mf.ammc.pm.service.main.user.ContactsTypeServiceImpl;
 import by.vsu.mf.ammc.pm.service.main.user.UserServiceImpl;
 
 public class ServiceFactoryImpl implements ServiceFactory {
@@ -25,6 +28,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
 	static {
 		services.put(UserService.class, UserServiceImpl.class);
 		services.put(ContactService.class, ContactServiceImpl.class);
+		services.put(ContactsTypeService.class, ContactsTypeServiceImpl.class);
 	}
 
 	private Transaction transaction;
