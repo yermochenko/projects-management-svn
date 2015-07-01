@@ -4,6 +4,7 @@
 	<welcome-file-list>
 		<welcom-file>index.html</welcom-file>
 	</welcome-file-list>
+	
 	<servlet>
 		<servlet-name>UserViewServlet</servlet-name>
 		<servlet-class>by.vsu.mf.ammc.pm.dispatcher.test.UserViewServlet</servlet-class>
@@ -22,7 +23,50 @@
 		<url-pattern>/edit.html</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>ContactsTypeListServlet</servlet-name>
+		<servlet-class>by.vsu.mf.ammc.pm.dispatcher.test.ContactsTypeListServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ContactsTypeListServlet</servlet-name>
+		<url-pattern>/admin/contacts-type/list.html</url-pattern>
+	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>ContactsTypeAddServlet</servlet-name>
+		<servlet-class>by.vsu.mf.ammc.pm.dispatcher.test.ContactsTypeAddServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ContactsTypeAddServlet</servlet-name>
+		<url-pattern>/admin/contacts-type/add.html</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ContactsTypeEditServlet</servlet-name>
+		<servlet-class>by.vsu.mf.ammc.pm.dispatcher.test.ContactsTypeEditServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ContactsTypeEditServlet</servlet-name>
+		<url-pattern>/admin/contacts-type/edit.html</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ContactsTypeSaveServlet</servlet-name>
+		<servlet-class>by.vsu.mf.ammc.pm.dispatcher.test.ContactsTypeSaveServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ContactsTypeSaveServlet</servlet-name>
+		<url-pattern>/admin/contacts-type/save.html</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ContactsTypeDeleteServlet</servlet-name>
+		<servlet-class>by.vsu.mf.ammc.pm.dispatcher.test.ContactsTypeDeleteServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ContactsTypeDeleteServlet</servlet-name>
+		<url-pattern>/admin/contacts-type/delete.html</url-pattern>
+	</servlet-mapping>
 	<error-page>
 		<error-code>404</error-code>
 		<location>/WEB-INF/jsp/error.jsp</location>
