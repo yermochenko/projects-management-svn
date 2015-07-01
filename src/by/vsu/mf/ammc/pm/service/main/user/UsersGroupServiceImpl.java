@@ -47,7 +47,7 @@ public class UsersGroupServiceImpl extends ServiceImpl implements UsersGroupServ
 
 	@Override
 	public void delete(int id) throws PersistentException {
-		// TODO Auto-generated method stub
+        //persistentException will be looked higher
+        this.getTransaction().getDao(UsersGroupDao.class).delete(id);
 	}
-
 }
