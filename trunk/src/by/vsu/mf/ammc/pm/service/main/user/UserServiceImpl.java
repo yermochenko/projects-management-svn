@@ -40,7 +40,13 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 
 	@Override
 	public void save(User user) throws PersistentException {
-		// TODO Auto-generated method stub
+        UserDao userDao = getTransaction().getDao(UserDao.class);
+        Integer id = user.getId();
+        if(id != null){
+            userDao.update(user);
+        }else{
+            user.setId(userDao.create(user));
+        }
 	}
 
 	@Override
