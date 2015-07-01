@@ -63,6 +63,6 @@ public class ProjectsCategoryServiceImpl extends ServiceImpl implements Projects
 
 	@Override
 	public void delete(int id) throws PersistentException {
-		// TODO Auto-generated method stub
+        this.getTransaction().getDao(ProjectsCategoryDao.class).delete(id);
 	}
 }
