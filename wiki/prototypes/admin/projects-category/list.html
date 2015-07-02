@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<HTML>
+	<HEAD>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<TITLE>Управление проектами - Категории проектов</TITLE>
+		<LINK rel="stylesheet" type="text/css" href="../../main.css">
+		<SCRIPT src="../../main.js"></SCRIPT>
+		<SCRIPT type="text/javascript">
+			rootUrl = "../../";
+		</SCRIPT>
+	</HEAD>
+	<BODY>
+		<DIV id="header">
+			<H1>Управление<BR>Проектами</H1>
+			<UL class="right">
+				<LI class="item"><A href="../user/list.html">Пользователи</A></LI>
+				<LI class="item"><A href="../project/list.html" class="current">Проекты</A></LI>
+				<LI class="item">
+					<A href="#" class="droplink">Справочники <IMG class="arrow" src="../../img/arrow-white-bottom.gif"></A>
+					<OL class="drop">
+						<LI><A href="../contacts-type/list.html">Типы контактов</A></LI>
+						<LI><A href="../tasks-category/list.html">Категории заданий</A></LI>
+					</OL>
+				</LI>
+				<LI class="item">
+					<A href="#" class="droplink">Username <IMG class="arrow" src="../../img/arrow-white-bottom.gif"></A>
+					<OL class="drop">
+						<LI><A href="../../private/profile/view.html">Профиль</A></LI>
+						<LI><A href="../../login.html">Выход</A></LI>
+					</OL>
+				</LI>
+			</UL>
+		</DIV>
+		<DIV id="wrapper">
+			<DIV id="content">
+				<DIV id="breadcrumbs"><A href="../../index.html">Главная</A> :: <A href="../project/list.html">Проекты</A> :: Категории проектов</DIV>
+				<H2>Категории проектов</H2>
+				<DIV id="page">
+					<DIV class="single-column">
+						<H3>Список категорий проектов</H3>
+						<UL class="drop-list">
+							<LI class="drop"><A href="edit.html">Сайты</A>
+								<UL class="drop">
+									<LI class="drop"><A href="edit.html">Интернет-магазины</A></LI>
+									<LI class="drop"><A href="edit.html">Рекламные сайты и сайты-визитки</A></LI>
+									<LI class="drop"><A href="edit.html">Интернет-порталы</A>
+										<UL class="drop">
+											<LI class="drop"><A href="edit.html">CMS</A>
+												<UL class="drop">
+													<LI class="drop"><A href="edit.html">Drupal</A></LI>
+													<LI class="drop"><A href="edit.html">Joomla</A></LI>
+													<LI class="drop"><A href="edit.html">Wordpress</A></LI>
+												</UL>
+											</LI>
+											<LI class="drop"><A href="edit.html">Свой движок на PHP</A></LI>
+										</UL>
+									</LI>
+								</UL>
+							</LI>
+							<LI class="drop"><A href="edit.html">Информационные системы</A>
+								<UL class="drop">
+									<LI class="drop"><A href="edit.html">Толстый клиент</A>
+										<UL class="drop">
+											<LI class="drop"><A href="edit.html">Кроссплатформенный клиент</A></LI>
+											<LI class="drop"><A href="edit.html">Windows-клиент</A></LI>
+											<LI class="drop"><A href="edit.html">Мобильный клиент</A></LI>
+										</UL>
+									</LI>
+									<LI class="drop"><A href="edit.html">Тонкий клиент</A></LI>
+								</UL>
+							</LI>
+							<LI class="drop"><A href="edit.html">Системные утилиты</A>
+								<UL class="drop">
+									<LI class="drop"><A href="edit.html">Windows</A></LI>
+									<LI class="drop"><A href="edit.html">Linux</A></LI>
+								</UL>
+							</LI>
+						</UL>
+						<BUTTON type="button" onclick="submitFormById('form-add')">Добавить категорию</BUTTON>
+						<BUTTON type="button" onclick="submitFormById('form-cancel')">Закончить редактирование категорий</BUTTON>
+						<FORM id="form-add" action="add.html"></FORM>
+						<FORM id="form-cancel" action="../project/list.html"></FORM>
+					</DIV>
+				</DIV>
+				<DIV id="copyright">&copy; Лаборатория компьютерных технологий ВГУ имени П.&nbsp;М.&nbsp;Машерова</DIV>
+			</DIV>
+		</DIV>
+	</BODY>
+</HTML>

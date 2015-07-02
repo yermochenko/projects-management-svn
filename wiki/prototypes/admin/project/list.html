@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<HTML>
+	<HEAD>
+		<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<TITLE>Управление проектами - Проекты</TITLE>
+		<LINK rel="stylesheet" type="text/css" href="../../main.css">
+		<SCRIPT src="../../main.js"></SCRIPT>
+		<SCRIPT type="text/javascript">
+			rootUrl = "../../";
+		</SCRIPT>
+	</HEAD>
+	<BODY>
+		<DIV id="header">
+			<H1>Управление<BR>Проектами</H1>
+			<UL class="right">
+				<LI class="item"><A href="../user/list.html">Пользователи</A></LI>
+				<LI class="item"><A href="list.html" class="current">Проекты</A></LI>
+				<LI class="item">
+					<A href="#" class="droplink">Справочники <IMG class="arrow" src="../../img/arrow-white-bottom.gif"></A>
+					<OL class="drop">
+						<LI><A href="../contacts-type/list.html">Типы контактов</A></LI>
+						<LI><A href="../tasks-category/list.html">Категории заданий</A></LI>
+					</OL>
+				</LI>
+				<LI class="item">
+					<A href="#" class="droplink">Username <IMG class="arrow" src="../../img/arrow-white-bottom.gif"></A>
+					<OL class="drop">
+						<LI><A href="../../private/profile/view.html">Профиль</A></LI>
+						<LI><A href="../../login.html">Выход</A></LI>
+					</OL>
+				</LI>
+			</UL>
+		</DIV>
+		<DIV id="wrapper">
+			<DIV id="content">
+				<DIV id="breadcrumbs"><A href="../../index.html">Главная</A> :: Проекты</DIV>
+				<H2>Проекты</H2>
+				<DIV id="page">
+					<DIV class="main-column">
+						<H3>Проекты категории «Сайты»</H3>
+						<TABLE>
+							<TR>
+								<TH class="insignificant">№</TH>
+								<TH>Название</TH>
+								<TH>Менеджер</TH>
+							</TR>
+							<TR onclick="submitFormById('form-1')">
+								<TD class="insignificant"><FORM id="form-1" action="edit.html">1</FORM></TD>
+								<TD>ОАО «Рога и копыта»</TD>
+								<TD>Бендер&nbsp;О.&nbsp;И.</TD>
+							</TR>
+							<TR onclick="submitFormById('form-2')">
+								<TD class="insignificant"><FORM id="form-2" action="edit.html">2</FORM></TD>
+								<TD>База торпедных катеров</TD>
+								<TD>Иванов&nbsp;И.&nbsp;И.</TD>
+							</TR>
+							<TR onclick="submitFormById('form-3')">
+								<TD class="insignificant"><FORM id="form-3" action="edit.html">3</FORM></TD>
+								<TD>Рекламный сайт колхоза «Заря»</TD>
+								<TD>Иванов&nbsp;И.&nbsp;И.</TD>
+							</TR>
+						</TABLE>
+						<FORM action="add.html"><BUTTON type="submit">Добавить проект</BUTTON></FORM>
+					</DIV>
+					<DIV class="side-column">
+						<H3>Категории проектов</H3>
+						<UL class="drop-list">
+							<LI class="drop"><A href="list.html">Сайты</A>
+								<UL class="drop">
+									<LI class="drop"><A href="list.html">Интернет-магазины</A></LI>
+									<LI class="drop"><A href="list.html">Рекламные сайты и сайты-визитки</A></LI>
+									<LI class="drop"><A href="list.html">Интернет-порталы</A>
+										<UL class="drop">
+											<LI class="drop"><A href="list.html">CMS</A>
+												<UL class="drop">
+													<LI class="drop"><A href="list.html">Drupal</A></LI>
+													<LI class="drop"><A href="list.html">Joomla</A></LI>
+													<LI class="drop"><A href="list.html">Wordpress</A></LI>
+												</UL>
+											</LI>
+											<LI class="drop"><A href="list.html">Свой движок на PHP</A></LI>
+										</UL>
+									</LI>
+								</UL>
+							</LI>
+							<LI class="drop"><A href="list.html">Информационные системы</A>
+								<UL class="drop">
+									<LI class="drop"><A href="list.html">Толстый клиент</A>
+										<UL class="drop">
+											<LI class="drop"><A href="list.html">Кроссплатформенный клиент</A></LI>
+											<LI class="drop"><A href="list.html">Windows-клиент</A></LI>
+											<LI class="drop"><A href="list.html">Мобильный клиент</A></LI>
+										</UL>
+									</LI>
+									<LI class="drop"><A href="list.html">Тонкий клиент</A></LI>
+								</UL>
+							</LI>
+							<LI class="drop"><A href="list.html">Системные утилиты</A>
+								<UL class="drop">
+									<LI class="drop"><A href="list.html">Windows</A></LI>
+									<LI class="drop"><A href="list.html">Linux</A></LI>
+								</UL>
+							</LI>
+						</UL>
+						<FORM action="../projects-category/list.html">
+							<BUTTON type="submit">Редактировать категории</BUTTON>
+						</FORM>
+					</DIV>
+				</DIV>
+				<DIV id="copyright">&copy; Лаборатория компьютерных технологий ВГУ имени П.&nbsp;М.&nbsp;Машерова</DIV>
+			</DIV>
+		</DIV>
+	</BODY>
+</HTML>
