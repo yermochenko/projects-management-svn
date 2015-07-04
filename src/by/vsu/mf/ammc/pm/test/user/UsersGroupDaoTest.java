@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import by.vsu.mf.ammc.pm.dao.mysql.TransactionImpl;
+import by.vsu.mf.ammc.pm.service.abstraction.ServiceFactory;
+import by.vsu.mf.ammc.pm.service.abstraction.user.UserService;
+import by.vsu.mf.ammc.pm.service.abstraction.user.UsersGroupService;
+import by.vsu.mf.ammc.pm.service.main.ServiceFactoryImpl;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Layout;
@@ -104,6 +109,11 @@ public class UsersGroupDaoTest {
 			System.err.println("delete ug1");
 			e.printStackTrace();
 		}
-	}
+        //ServiceFactory factory = new ServiceFactoryImpl(new TransactionImpl());
+        //UsersGroupService usersGroupService = factory.getService(UsersGroupService.class);
+        //UsersGroup usersGroup = usersGroupService.findById(21031);
+        /*UsersGroup usersGroup = dao.read(21031);
+        System.out.println(usersGroup.getName());*/
+    }
 
 }

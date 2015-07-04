@@ -150,18 +150,30 @@ public class UsersGroupDaoImpl extends BaseDaoImpl implements UsersGroupDao {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		List<UsersGroup> usersGroups= new ArrayList<UsersGroup>(  );
-		try {
-			String sql = "SELECT * FROM users_group WHERE parent_id IS NULL ";
-			preparedStatement = getConnection().prepareStatement( sql, PreparedStatement.RETURN_GENERATED_KEYS );
-			resultSet = preparedStatement.executeQuery();
-			while ( resultSet.next() ){
-				UsersGroup usersGroup = getEntityFactory().create( UsersGroup.class );
-				usersGroup.setId( resultSet.getInt( "id" ) );
-				usersGroup.setName( resultSet.getString( "name" ) );
-				usersGroups.add( usersGroup );
-			}
-			return usersGroups;
-		}  catch ( SQLException e ) {
+        try {
+            //String sql = "SELECT * FROM users_group WHERE parent_id IS NULL ";
+            String sql = "SELECT * FROM users_group";
+            preparedStatement = getConnection().prepareStatement( sql, PreparedStatement.RETURN_GENERATED_KEYS );
+            resultSet = preparedStatement.executeQuery();
+            while ( resultSet.next() ){
+                UsersGroup usersGroup=null;
+                if ( cacheMap.containsKey( resultSet.getInt( "id" ) ) ) {
+                    usersGroup = cacheMap.get( resultSet.getInt( "id" ) );
+                }else{
+                    usersGroup = getEntityFactory().create( UsersGroup.class );
+                    usersGroup.setId( resultSet.getInt( "id" ));
+                    cacheMap.put( resultSet.getInt( "id" ), usersGroup );
+                }
+                usersGroup.setName( resultSet.getString( "name" ) );
+                Integer parentId = resultSet.getInt("parent_id");
+                if(!resultSet.wasNull() && parentId != usersGroup.getId()){
+                    UsersGroup parent = read(parentId);
+                    usersGroup.setParent(parent);
+                }
+                usersGroups.add( usersGroup );
+            }
+            return usersGroups;
+        }  catch ( SQLException e ) {
 			logger.error( "Reading of record was failed. Table 'users_groups'", e );
 			throw new PersistentException( e );
 		} finally {

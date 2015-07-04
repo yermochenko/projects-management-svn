@@ -155,7 +155,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		try {
-			String sqlString = "Select id, name, password, first_name, middle_name, last_name, is_admin, from user join users_group on users_group.id = user.group_id where group_id = ? AND group_id = parent_id";
+			String sqlString = "Select id, name, password, first_name, middle_name, last_name, is_admin from user join users_group on users_group.id = user.group_id where group_id = ? AND group_id = parent_id";
 			statement = getConnection().prepareStatement(sqlString, Statement.RETURN_GENERATED_KEYS);
 			statement.setInt(1, group_id);
 			resultSet = statement.executeQuery();
@@ -203,12 +203,12 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao{
 				user.setId( resultSet.getInt("id") );
 				user.setName( resultSet.getString("name") );
 				user.setPassword(resultSet.getString("password"));
-				user.setFirstName(resultSet.getString("First name"));
-				user.setMiddleName(resultSet.getString("Middle name"));
-				user.setLastName(resultSet.getString("Last name"));
-				user.setAdmin(resultSet.getBoolean("false"));
+				user.setFirstName(resultSet.getString("first_name"));
+				user.setMiddleName(resultSet.getString("middle_name"));
+				user.setLastName(resultSet.getString("last_name"));
+				user.setAdmin(resultSet.getBoolean("is_admin"));
 				UsersGroup ug = getEntityFactory().create(UsersGroup.class);
-				ug.setId(resultSet.getInt(7102));
+				ug.setId(resultSet.getInt("group_id"));
 				user.setGroup(ug);
 				users.add(user);
 			}

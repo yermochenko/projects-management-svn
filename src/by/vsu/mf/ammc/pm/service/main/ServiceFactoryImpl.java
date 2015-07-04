@@ -7,6 +7,8 @@ import java.lang.reflect.Proxy;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import by.vsu.mf.ammc.pm.service.abstraction.user.UsersGroupService;
+import by.vsu.mf.ammc.pm.service.main.user.UsersGroupServiceImpl;
 import org.apache.log4j.Logger;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.Transaction;
@@ -27,6 +29,7 @@ public class ServiceFactoryImpl implements ServiceFactory {
 	private static Map<Class<? extends Service>, Class<? extends ServiceImpl>> services = new ConcurrentHashMap<>();
 	static {
 		services.put(UserService.class, UserServiceImpl.class);
+		services.put(UsersGroupService.class, UsersGroupServiceImpl.class);
 		services.put(ContactService.class, ContactServiceImpl.class);
 		services.put(ContactsTypeService.class, ContactsTypeServiceImpl.class);
 	}

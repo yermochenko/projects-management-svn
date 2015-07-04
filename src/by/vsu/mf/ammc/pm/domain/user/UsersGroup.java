@@ -11,4 +11,10 @@ public class UsersGroup extends HierarchyEntity<UsersGroup> {
 	public List<User> getUsers() {
 		return users;
 	}
+
+    @Override
+    public void setParent(UsersGroup parent) {
+        super.setParent(parent);
+        parent.getChildren().add(this);
+    }
 }
