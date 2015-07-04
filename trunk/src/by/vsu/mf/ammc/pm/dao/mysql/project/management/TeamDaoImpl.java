@@ -15,7 +15,7 @@ import by.vsu.mf.ammc.pm.domain.user.User;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 
 public class TeamDaoImpl extends BaseDaoImpl implements TeamDao {
-	private HashMap<Integer, Team> identityMap = new HashMap<>();
+	private HashMap<Integer, Team> identityMap = new HashMap();
 
 	@Override
 	public Integer create(Team team) throws PersistentException {

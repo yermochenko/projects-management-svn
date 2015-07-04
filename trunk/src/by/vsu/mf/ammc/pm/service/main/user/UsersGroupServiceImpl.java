@@ -1,6 +1,5 @@
 package by.vsu.mf.ammc.pm.service.main.user;
 
-import by.vsu.mf.ammc.pm.dao.abstraction.user.ContactsTypeDao;
 import by.vsu.mf.ammc.pm.dao.abstraction.user.UsersGroupDao;
 import by.vsu.mf.ammc.pm.dao.mysql.user.UsersGroupDaoImpl;
 import by.vsu.mf.ammc.pm.domain.user.UsersGroup;

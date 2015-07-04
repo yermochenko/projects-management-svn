@@ -1,6 +1,7 @@
 package by.vsu.mf.ammc.pm.service.main.user;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import by.vsu.mf.ammc.pm.dao.abstraction.project.ProjectDao;
@@ -13,8 +14,10 @@ import by.vsu.mf.ammc.pm.domain.user.UsersGroup;
 import by.vsu.mf.ammc.pm.exception.PersistentException;
 import by.vsu.mf.ammc.pm.service.abstraction.user.UserService;
 import by.vsu.mf.ammc.pm.service.main.ServiceImpl;
+import org.apache.log4j.Logger;
 
 public class UserServiceImpl extends ServiceImpl implements UserService {
+    private static Logger logger = Logger.getLogger(UserServiceImpl.class);
 	@Override
 	public List<User> findAll() throws PersistentException {
 			UserDao userDao = getTransaction().getDao( UserDao.class );
@@ -23,8 +26,19 @@ public class UserServiceImpl extends ServiceImpl implements UserService {
 
 	@Override
 	public List<User> findByUsersGroup(UsersGroup group) throws PersistentException {
-		// TODO Auto-generated method stub
-		return null;
+        UserDao userDao = getTransaction().getDao( UserDao.class );
+        List<User> users = userDao.readAll();
+        logger.debug(String.format("size all users: " + users.size()));
+        List<User> userList = new ArrayList<>();
+        for(User user : users){
+            if(user.getGroup().getId().equals(group.getId())) {
+                logger.debug(String.format("ok: "));
+                userList.add(user);
+            }
+        }
+        logger.debug(String.format("size all users: " + userList.size()));
+        logger.debug(String.format("ID: " + group.getId()));
+		return userList;
 	}
 
 	@Override
