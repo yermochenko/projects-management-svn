@@ -1,0 +1,1 @@
+System allow to manage projects which students develops in course works or diplomas. It is developed by students at discipline "Information systems development technologies" (ISDT) in Vitebsk State University named after P.M. Masherov (VSU), Mathematical faculty (MF), department of Applied Mathematics and Mechanics (AM&M).
